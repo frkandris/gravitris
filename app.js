@@ -156,7 +156,73 @@ var pieceMap = {
     ],
 };
 
-var calculationArea = [
+var currentCalculationArea = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+];
+
+var futureCalculationArea = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+];
+
+var tempCalculationArea = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -196,37 +262,20 @@ var colors = [
     function checkKeyboardInput(e) {
         e = e || window.event;
         if (e.keyCode == '38') {
-            // up arrow
             // console.log('up');
-            var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
-            // console.log("numberOfRotations: " + numberOfRotations);
-            // console.log("rotationIndex: " + window.rotationIndex);
-            window.rotationIndex--;
-            if (window.rotationIndex < 0) {
-                window.rotationIndex = numberOfRotations - 1;
-            };
-            console.log("rotationIndex: " + window.rotationIndex);
+            movePieceInCalculationArea("rotateRight");
         }
         else if (e.keyCode == '40') {
             // console.log('down');
-            var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
-            // console.log("numberOfRotations: " + numberOfRotations);
-            // console.log("rotationIndex: " + window.rotationIndex);
-            window.rotationIndex++;
-            if (window.rotationIndex == numberOfRotations) {
-                window.rotationIndex = 0;
-            };
-            console.log("rotationIndex: " + window.rotationIndex);
+            movePieceInCalculationArea("rotateLeft");
         }
         else if (e.keyCode == '37') {
-            // left arrow
             // console.log('left');
-            xPlayArea = xPlayArea - pixelSize;
+            movePieceInCalculationArea("left");
         }
         else if (e.keyCode == '39') {
-            // right arrow
             // console.log('right');
-            xPlayArea = xPlayArea + pixelSize;
+            movePieceInCalculationArea("right");
         }
         else if (e.keyCode == '32 ') {
             selectANewPiece();
@@ -241,21 +290,227 @@ var colors = [
         yPlayArea = 0 * pixelSize;
     }
 
-    function drawCalculationArea(){
 
-        var numberOfRows = calculationArea.length;
-        var numberOfColumns = calculationArea[0].length;
+    function movePieceInCalculationArea(direction){
+
+        var xModifier = 0;
+        var yModifier = 0;
+        var rotationModifier = 0;
+
+        if (direction == "down") {
+            yModifier = -1;
+        }
+        if (direction == "left") {
+            xPlayArea = xPlayArea - pixelSize;
+            xModifier = 1;
+        }
+        if (direction == "right") {
+            xPlayArea = xPlayArea + pixelSize;
+            xModifier = -1;
+        }
+        if (direction == "rotateLeft") {
+            var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
+            window.rotationIndex++;
+            if (window.rotationIndex == numberOfRotations) {
+                window.rotationIndex = 0;
+            };
+            rotationModifier = -1;
+        }
+        if (direction == "rotateRight") {
+            var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
+            window.rotationIndex--;
+            if (window.rotationIndex < 0) {
+                window.rotationIndex = numberOfRotations - 1;
+            };
+            rotationModifier = 1;
+        }
+
+        // test if we can make the move
+
+        var moveCanBeDone = true;
+
+        // 1.0. copy currentCalculationArea to futureCalculationArea
+
+        var numberOfRows = currentCalculationArea.length;
+        var numberOfColumns = currentCalculationArea[0].length;
+        for (i = 0; i < numberOfRows; i++) {
+            for (j = 0; j < numberOfColumns; j++) {
+                futureCalculationArea[j][i] = currentCalculationArea[j][i];
+            }
+        }
+        // 1.1. remove pieceMap from futureCalculationArea
+
+        var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
+        window.rotationIndex += rotationModifier;
+        if (window.rotationIndex < 0) {
+            window.rotationIndex = numberOfRotations - 1;
+        };
+        if (window.rotationIndex == numberOfRotations) {
+            window.rotationIndex = 0;
+        };
+
+        var pieceMapNumberOfRows = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex]).length;
+        var pieceMapNumberOfColumns = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex][0]).length;
+        for (i = 0; i < pieceMapNumberOfRows; i++) {
+            for (j = 0; j < pieceMapNumberOfColumns; j++) {
+                isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][i][j];
+                if (isRectangleFilled == 1) {
+                    var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + j + yModifier;
+                    var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + i + xModifier;
+                    futureCalculationArea[yOnCalculationArea][xOnCalculationArea] = 0;
+                } 
+            }
+        }
+
+        // 1.2. test if we could add the piece to futureCalculationArea without overlap
+
+        var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
+        window.rotationIndex -= rotationModifier;
+        if (window.rotationIndex < 0) {
+            window.rotationIndex = numberOfRotations - 1;
+        };
+        if (window.rotationIndex == numberOfRotations) {
+            window.rotationIndex = 0;
+        };
+        var pieceMapNumberOfRows = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex]).length;
+        var pieceMapNumberOfColumns = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex][0]).length;
+
+        for (i = 0; i < pieceMapNumberOfRows; i++) {
+            for (j = 0; j < pieceMapNumberOfColumns; j++) {
+                isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][i][j];
+                if (isRectangleFilled == 1) {
+                    var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + j;
+                    var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + i;
+                    if (yOnCalculationArea > (numberOfRows-1)) {
+                        // piece reached the bottom
+                        moveCanBeDone = false;
+                        console.log("reached bottom");
+                    } else if (futureCalculationArea[yOnCalculationArea][xOnCalculationArea] != 0) {
+                        // move can not be done
+                        moveCanBeDone = false;
+                    };
+                } 
+            }
+        }        
+
+        if (moveCanBeDone == true) {
+
+            // 1.3. move can be done - remove pieceMap from currentCalculationArea
+
+            var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
+            window.rotationIndex += rotationModifier;
+            if (window.rotationIndex < 0) {
+                window.rotationIndex = numberOfRotations - 1;
+            };
+            if (window.rotationIndex == numberOfRotations) {
+                window.rotationIndex = 0;
+            };
+            var pieceMapNumberOfRows = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex]).length;
+            var pieceMapNumberOfColumns = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex][0]).length;
+
+            for (i = 0; i < pieceMapNumberOfRows; i++) {
+                for (j = 0; j < pieceMapNumberOfColumns; j++) {
+                    isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][i][j];
+                    if (isRectangleFilled == 1) {
+                        var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + j + yModifier;
+                        var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + i + xModifier;
+                        currentCalculationArea[yOnCalculationArea][xOnCalculationArea] = 0;
+                    } 
+                }
+            }
+
+            // 1.4. add pieceMap to currentCalculationArea
+
+            var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
+            window.rotationIndex -= rotationModifier;
+            if (window.rotationIndex < 0) {
+                window.rotationIndex = numberOfRotations - 1;
+            };
+            if (window.rotationIndex == numberOfRotations) {
+                window.rotationIndex = 0;
+            };
+            var pieceMapNumberOfRows = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex]).length;
+            var pieceMapNumberOfColumns = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex][0]).length;
+            for (i = 0; i < pieceMapNumberOfRows; i++) {
+                for (j = 0; j < pieceMapNumberOfColumns; j++) {
+                    isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][i][j];
+                    if (isRectangleFilled == 1) {
+                        var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + j;
+                        var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + i;
+                        currentCalculationArea[yOnCalculationArea][xOnCalculationArea] = pieceIndex+1;
+                    } 
+                }
+            }
+        } // if (moveCanBeDone == true)
+        else {
+            // move can not be done
+            
+            console.log("move can not be done");
+
+            if (direction == "down") {
+                selectANewPiece();
+            }
+            if (direction == "left") {
+                xPlayArea = xPlayArea + pixelSize;
+            }
+            if (direction == "right") {
+                xPlayArea = xPlayArea - pixelSize;
+            }
+            if (direction == "rotateLeft") {
+                var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
+                window.rotationIndex--;
+                if (window.rotationIndex < 0) {
+                    window.rotationIndex = numberOfRotations - 1;
+                };
+            }
+            if (direction == "rotateRight") {
+                var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
+                window.rotationIndex++;
+                if (window.rotationIndex == numberOfRotations) {
+                    window.rotationIndex = 0;
+                };
+            }            
+        }
+    }
+
+    function drawCurrentCalculationArea(){
+
+        var numberOfRows = currentCalculationArea.length;
+        var numberOfColumns = currentCalculationArea[0].length;
         // console.log("numberOfRows: " + numberOfRows);
         // console.log("numberOfColumns: " + numberOfColumns);
 
-        var c = document.getElementById("calculationAreaCanvas");
+        var c = document.getElementById("currentCalculationAreaCanvas");
         var ctx = c.getContext("2d");
         
         ctx.clearRect(0, 0, c.width, c.height);
 
         for (i = 0; i < numberOfRows; i++) {
             for (j = 0; j < numberOfColumns; j++) {
-                isRectangleFilled = calculationArea[i][j];
+                isRectangleFilled = currentCalculationArea[i][j];
+                if (isRectangleFilled > 0) {
+                    ctx.fillStyle = colors[isRectangleFilled - 1];
+                    ctx.fillRect(j * pixelSize, i * pixelSize, (pixelSize - 1), (pixelSize - 1));
+                } 
+            }
+        }
+    }
+
+    function drawFutureCalculationArea(){
+
+        var numberOfRows = futureCalculationArea.length;
+        var numberOfColumns = futureCalculationArea[0].length;
+        // console.log("numberOfRows: " + numberOfRows);
+        // console.log("numberOfColumns: " + numberOfColumns);
+
+        var c = document.getElementById("futureCalculationAreaCanvas");
+        var ctx = c.getContext("2d");
+        
+        ctx.clearRect(0, 0, c.width, c.height);
+
+        for (i = 0; i < numberOfRows; i++) {
+            for (j = 0; j < numberOfColumns; j++) {
+                isRectangleFilled = futureCalculationArea[i][j];
                 if (isRectangleFilled > 0) {
                     ctx.fillStyle = colors[isRectangleFilled - 1];
                     ctx.fillRect(j * pixelSize, i * pixelSize, (pixelSize - 1), (pixelSize - 1));
@@ -266,18 +521,11 @@ var colors = [
 
     function computeCalculateArea(pieceIndex, rotationIndex, xPlayArea, yPlayArea) {
 
-        var numberOfRows = calculationArea.length;
-        var numberOfColumns = calculationArea[0].length;
-        for (i = 0; i < numberOfRows; i++) {
-            for (j = 0; j < numberOfColumns; j++) {
-                calculationArea[j][i] = 0;
-            }
-        }
+        var numberOfRows = currentCalculationArea.length;
+        var numberOfColumns = currentCalculationArea[0].length;
 
         var pieceMapNumberOfRows = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex]).length;
-        // console.l og("numberOfRows: " + numberOfRows);
         var pieceMapNumberOfColumns = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex][0]).length;
-        // console.log("numberOfColumns: " + numberOfColumns);
 
         for (i = 0; i < pieceMapNumberOfRows; i++) {
             for (j = 0; j < pieceMapNumberOfColumns; j++) {
@@ -285,14 +533,14 @@ var colors = [
                 if (isRectangleFilled == 1) {
                     var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + j;
                     var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + i;
-                    calculationArea[yOnCalculationArea][xOnCalculationArea] = pieceIndex+1;
+                    currentCalculationArea[yOnCalculationArea][xOnCalculationArea] = pieceIndex+1;
                 } 
             }
         }
 
-        if (yOnCalculationArea > (numberOfRows-3)) {
-            selectANewPiece();
-        }
+        // if (yOnCalculationArea > (numberOfRows-3)) {
+        //     selectANewPiece();
+        // }
 
     }
 
@@ -310,24 +558,62 @@ var colors = [
         return [pieceIndex, rotationIndex];
     }
 
-    function drawPiece(pieceIndex, rotationIndex, xPlayArea, yPlayArea) {
-        var numberOfRows = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex]).length;
-        // console.log("numberOfRows: " + numberOfRows);
-        var numberOfColumns = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex][0]).length;
-        // console.log("numberOfColumns: " + numberOfColumns);
+    function drawPlayArea(pieceIndex, rotationIndex, xPlayArea, yPlayArea) {
 
         var c = document.getElementById("playAreaCanvas");
         var ctx = c.getContext("2d");
         
         ctx.clearRect(0, 0, c.width, c.height);
 
-        ctx.fillStyle = colors[pieceIndex];
+        // copy currentCalculationArea to tempCalculationArea
 
+        var numberOfRows = currentCalculationArea.length;
+        var numberOfColumns = currentCalculationArea[0].length;
+        for (i = 0; i < numberOfRows; i++) {
+            for (j = 0; j < numberOfColumns; j++) {
+                tempCalculationArea[j][i] = currentCalculationArea[j][i];
+            }
+        }
+
+        // remove current falling piece from tempCalculationArea
+
+        var pieceMapNumberOfRows = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex]).length;
+        var pieceMapNumberOfColumns = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex][0]).length;
+        for (i = 0; i < pieceMapNumberOfRows; i++) {
+            for (j = 0; j < pieceMapNumberOfColumns; j++) {
+                isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][i][j];
+                if (isRectangleFilled == 1) {
+                    var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + j;
+                    var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + i;
+                    tempCalculationArea[yOnCalculationArea][xOnCalculationArea] = 0;
+                }  
+            }
+        }
+
+        // draw tempCalculationArea
+
+        var numberOfRows = currentCalculationArea.length;
+        var numberOfColumns = currentCalculationArea[0].length;
+        for (i = 0; i < numberOfRows; i++) {
+            for (j = 0; j < numberOfColumns; j++) {
+                isRectangleFilled = tempCalculationArea[i][j];
+                if (isRectangleFilled > 0) {
+                    ctx.fillStyle = colors[isRectangleFilled - 1];
+                    ctx.fillRect(j * pixelSize, (i+1) * pixelSize, (pixelSize - 1), (pixelSize - 1));
+                } 
+            }
+        }
+
+        // draw pixelperfect moving part
+
+        var numberOfRows = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex]).length;
+        var numberOfColumns = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex][0]).length;
+        ctx.fillStyle = colors[pieceIndex];
         for (i = 0; i < numberOfRows; i++) {
             for (j = 0; j < numberOfColumns; j++) {
                 isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][i][j];
                 if (isRectangleFilled == 1) {
-                    ctx.fillRect(xPlayArea + (i * pixelSize), yPlayArea + (j * pixelSize), (pixelSize - 1), (pixelSize - 1));
+                    ctx.fillRect(xPlayArea + (i * pixelSize), (yPlayArea) + (j * pixelSize), (pixelSize - 1), (pixelSize - 1));
                 } 
             }
         }
@@ -335,19 +621,25 @@ var colors = [
 
     function gameLoop() {
 
-        computeCalculateArea(window.pieceIndex, window.rotationIndex, xPlayArea, yPlayArea);
-        drawCalculationArea();
-
-        drawPiece(window.pieceIndex, window.rotationIndex, xPlayArea, yPlayArea);
+        previousYCalculationArea = Math.floor(yPlayArea / pixelSize);
         yPlayArea = yPlayArea + fallingSpeed;
+        currentYCalculationArea = Math.floor(yPlayArea / pixelSize);
+        if (previousYCalculationArea != currentYCalculationArea) {
+            movePieceInCalculationArea("down");
+        } else {
+            computeCalculateArea(window.pieceIndex, window.rotationIndex, xPlayArea, yPlayArea);
+        }
+
+
+        drawPlayArea(window.pieceIndex, window.rotationIndex, xPlayArea, yPlayArea);
+        drawCurrentCalculationArea();
+        drawFutureCalculationArea();
 
         requestAnimationFrame(gameLoop);
     }
 
     document.onkeydown = checkKeyboardInput;
-
     selectANewPiece();
-
     requestAnimationFrame(gameLoop);
 
 console.log("end");
