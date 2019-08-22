@@ -5,7 +5,7 @@ var playAreaWidth = 16 * pixelSize;
 var playAreaHeight = 20 * pixelSize;
 var fallingSpeed = 1;
 
-var pieceType = {
+var pieceMap = {
     0 : [
         { 
             0 : [
@@ -198,7 +198,7 @@ var colors = [
         if (e.keyCode == '38') {
             // up arrow
             // console.log('up');
-            var numberOfRotations = Object.keys(pieceType[pieceIndex]).length;
+            var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
             // console.log("numberOfRotations: " + numberOfRotations);
             // console.log("rotationIndex: " + window.rotationIndex);
             window.rotationIndex--;
@@ -209,7 +209,7 @@ var colors = [
         }
         else if (e.keyCode == '40') {
             // console.log('down');
-            var numberOfRotations = Object.keys(pieceType[pieceIndex]).length;
+            var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
             // console.log("numberOfRotations: " + numberOfRotations);
             // console.log("rotationIndex: " + window.rotationIndex);
             window.rotationIndex++;
@@ -274,14 +274,14 @@ var colors = [
             }
         }
 
-        var pieceMapNumberOfRows = Object.keys(pieceType[pieceIndex][rotationIndex][rotationIndex]).length;
+        var pieceMapNumberOfRows = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex]).length;
         // console.l og("numberOfRows: " + numberOfRows);
-        var pieceMapNumberOfColumns = Object.keys(pieceType[pieceIndex][rotationIndex][rotationIndex][0]).length;
+        var pieceMapNumberOfColumns = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex][0]).length;
         // console.log("numberOfColumns: " + numberOfColumns);
 
         for (i = 0; i < pieceMapNumberOfRows; i++) {
             for (j = 0; j < pieceMapNumberOfColumns; j++) {
-                isRectangleFilled = pieceType[pieceIndex][rotationIndex][rotationIndex][i][j];
+                isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][i][j];
                 if (isRectangleFilled == 1) {
                     var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + j;
                     var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + i;
@@ -297,12 +297,12 @@ var colors = [
     }
 
     function selectAPieceAndRotationRandomly() {
-        var numberOfPieces = Object.keys(pieceType).length;
+        var numberOfPieces = Object.keys(pieceMap).length;
         // console.log("numberOfPieces: " + numberOfPieces);
         var pieceIndex = Math.floor(Math.random() * numberOfPieces);
         // console.log("pieceIndex: " + pieceIndex);
     
-        var numberOfRotations = Object.keys(pieceType[pieceIndex]).length;
+        var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
         // console.log("numberOfRotations: " + numberOfRotations);
         var rotationIndex = Math.floor(Math.random() * numberOfRotations);
         // console.log("rotationIndex: " + rotationIndex);
@@ -311,9 +311,9 @@ var colors = [
     }
 
     function drawPiece(pieceIndex, rotationIndex, xPlayArea, yPlayArea) {
-        var numberOfRows = Object.keys(pieceType[pieceIndex][rotationIndex][rotationIndex]).length;
+        var numberOfRows = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex]).length;
         // console.log("numberOfRows: " + numberOfRows);
-        var numberOfColumns = Object.keys(pieceType[pieceIndex][rotationIndex][rotationIndex][0]).length;
+        var numberOfColumns = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex][0]).length;
         // console.log("numberOfColumns: " + numberOfColumns);
 
         var c = document.getElementById("playAreaCanvas");
@@ -325,7 +325,7 @@ var colors = [
 
         for (i = 0; i < numberOfRows; i++) {
             for (j = 0; j < numberOfColumns; j++) {
-                isRectangleFilled = pieceType[pieceIndex][rotationIndex][rotationIndex][i][j];
+                isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][i][j];
                 if (isRectangleFilled == 1) {
                     ctx.fillRect(xPlayArea + (i * pixelSize), yPlayArea + (j * pixelSize), (pixelSize - 1), (pixelSize - 1));
                 } 
