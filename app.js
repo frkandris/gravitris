@@ -189,39 +189,6 @@ var currentCalculationArea = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
 
-var futureCalculationArea = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-];
-
 var tempCalculationArea = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -324,7 +291,7 @@ var colors = [
             };
             rotationModifier = 1;
         }
-        if (direction == "") {
+        if (direction == "") {
             // 
         }
 
@@ -332,16 +299,17 @@ var colors = [
 
         var moveCanBeDone = true;
 
-        // 1.0. copy currentCalculationArea to futureCalculationArea
+        // 1.0. copy currentCalculationArea to tempCalculationArea
 
         var numberOfRows = currentCalculationArea.length;
         var numberOfColumns = currentCalculationArea[0].length;
         for (i = 0; i < numberOfRows; i++) {
             for (j = 0; j < numberOfColumns; j++) {
-                futureCalculationArea[j][i] = currentCalculationArea[j][i];
+                tempCalculationArea[j][i] = currentCalculationArea[j][i];
             }
         }
-        // 1.1. remove pieceMap from futureCalculationArea
+
+        // 1.1. remove pieceMap from tempCalculationArea
 
         var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
         window.rotationIndex += rotationModifier;
@@ -360,12 +328,12 @@ var colors = [
                 if (isRectangleFilled == 1) {
                     var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + j + yModifier;
                     var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + i + xModifier;
-                    futureCalculationArea[yOnCalculationArea][xOnCalculationArea] = 0;
+                    tempCalculationArea[yOnCalculationArea][xOnCalculationArea] = 0;
                 } 
             }
         }
 
-        // 1.2. test if we could add the piece to futureCalculationArea without overlap
+        // 1.2. test if we could add the piece to tempCalculationArea without overlap
 
         var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
         window.rotationIndex -= rotationModifier;
@@ -388,7 +356,7 @@ var colors = [
                         // piece reached the bottom
                         moveCanBeDone = false;
                         console.log("reached bottom");
-                    } else if (futureCalculationArea[yOnCalculationArea][xOnCalculationArea] != 0) {
+                    } else if (tempCalculationArea[yOnCalculationArea][xOnCalculationArea] != 0) {
                         // move can not be done
                         moveCanBeDone = false;
                     };
@@ -499,29 +467,6 @@ var colors = [
         }
     }
 
-    function drawFutureCalculationArea(){
-
-        var numberOfRows = futureCalculationArea.length;
-        var numberOfColumns = futureCalculationArea[0].length;
-        // console.log("numberOfRows: " + numberOfRows);
-        // console.log("numberOfColumns: " + numberOfColumns);
-
-        var c = document.getElementById("futureCalculationAreaCanvas");
-        var ctx = c.getContext("2d");
-        
-        ctx.clearRect(0, 0, c.width, c.height);
-
-        for (i = 0; i < numberOfRows; i++) {
-            for (j = 0; j < numberOfColumns; j++) {
-                isRectangleFilled = futureCalculationArea[i][j];
-                if (isRectangleFilled > 0) {
-                    ctx.fillStyle = colors[isRectangleFilled - 1];
-                    ctx.fillRect(j * pixelSize, i * pixelSize, (pixelSize - 1), (pixelSize - 1));
-                } 
-            }
-        }
-    }
-
     function selectAPieceAndRotationRandomly() {
         var numberOfPieces = Object.keys(pieceMap).length;
         // console.log("numberOfPieces: " + numberOfPieces);
@@ -613,7 +558,6 @@ var colors = [
 
         drawPlayArea(window.pieceIndex, window.rotationIndex, xPlayArea, yPlayArea);
         drawCurrentCalculationArea();
-        drawFutureCalculationArea();
 
         // let's restart the game loop in the next frame
         requestAnimationFrame(gameLoop);
