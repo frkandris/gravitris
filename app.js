@@ -5,6 +5,7 @@ var playAreaWidth = 16 * pixelSize;
 var playAreaHeight = 20 * pixelSize;
 var fallingSpeed = 1;
 var selectANewPieceNextFrame = true;
+var moveCanBeDone = true;
 
 var pieceMap = {
     0 : [
@@ -247,7 +248,12 @@ var colors = [
         }
         else if (e.keyCode == '32 ') {
             // console.log('space');
-            selectANewPiece();
+
+            // instant drop
+            while (moveCanBeDone == true) {
+                yPlayArea = yPlayArea + pixelSize;
+                movePieceInCalculationArea("down");
+            }
         }
     }
 
@@ -307,7 +313,7 @@ var colors = [
 
         // test if we can make the move
 
-        var moveCanBeDone = true;
+        moveCanBeDone = true;
 
         // 1.0. copy currentCalculationArea to tempCalculationArea
 
@@ -428,7 +434,7 @@ var colors = [
         else {
             // move can not be done
             
-            console.log("move can not be done");
+            // console.log("move can not be done");
 
             if (direction == "down") {
                 selectANewPiece();
