@@ -295,7 +295,6 @@ var colors = [
         }
         if (direction == "rotateLeft") {
             // calculationArea modifications
-            xCalculationAreaModifier = -1;
             var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
             window.rotationIndex++;
             if (window.rotationIndex == numberOfRotations) {
