@@ -383,7 +383,7 @@ var colors = [
                     };
                 } 
             }
-        }        
+        }
 
         if (moveCanBeDone == true) {
 
@@ -600,6 +600,55 @@ var colors = [
         } while (fullLineFound == true);
     }
 
+    // this function draws a shadow of the piece
+
+    function drawShadow() {
+
+        var numberOfRows = currentCalculationArea.length;
+
+        // let's try to move the piece downwards and look for overlap
+        var yModifier = 0;
+        do {
+            var shadowCanBeMoved = true;
+            var pieceMapNumberOfRows = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex]).length;
+            var pieceMapNumberOfColumns = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex][0]).length;
+            for (i = 0; i < pieceMapNumberOfRows; i++) {
+                for (j = 0; j < pieceMapNumberOfColumns; j++) {
+                    isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][i][j];
+                    if (isRectangleFilled == 1) {
+                        var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + j + yModifier;
+                        var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + i;
+                        if (yOnCalculationArea > (numberOfRows - 2)) {
+                            shadowCanBeMoved = false;
+                        }
+                        if (tempCalculationArea[yOnCalculationArea][xOnCalculationArea] != 0) {
+                            shadowCanBeMoved = false;
+                        };
+                    } 
+                }
+            }
+            yModifier++;
+        }
+        while (shadowCanBeMoved == true);
+
+        // let's draw the piece
+        var c = document.getElementById("playAreaCanvas");
+        var ctx = c.getContext("2d");
+
+        for (i = 0; i < pieceMapNumberOfRows; i++) {
+            for (j = 0; j < pieceMapNumberOfColumns; j++) {
+                isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][i][j];
+                if (isRectangleFilled == 1) {
+                    var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + j + yModifier - 1;
+                    var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + i;
+                    ctx.fillStyle = "white";
+                    ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize, (pixelSize - 1), (pixelSize - 1));
+                }  
+            }
+        }
+
+    }
+
     // this is the game loop, it runs every frame
 
     function gameLoop() {
@@ -635,6 +684,9 @@ var colors = [
 
         // draw the calculationArea
         drawCurrentCalculationArea();
+
+        // draw a the shadow of the piece
+        drawShadow();
 
         // let's restart the game loop in the next frame
         requestAnimationFrame(gameLoop);
