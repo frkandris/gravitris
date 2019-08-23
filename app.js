@@ -261,20 +261,20 @@ var colors = [
 
     function movePieceInCalculationArea(direction){
 
-        var xModifier = 0;
-        var yModifier = 0;
+        var xCalculationAreaModifier = 0;
+        var yCalculationAreaModifier = 0;
         var rotationModifier = 0;
 
         if (direction == "down") {
-            yModifier = -1;
+            yCalculationAreaModifier = -1;
         }
         if (direction == "left") {
             xPlayArea = xPlayArea - pixelSize;
-            xModifier = 1;
+            xCalculationAreaModifier = 1;
         }
         if (direction == "right") {
             xPlayArea = xPlayArea + pixelSize;
-            xModifier = -1;
+            xCalculationAreaModifier = -1;
         }
         if (direction == "rotateLeft") {
             var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
@@ -327,8 +327,8 @@ var colors = [
             for (j = 0; j < pieceMapNumberOfColumns; j++) {
                 isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][i][j];
                 if (isRectangleFilled == 1) {
-                    var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + j + yModifier;
-                    var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + i + xModifier;
+                    var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + j + yCalculationAreaModifier;
+                    var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + i + xCalculationAreaModifier;
                     tempCalculationArea[yOnCalculationArea][xOnCalculationArea] = 0;
                 } 
             }
@@ -353,12 +353,12 @@ var colors = [
                 if (isRectangleFilled == 1) {
                     var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + j;
                     var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + i;
-                    if (yOnCalculationArea > (numberOfRows-1)) {
+                    if (yOnCalculationArea > (numberOfRows-2)) {
                         // piece reached the bottom
                         moveCanBeDone = false;
                         console.log("reached bottom");
                     } else if (tempCalculationArea[yOnCalculationArea][xOnCalculationArea] != 0) {
-                        // move can not be done
+                        // move can not be done, as the piece in the new position would overlap with something
                         moveCanBeDone = false;
                     };
                 } 
@@ -384,8 +384,8 @@ var colors = [
                 for (j = 0; j < pieceMapNumberOfColumns; j++) {
                     isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][i][j];
                     if (isRectangleFilled == 1) {
-                        var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + j + yModifier;
-                        var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + i + xModifier;
+                        var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + j + yCalculationAreaModifier;
+                        var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + i + xCalculationAreaModifier;
                         currentCalculationArea[yOnCalculationArea][xOnCalculationArea] = 0;
                     } 
                 }
