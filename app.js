@@ -266,17 +266,24 @@ var colors = [
         var rotationModifier = 0;
 
         if (direction == "down") {
+            // calculationArea modifications
             yCalculationAreaModifier = -1;
         }
         if (direction == "left") {
-            xPlayArea = xPlayArea - pixelSize;
+            // calculationArea modifications
             xCalculationAreaModifier = 1;
+            // playArea modifications
+            xPlayArea = xPlayArea - pixelSize;
         }
         if (direction == "right") {
-            xPlayArea = xPlayArea + pixelSize;
+            // calculationArea modifications
             xCalculationAreaModifier = -1;
+            // playArea modifications
+            xPlayArea = xPlayArea + pixelSize;
         }
         if (direction == "rotateLeft") {
+            // calculationArea modifications
+            xCalculationAreaModifier = -1;
             var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
             window.rotationIndex++;
             if (window.rotationIndex == numberOfRotations) {
@@ -285,6 +292,7 @@ var colors = [
             rotationModifier = -1;
         }
         if (direction == "rotateRight") {
+            // calculationArea modifications
             var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
             window.rotationIndex--;
             if (window.rotationIndex < 0) {
@@ -293,7 +301,7 @@ var colors = [
             rotationModifier = 1;
         }
         if (direction == "") {
-            // 
+            // do nothing
         }
 
         // test if we can make the move
