@@ -233,18 +233,22 @@ var colors = [
         if (e.keyCode == '38') {
             // console.log('up');
             movePieceInCalculationArea("rotateRight");
+            event.preventDefault();
         }
         else if (e.keyCode == '40') {
             // console.log('down');
             movePieceInCalculationArea("rotateLeft");
+            event.preventDefault();
         }
         else if (e.keyCode == '37') {
             // console.log('left');
             movePieceInCalculationArea("left");
+            event.preventDefault();
         }
         else if (e.keyCode == '39') {
             // console.log('right');
             movePieceInCalculationArea("right");
+            event.preventDefault();
         }
         else if (e.keyCode == '32 ') {
             // console.log('space');
@@ -254,6 +258,7 @@ var colors = [
                 yPlayArea = yPlayArea + pixelSize;
                 movePieceInCalculationArea("down");
             }
+            event.preventDefault();
         }
     }
 
