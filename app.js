@@ -4,6 +4,7 @@ var pixelSize = 20;
 var playAreaWidth = 16 * pixelSize;
 var playAreaHeight = 20 * pixelSize;
 var fallingSpeed = 1;
+var selectANewPieceNextFrame = true;
 
 var pieceMap = {
     0 : [
@@ -314,7 +315,7 @@ var colors = [
         var numberOfColumns = currentCalculationArea[0].length;
         for (i = 0; i < numberOfRows; i++) {
             for (j = 0; j < numberOfColumns; j++) {
-                tempCalculationArea[j][i] = currentCalculationArea[j][i];
+                tempCalculationArea[i][j] = currentCalculationArea[i][j];
             }
         }
 
@@ -342,7 +343,7 @@ var colors = [
             }
         }
 
-        // 1.2. test if we could add the piece to tempCalculationArea without overlap
+        // 1.2. test if we could add the piece to tempCalculationArea without overlap or any other problems
 
         var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
         window.rotationIndex -= rotationModifier;
@@ -361,11 +362,12 @@ var colors = [
                 if (isRectangleFilled == 1) {
                     var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + j;
                     var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + i;
-                    if (yOnCalculationArea > (numberOfRows-2)) {
+                    if (yOnCalculationArea > (numberOfRows - 2)) {
                         // piece reached the bottom
+                        selectANewPieceNextFrame = true;
                         moveCanBeDone = false;
-                        console.log("reached bottom");
-                    } else if (tempCalculationArea[yOnCalculationArea][xOnCalculationArea] != 0) {
+                    }
+                    if (tempCalculationArea[yOnCalculationArea][xOnCalculationArea] != 0) {
                         // move can not be done, as the piece in the new position would overlap with something
                         moveCanBeDone = false;
                     };
@@ -422,6 +424,7 @@ var colors = [
                 }
             }
         } // if (moveCanBeDone == true)
+
         else {
             // move can not be done
             
@@ -470,7 +473,7 @@ var colors = [
                 isRectangleFilled = currentCalculationArea[i][j];
                 if (isRectangleFilled > 0) {
                     ctx.fillStyle = colors[isRectangleFilled - 1];
-                    ctx.fillRect(j * pixelSize, i * pixelSize, (pixelSize - 1), (pixelSize - 1));
+                    ctx.fillRect(j * pixelSize, (i + 1) * pixelSize, (pixelSize - 1), (pixelSize - 1));
                 } 
             }
         }
@@ -555,6 +558,11 @@ var colors = [
 
     function gameLoop() {
 
+        if (selectANewPieceNextFrame == true) {
+            selectANewPieceNextFrame = false;
+            selectANewPiece();
+        }
+
         previousYCalculationArea = Math.floor(yPlayArea / pixelSize);
         yPlayArea = yPlayArea + fallingSpeed;
         currentYCalculationArea = Math.floor(yPlayArea / pixelSize);
@@ -576,9 +584,6 @@ var colors = [
 
     // the checkKeyboardInput() function will take care of the keyboard interactions
     document.onkeydown = checkKeyboardInput;
-
-    // let's decide the first piece
-    selectANewPiece();
 
     // start the gameloop
     requestAnimationFrame(gameLoop);
