@@ -564,6 +564,8 @@ var colors = [
         }
     }
 
+
+    // this function checks if we have full lines in the calculationArea and removes them
     function checkFullLineInCurrentCalculationArea(){
 
         do {
@@ -592,6 +594,7 @@ var colors = [
                             currentCalculationArea[k][l] = currentCalculationArea[k-1][l];
                         }
                     }
+                    selectANewPieceNextFrame = true;          
                 }
             }    
         } while (fullLineFound == true);
@@ -601,24 +604,36 @@ var colors = [
 
     function gameLoop() {
 
+        // check if we have full lines, if we have them, remove them
         checkFullLineInCurrentCalculationArea();
 
+        // if we need to set a new piece, set one
         if (selectANewPieceNextFrame == true) {
-            selectANewPieceNextFrame = false;
             selectANewPiece();
+            selectANewPieceNextFrame = false;
         }
 
+        // let's move the current piece down
+
+        // y previously in the calculationArea
         previousYCalculationArea = Math.floor(yPlayArea / pixelSize);
+        // y in the playArea
         yPlayArea = yPlayArea + fallingSpeed;
+        // y now in the calculationArea
         currentYCalculationArea = Math.floor(yPlayArea / pixelSize);
+        // do we need to move down the piece in the calculationArea
         if (previousYCalculationArea != currentYCalculationArea) {
+            // yes, try to do the move in calculationArea
             movePieceInCalculationArea("down");
         } else {
+            // no, just recalculate calculationArea
             movePieceInCalculationArea("");
-            // computeCalculateArea(window.pieceIndex, window.rotationIndex, xPlayArea, yPlayArea);
         }
 
+        // draw the pixel perfect playArea
         drawPlayArea(window.pieceIndex, window.rotationIndex, xPlayArea, yPlayArea);
+
+        // draw the calculationArea
         drawCurrentCalculationArea();
 
         // let's restart the game loop in the next frame
