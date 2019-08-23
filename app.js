@@ -39,10 +39,10 @@ var pieceMap = {
     1 : [
         { 
             0 : [
-                [0, 1, 0, 0],
-                [0, 1, 0, 0],
-                [0, 1, 0, 0],
-                [0, 1, 0, 0]
+                [0, 0, 1, 0],
+                [0, 0, 1, 0],
+                [0, 0, 1, 0],
+                [0, 0, 1, 0]
             ]
         },
         { 
@@ -324,6 +324,9 @@ var colors = [
             };
             rotationModifier = 1;
         }
+        if (direction == "") {
+            // 
+        }
 
         // test if we can make the move
 
@@ -519,31 +522,6 @@ var colors = [
         }
     }
 
-    function computeCalculateArea(pieceIndex, rotationIndex, xPlayArea, yPlayArea) {
-
-        var numberOfRows = currentCalculationArea.length;
-        var numberOfColumns = currentCalculationArea[0].length;
-
-        var pieceMapNumberOfRows = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex]).length;
-        var pieceMapNumberOfColumns = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex][0]).length;
-
-        for (i = 0; i < pieceMapNumberOfRows; i++) {
-            for (j = 0; j < pieceMapNumberOfColumns; j++) {
-                isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][i][j];
-                if (isRectangleFilled == 1) {
-                    var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + j;
-                    var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + i;
-                    currentCalculationArea[yOnCalculationArea][xOnCalculationArea] = pieceIndex+1;
-                } 
-            }
-        }
-
-        // if (yOnCalculationArea > (numberOfRows-3)) {
-        //     selectANewPiece();
-        // }
-
-    }
-
     function selectAPieceAndRotationRandomly() {
         var numberOfPieces = Object.keys(pieceMap).length;
         // console.log("numberOfPieces: " + numberOfPieces);
@@ -619,6 +597,8 @@ var colors = [
         }
     }
 
+    // this is the game loop, it runs every frame
+
     function gameLoop() {
 
         previousYCalculationArea = Math.floor(yPlayArea / pixelSize);
@@ -627,19 +607,27 @@ var colors = [
         if (previousYCalculationArea != currentYCalculationArea) {
             movePieceInCalculationArea("down");
         } else {
-            computeCalculateArea(window.pieceIndex, window.rotationIndex, xPlayArea, yPlayArea);
+            movePieceInCalculationArea("");
+            // computeCalculateArea(window.pieceIndex, window.rotationIndex, xPlayArea, yPlayArea);
         }
-
 
         drawPlayArea(window.pieceIndex, window.rotationIndex, xPlayArea, yPlayArea);
         drawCurrentCalculationArea();
         drawFutureCalculationArea();
 
+        // let's restart the game loop in the next frame
         requestAnimationFrame(gameLoop);
     }
 
+    // we start everything here
+
+    // the checkKeyboardInput() function will take care of the keyboard interactions
     document.onkeydown = checkKeyboardInput;
+
+    // let's decide the first piece
     selectANewPiece();
+
+    // start the gameloop
     requestAnimationFrame(gameLoop);
 
 console.log("end");
