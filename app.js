@@ -254,11 +254,16 @@ var colors = [
             // console.log('space');
 
             // instant drop
-            while (moveCanBeDone == true) {
-                yPlayArea = yPlayArea + pixelSize;
-                movePieceInCalculationArea("down");
-            }
+            instantDrop();
             event.preventDefault();
+        }
+    }
+
+    // this function drops the piece to the bottom of the calculationArea instantly
+    function instantDrop(){
+        while (moveCanBeDone == true) {
+            yPlayArea = yPlayArea + pixelSize;
+            movePieceInCalculationArea("down");
         }
     }
 
@@ -600,6 +605,13 @@ var colors = [
         } while (fullLineFound == true);
     }
 
+    // this function draws the shadow of the piece into the playArea
+    
+    function drawShadowToPlayArea(){
+
+    }
+
+
     // this is the game loop, it runs every frame
 
     function gameLoop() {
@@ -612,7 +624,7 @@ var colors = [
             selectANewPiece();
             selectANewPieceNextFrame = false;
         }
-
+        
         // let's move the current piece down
 
         // y previously in the calculationArea
@@ -635,6 +647,9 @@ var colors = [
 
         // draw the calculationArea
         drawCurrentCalculationArea();
+
+        // draw the shadow of the piece into the playArea
+        drawShadowToPlayArea();
 
         // let's restart the game loop in the next frame
         requestAnimationFrame(gameLoop);
