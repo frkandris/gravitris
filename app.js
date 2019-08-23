@@ -564,9 +564,44 @@ var colors = [
         }
     }
 
+    function checkFullLineInCurrentCalculationArea(){
+
+        do {
+            var fullLineFound = false;
+            var numberOfRows = currentCalculationArea.length;
+            var numberOfColumns = currentCalculationArea[0].length;
+            for (i = 0; i < numberOfRows; i++) {
+                numberOfEmptyRectanglesInRow = 0;
+                for (j = 0; j < numberOfColumns; j++) {
+                    isRectangleFilled = currentCalculationArea[i][j];
+                    if (isRectangleFilled > 0) {
+                        numberOfEmptyRectanglesInRow++;
+                    } 
+                }
+                if (numberOfEmptyRectanglesInRow == numberOfColumns) {
+                    // we've found a full line in row i
+                    fullLineFound = true;
+                    
+                    // remove it
+                    for (l = 0; l < numberOfColumns; l++) {
+                        currentCalculationArea[i][l] = 0;
+                        currentCalculationArea[0][l] = 0;
+                    }
+                    for (k = i; k > 0; k--) {
+                        for (l = 0; l < numberOfColumns; l++) {
+                            currentCalculationArea[k][l] = currentCalculationArea[k-1][l];
+                        }
+                    }
+                }
+            }    
+        } while (fullLineFound == true);
+    }
+
     // this is the game loop, it runs every frame
 
     function gameLoop() {
+
+        checkFullLineInCurrentCalculationArea();
 
         if (selectANewPieceNextFrame == true) {
             selectANewPieceNextFrame = false;
