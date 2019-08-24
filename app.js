@@ -224,6 +224,8 @@ var tempCalculationArea = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
 
+var nextPieces = [];
+
 var colors = [
     'red', 'green', 'blue', 'cyan', 'purple', 'brown', 'grey'
 ]
@@ -263,9 +265,19 @@ var colors = [
     }
 
     function selectANewPiece(){
-        var values = selectAPieceAndRotationRandomly();
-        window.pieceIndex = values[0];
-        window.rotationIndex = values[1];
+
+        // get a random new piece
+        var newPiece = selectAPieceRandomly();
+
+        // add new item to the beginning of the array
+        nextPieces.unshift(newPiece); 
+
+        currentPiece = nextPieces.slice(-1).pop(); // get the last item
+        nextPieces.splice(-1,1); // remove the last item
+
+        // set the current piece
+        window.pieceIndex = currentPiece;
+        window.rotationIndex = 0;
         xPlayArea = (playAreaWidth / 2) - (2 * pixelSize);
         yPlayArea = 0 * pixelSize;
     }
@@ -441,7 +453,7 @@ var colors = [
             // console.log("move can not be done");
 
             if (direction == "down") {
-                selectANewPiece();
+                selectANewPieceNextFrame = true;
             }
             if (direction == "left") {
                 xPlayArea = xPlayArea + pixelSize;
@@ -489,18 +501,12 @@ var colors = [
         }
     }
 
-    function selectAPieceAndRotationRandomly() {
-        var numberOfPieces = Object.keys(pieceMap).length;
-        // console.log("numberOfPieces: " + numberOfPieces);
-        var pieceIndex = Math.floor(Math.random() * numberOfPieces);
-        // console.log("pieceIndex: " + pieceIndex);
-    
-        var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
-        // console.log("numberOfRotations: " + numberOfRotations);
-        var rotationIndex = Math.floor(Math.random() * numberOfRotations);
-        // console.log("rotationIndex: " + rotationIndex);
+    function selectAPieceRandomly() {
 
-        return [pieceIndex, rotationIndex];
+        var numberOfPieces = Object.keys(pieceMap).length;
+        var pieceIndex = Math.floor(Math.random() * numberOfPieces);
+    
+        return pieceIndex;
     }
 
     function drawPlayArea(pieceIndex, rotationIndex, xPlayArea, yPlayArea) {
@@ -691,6 +697,38 @@ var colors = [
 
     }
 
+    function drawPiece(ctx, pieceToDrawIndex, xModifier, yModifier) {
+        var localRotationIndex = 0;
+        var pieceMapNumberOfRows = Object.keys(pieceMap[pieceToDrawIndex][localRotationIndex][localRotationIndex]).length;
+        var pieceMapNumberOfColumns = Object.keys(pieceMap[pieceToDrawIndex][localRotationIndex][localRotationIndex][0]).length;
+        for (var i = 0; i < pieceMapNumberOfRows; i++) {
+            for (var j = 0; j < pieceMapNumberOfColumns; j++) {
+                isRectangleFilled = pieceMap[pieceToDrawIndex][localRotationIndex][localRotationIndex][i][j];
+                if (isRectangleFilled == 1) {
+                    var xOnCalculationArea = j + xModifier;
+                    var yOnCalculationArea = i + yModifier;
+                    ctx.fillStyle = colors[pieceToDrawIndex];
+                    ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize, (pixelSize - 1), (pixelSize - 1));
+                }  
+            }
+        }
+    }
+
+    // this function draws the next pieces to the nextPiecesAreaCanvas
+    function drawNextPiecesArea() {
+
+        // let's draw the piece
+        var c = document.getElementById("nextPiecesAreaCanvas");
+        var ctx = c.getContext("2d");
+        ctx.clearRect(0, 0, c.width, c.height);
+
+        for (var i = 0; i < nextPieces.length; i++) {
+            pieceToDrawIndex = nextPieces[i];
+            drawPiece(ctx, pieceToDrawIndex, i * 4 + 2,  2);
+        }
+        
+    }
+
     // this is the game loop, it runs every frame
 
     function gameLoop() {
@@ -730,14 +768,26 @@ var colors = [
         // draw a the shadow of the piece
         drawShadow();
 
+        // draw next pieces
+        drawNextPiecesArea();
+    
         // let's restart the game loop in the next frame
         requestAnimationFrame(gameLoop);
     }
+
 
     // we start everything here
 
     // the checkKeyboardInput() function will take care of the keyboard interactions
     document.onkeydown = checkKeyboardInput;
+
+    // let's generate the first 3 pieces
+    window.pieceIndex = selectAPieceRandomly();
+    nextPieces.unshift(window.pieceIndex);
+    window.pieceIndex = selectAPieceRandomly();
+    nextPieces.unshift(window.pieceIndex);
+    window.pieceIndex = selectAPieceRandomly();
+    nextPieces.unshift(window.pieceIndex);
 
     // start the gameloop
     requestAnimationFrame(gameLoop);
