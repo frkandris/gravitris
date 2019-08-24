@@ -570,8 +570,11 @@ var colors = [
 
         do {
             var fullLineFound = false;
+
             var numberOfRows = currentCalculationArea.length;
             var numberOfColumns = currentCalculationArea[0].length;
+
+            // let's check for full lines
             for (i = 0; i < numberOfRows; i++) {
                 numberOfEmptyRectanglesInRow = 0;
                 for (j = 0; j < numberOfColumns; j++) {
@@ -596,7 +599,46 @@ var colors = [
                     }
                     selectANewPieceNextFrame = true;          
                 }
-            }    
+            }
+
+            // if (fullLineFound == true) {
+
+                // // do {
+
+                //     var fallingRectangleFound = false;
+
+                //     // copy currentCalculationArea to tempCalculationArea
+
+                //     var numberOfRows = currentCalculationArea.length;
+                //     var numberOfColumns = currentCalculationArea[0].length;
+                //     for (i = 0; i < numberOfRows; i++) {
+                //         for (j = 0; j < numberOfColumns; j++) {
+                //             tempCalculationArea[i][j] = currentCalculationArea[i][j];
+                //         }
+                //     }
+
+                //     // let's check for orphan rectangles that can fall down
+                //     for (i = 0; i < (numberOfRows-1); i++) {
+                //         for (j = 0; j < (numberOfColumns-1); j++) {
+                //             isRectangleFilled = tempCalculationArea[i][j];
+                //             isRectangleRightNeighbourFilled = tempCalculationArea[i][j+1];
+                //             isRectangleBottomNeighbourFilled = tempCalculationArea[i+1][j];
+                //             if (
+                //                 (isRectangleFilled > 0) && 
+                //                 (isRectangleFilled != isRectangleRightNeighbourFilled) &&
+                //                 (isRectangleBottomNeighbourFilled == 0)
+                //             ) {
+                //                 fallingRectangleFound = true;
+                //                 console.log("falling piece found");
+                //                 // currentCalculationArea[i+1][j] = currentCalculationArea[i][j];
+                //                 currentCalculationArea[i][j] = 1;
+                //                 drawCurrentCalculationArea();
+                //             }
+                //         }
+                //     }
+                // } while (fallingRectangleFound == true)
+            // }
+
         } while (fullLineFound == true);
     }
 
