@@ -158,6 +158,157 @@ var pieceMap = {
     ],
 };
 
+var pieceConnectionsMap = {
+    0 : [
+        { 
+            0 : [
+                [0, 0b0010, 0, 0],
+                [0, 0b1010, 0, 0],
+                [0, 0b1100, 0b0001, 0]
+            ]
+        },
+        { 
+            1 : [
+                [0, 0, 0, 0],
+                [1, 1, 1, 0],
+                [1, 0, 0, 0]
+            ]
+        },
+        { 
+            2 : [
+                [1, 1, 0, 0],
+                [0, 1, 0, 0],
+                [0, 1, 0, 0]
+            ]
+        },
+        { 
+            3 : [
+                [0, 0, 1, 0],
+                [1, 1, 1, 0],
+                [0, 0, 0, 0]
+            ]
+        }
+    ],
+    1 : [
+        { 
+            0 : [
+                [0, 0, 0b0010, 0],
+                [0, 0, 0b1010, 0],
+                [0, 0, 0b1010, 0],
+                [0, 0, 0b1000, 0]
+            ]
+        },
+        { 
+            1 : [
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+                [1, 1, 1, 1],
+                [0, 0, 0, 0]
+            ]
+        }
+    ],
+    2 : [
+        { 
+            0 : [
+                [0, 0b0110, 0b0011, 0],
+                [0, 0b1100, 0b1001, 0]
+            ]
+        }
+    ],
+    3 : [
+        { 
+            0 : [
+                [0, 0, 0b0010, 0],
+                [0, 0, 0b1010, 0],
+                [0, 0b0100, 0b1001, 0]
+            ]
+        },
+        { 
+            1 : [
+                [0, 1, 0, 0],
+                [0, 1, 1, 1],
+                [0, 0, 0, 0]
+            ]
+        },
+        { 
+            2 : [
+                [0, 0, 1, 1],
+                [0, 0, 1, 0],
+                [0, 0, 1, 0]
+            ]
+        },
+        { 
+            3 : [
+                [0, 0, 0, 0],
+                [0, 1, 1, 1],
+                [0, 0, 0, 1]
+            ]
+        }
+    ],
+    4 : [
+        { 
+            0 : [
+                [0, 0b0010, 0, 0],
+                [0b0100, 0b1101, 0b0001, 0],
+                [0, 0, 0, 0]
+            ]
+        },
+        { 
+            1 : [
+                [0, 1, 0, 0],
+                [0, 1, 1, 0],
+                [0, 1, 0, 0]
+            ]
+        },
+        { 
+            2 : [
+                [0, 0, 0, 0],
+                [1, 1, 1, 0],
+                [0, 1, 0, 0]
+            ]
+        },
+        { 
+            3 : [
+                [0, 1, 0, 0],
+                [1, 1, 0, 0],
+                [0, 1, 0, 0]
+            ]
+        }
+    ],
+    5 : [
+        { 
+            0 : [
+                [0, 0b0010, 0, 0],
+                [0, 0b1100, 0b0011, 0],
+                [0, 0, 0b1000, 0]
+            ]
+        },
+        { 
+            1 : [
+                [0, 0, 1, 1],
+                [0, 1, 1, 0],
+                [0, 0, 0, 0]
+            ]
+        }
+    ],
+    6 : [
+        { 
+            0 : [
+                [0, 0, 0b0010, 0],
+                [0, 0b0110, 0b1001, 0],
+                [0, 0b1000, 0, 0]
+            ]
+        },
+        { 
+            1 : [
+                [0, 1, 1, 0],
+                [0, 0, 1, 1],
+                [0, 0, 0, 0]
+            ]
+        }
+    ],
+};
+
 var currentCalculationArea = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -276,8 +427,8 @@ var colors = [
         nextPieces.splice(-1,1); // remove the last item
 
         // set the current piece
-        window.pieceIndex = currentPiece;
-        window.rotationIndex = 0;
+        pieceIndex = currentPiece;
+        rotationIndex = 0;
         xPlayArea = (playAreaWidth / 2) - (2 * pixelSize);
         yPlayArea = 0 * pixelSize;
     }
@@ -308,18 +459,18 @@ var colors = [
         if (direction == "rotateLeft") {
             // calculationArea modifications
             var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
-            window.rotationIndex++;
-            if (window.rotationIndex == numberOfRotations) {
-                window.rotationIndex = 0;
+            rotationIndex++;
+            if (rotationIndex == numberOfRotations) {
+                rotationIndex = 0;
             };
             rotationModifier = -1;
         }
         if (direction == "rotateRight") {
             // calculationArea modifications
             var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
-            window.rotationIndex--;
-            if (window.rotationIndex < 0) {
-                window.rotationIndex = numberOfRotations - 1;
+            rotationIndex--;
+            if (rotationIndex < 0) {
+                rotationIndex = numberOfRotations - 1;
             };
             rotationModifier = 1;
         }
@@ -335,31 +486,31 @@ var colors = [
 
         var numberOfRows = currentCalculationArea.length;
         var numberOfColumns = currentCalculationArea[0].length;
-        for (i = 0; i < numberOfRows; i++) {
-            for (j = 0; j < numberOfColumns; j++) {
-                tempCalculationArea[i][j] = currentCalculationArea[i][j];
+        for (var y = 0; y < numberOfRows; y++) {
+            for (var x = 0; x < numberOfColumns; x++) {
+                tempCalculationArea[y][x] = currentCalculationArea[y][x];
             }
         }
 
         // 1.1. remove pieceMap from tempCalculationArea
 
         var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
-        window.rotationIndex += rotationModifier;
-        if (window.rotationIndex < 0) {
-            window.rotationIndex = numberOfRotations - 1;
+        rotationIndex += rotationModifier;
+        if (rotationIndex < 0) {
+            rotationIndex = numberOfRotations - 1;
         };
-        if (window.rotationIndex == numberOfRotations) {
-            window.rotationIndex = 0;
+        if (rotationIndex == numberOfRotations) {
+            rotationIndex = 0;
         };
 
         var pieceMapNumberOfRows = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex]).length;
         var pieceMapNumberOfColumns = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex][0]).length;
-        for (i = 0; i < pieceMapNumberOfRows; i++) {
-            for (j = 0; j < pieceMapNumberOfColumns; j++) {
-                isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][i][j];
+        for (var y = 0; y < pieceMapNumberOfRows; y++) {
+            for (var x = 0; x < pieceMapNumberOfColumns; x++) {
+                isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][y][x];
                 if (isRectangleFilled == 1) {
-                    var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + j + yCalculationAreaModifier;
-                    var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + i + xCalculationAreaModifier;
+                    var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y + yCalculationAreaModifier;
+                    var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x + xCalculationAreaModifier;
                     tempCalculationArea[yOnCalculationArea][xOnCalculationArea] = 0;
                 } 
             }
@@ -368,22 +519,22 @@ var colors = [
         // 1.2. test if we could add the piece to tempCalculationArea without overlap or any other problems
 
         var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
-        window.rotationIndex -= rotationModifier;
-        if (window.rotationIndex < 0) {
-            window.rotationIndex = numberOfRotations - 1;
+        rotationIndex -= rotationModifier;
+        if (rotationIndex < 0) {
+            rotationIndex = numberOfRotations - 1;
         };
-        if (window.rotationIndex == numberOfRotations) {
-            window.rotationIndex = 0;
+        if (rotationIndex == numberOfRotations) {
+            rotationIndex = 0;
         };
         var pieceMapNumberOfRows = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex]).length;
         var pieceMapNumberOfColumns = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex][0]).length;
 
-        for (i = 0; i < pieceMapNumberOfRows; i++) {
-            for (j = 0; j < pieceMapNumberOfColumns; j++) {
-                isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][i][j];
+        for (var y = 0; y < pieceMapNumberOfRows; y++) {
+            for (var x = 0; x < pieceMapNumberOfColumns; x++) {
+                isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][y][x];
                 if (isRectangleFilled == 1) {
-                    var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + j;
-                    var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + i;
+                    var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y;
+                    var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
                     if (yOnCalculationArea > (numberOfRows - 2)) {
                         // piece reached the bottom
                         selectANewPieceNextFrame = true;
@@ -402,22 +553,22 @@ var colors = [
             // 1.3. move can be done - remove pieceMap from currentCalculationArea
 
             var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
-            window.rotationIndex += rotationModifier;
-            if (window.rotationIndex < 0) {
-                window.rotationIndex = numberOfRotations - 1;
+            rotationIndex += rotationModifier;
+            if (rotationIndex < 0) {
+                rotationIndex = numberOfRotations - 1;
             };
-            if (window.rotationIndex == numberOfRotations) {
-                window.rotationIndex = 0;
+            if (rotationIndex == numberOfRotations) {
+                rotationIndex = 0;
             };
             var pieceMapNumberOfRows = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex]).length;
             var pieceMapNumberOfColumns = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex][0]).length;
 
-            for (i = 0; i < pieceMapNumberOfRows; i++) {
-                for (j = 0; j < pieceMapNumberOfColumns; j++) {
-                    isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][i][j];
+            for (var y = 0; y < pieceMapNumberOfRows; y++) {
+                for (var x = 0; x < pieceMapNumberOfColumns; x++) {
+                    isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][y][x];
                     if (isRectangleFilled == 1) {
-                        var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + j + yCalculationAreaModifier;
-                        var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + i + xCalculationAreaModifier;
+                        var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y + yCalculationAreaModifier;
+                        var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x + xCalculationAreaModifier;
                         currentCalculationArea[yOnCalculationArea][xOnCalculationArea] = 0;
                     } 
                 }
@@ -426,21 +577,21 @@ var colors = [
             // 1.4. add pieceMap to currentCalculationArea
 
             var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
-            window.rotationIndex -= rotationModifier;
-            if (window.rotationIndex < 0) {
-                window.rotationIndex = numberOfRotations - 1;
+            rotationIndex -= rotationModifier;
+            if (rotationIndex < 0) {
+                rotationIndex = numberOfRotations - 1;
             };
-            if (window.rotationIndex == numberOfRotations) {
-                window.rotationIndex = 0;
+            if (rotationIndex == numberOfRotations) {
+                rotationIndex = 0;
             };
             var pieceMapNumberOfRows = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex]).length;
             var pieceMapNumberOfColumns = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex][0]).length;
-            for (i = 0; i < pieceMapNumberOfRows; i++) {
-                for (j = 0; j < pieceMapNumberOfColumns; j++) {
-                    isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][i][j];
+            for (var y = 0; y < pieceMapNumberOfRows; y++) {
+                for (var x = 0; x < pieceMapNumberOfColumns; x++) {
+                    isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][y][x];
                     if (isRectangleFilled == 1) {
-                        var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + j;
-                        var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + i;
+                        var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y;
+                        var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
                         currentCalculationArea[yOnCalculationArea][xOnCalculationArea] = pieceIndex+1;
                     } 
                 }
@@ -463,16 +614,16 @@ var colors = [
             }
             if (direction == "rotateLeft") {
                 var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
-                window.rotationIndex--;
-                if (window.rotationIndex < 0) {
-                    window.rotationIndex = numberOfRotations - 1;
+                rotationIndex--;
+                if (rotationIndex < 0) {
+                    rotationIndex = numberOfRotations - 1;
                 };
             }
             if (direction == "rotateRight") {
                 var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
-                window.rotationIndex++;
-                if (window.rotationIndex == numberOfRotations) {
-                    window.rotationIndex = 0;
+                rotationIndex++;
+                if (rotationIndex == numberOfRotations) {
+                    rotationIndex = 0;
                 };
             }            
         }
@@ -490,12 +641,12 @@ var colors = [
         
         ctx.clearRect(0, 0, c.width, c.height);
 
-        for (i = 0; i < numberOfRows; i++) {
-            for (j = 0; j < numberOfColumns; j++) {
-                isRectangleFilled = currentCalculationArea[i][j];
+        for (var y = 0; y < numberOfRows; y++) {
+            for (var x = 0; x < numberOfColumns; x++) {
+                isRectangleFilled = currentCalculationArea[y][x];
                 if (isRectangleFilled > 0) {
                     ctx.fillStyle = getPieceColor(isRectangleFilled - 1);
-                    ctx.fillRect(j * pixelSize, (i + 1) * pixelSize, (pixelSize - 1), (pixelSize - 1));
+                    ctx.fillRect(x * pixelSize, (y + 1) * pixelSize, (pixelSize - 1), (pixelSize - 1));
                 } 
             }
         }
@@ -518,7 +669,7 @@ var colors = [
         return pieceIndex;
     }
 
-    function drawPlayArea(pieceIndex, rotationIndex, xPlayArea, yPlayArea) {
+    function drawPlayArea() {
 
         var c = document.getElementById("playAreaCanvas");
         var ctx = c.getContext("2d");
@@ -529,9 +680,9 @@ var colors = [
 
         var numberOfRows = currentCalculationArea.length;
         var numberOfColumns = currentCalculationArea[0].length;
-        for (i = 0; i < numberOfRows; i++) {
-            for (j = 0; j < numberOfColumns; j++) {
-                tempCalculationArea[j][i] = currentCalculationArea[j][i];
+        for (var y = 0; y < numberOfRows; y++) {
+            for (var x = 0; x < numberOfColumns; x++) {
+                tempCalculationArea[y][x] = currentCalculationArea[y][x];
             }
         }
 
@@ -539,12 +690,12 @@ var colors = [
 
         var pieceMapNumberOfRows = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex]).length;
         var pieceMapNumberOfColumns = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex][0]).length;
-        for (i = 0; i < pieceMapNumberOfRows; i++) {
-            for (j = 0; j < pieceMapNumberOfColumns; j++) {
-                isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][i][j];
+        for (var y = 0; y < pieceMapNumberOfRows; y++) {
+            for (var x = 0; x < pieceMapNumberOfColumns; x++) {
+                isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][y][x];
                 if (isRectangleFilled == 1) {
-                    var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + j;
-                    var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + i;
+                    var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y;
+                    var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
                     tempCalculationArea[yOnCalculationArea][xOnCalculationArea] = 0;
                 }  
             }
@@ -554,29 +705,24 @@ var colors = [
 
         var numberOfRows = currentCalculationArea.length;
         var numberOfColumns = currentCalculationArea[0].length;
-        for (i = 0; i < numberOfRows; i++) {
-            for (j = 0; j < numberOfColumns; j++) {
-                isRectangleFilled = tempCalculationArea[i][j];
+        for (var y = 0; y < numberOfRows; y++) {
+            for (var x = 0; x < numberOfColumns; x++) {
+                isRectangleFilled = tempCalculationArea[y][x];
                 if (isRectangleFilled > 0) {
                     ctx.fillStyle = getPieceColor(isRectangleFilled - 1);
-                    ctx.fillRect(j * pixelSize, (i+1) * pixelSize, (pixelSize - 1), (pixelSize - 1));
+                    ctx.fillRect(x * pixelSize, (y + 1) * pixelSize, (pixelSize - 1), (pixelSize - 1));
                 } 
             }
         }
 
         // draw pixelperfect moving part
 
-        var numberOfRows = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex]).length;
-        var numberOfColumns = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex][0]).length;
-        ctx.fillStyle = getPieceColor(pieceIndex);
-        for (i = 0; i < numberOfRows; i++) {
-            for (j = 0; j < numberOfColumns; j++) {
-                isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][i][j];
-                if (isRectangleFilled == 1) {
-                    ctx.fillRect(xPlayArea + (i * pixelSize), (yPlayArea) + (j * pixelSize), (pixelSize - 1), (pixelSize - 1));
-                } 
-            }
-        }
+        var xModifier = xPlayArea / pixelSize;
+        var yModifier = yPlayArea / pixelSize;
+        var pieceToDrawIndex = pieceIndex;
+        var pieceToDrawRotation = rotationIndex;
+        drawPiece(ctx, pieceToDrawIndex, pieceToDrawRotation, xModifier, yModifier);
+
     }
 
 
@@ -590,9 +736,9 @@ var colors = [
             var numberOfColumns = currentCalculationArea[0].length;
 
             // let's check for full lines
-            for (i = 0; i < numberOfRows; i++) {
+            for (var i = 0; i < numberOfRows; i++) {
                 numberOfEmptyRectanglesInRow = 0;
-                for (j = 0; j < numberOfColumns; j++) {
+                for (var j = 0; j < numberOfColumns; j++) {
                     isRectangleFilled = currentCalculationArea[i][j];
                     if (isRectangleFilled > 0) {
                         numberOfEmptyRectanglesInRow++;
@@ -603,12 +749,12 @@ var colors = [
                     fullLineFound = true;
                     
                     // remove it
-                    for (l = 0; l < numberOfColumns; l++) {
+                    for (var l = 0; l < numberOfColumns; l++) {
                         currentCalculationArea[i][l] = 0;
                         currentCalculationArea[0][l] = 0;
                     }
-                    for (k = i; k > 0; k--) {
-                        for (l = 0; l < numberOfColumns; l++) {
+                    for (var k = i; k > 0; k--) {
+                        for (var l = 0; l < numberOfColumns; l++) {
                             currentCalculationArea[k][l] = currentCalculationArea[k-1][l];
                         }
                     }
@@ -669,12 +815,12 @@ var colors = [
             var shadowCanBeMoved = true;
             var pieceMapNumberOfRows = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex]).length;
             var pieceMapNumberOfColumns = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex][0]).length;
-            for (i = 0; i < pieceMapNumberOfRows; i++) {
-                for (j = 0; j < pieceMapNumberOfColumns; j++) {
-                    isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][i][j];
+            for (var y = 0; y < pieceMapNumberOfRows; y++) {
+                for (var x = 0; x < pieceMapNumberOfColumns; x++) {
+                    isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][y][x];
                     if (isRectangleFilled == 1) {
-                        var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + j + yModifier;
-                        var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + i;
+                        var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y + yModifier;
+                        var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
                         if (yOnCalculationArea > (numberOfRows - 2)) {
                             shadowCanBeMoved = false;
                         }
@@ -692,12 +838,12 @@ var colors = [
         var c = document.getElementById("playAreaCanvas");
         var ctx = c.getContext("2d");
 
-        for (i = 0; i < pieceMapNumberOfRows; i++) {
-            for (j = 0; j < pieceMapNumberOfColumns; j++) {
-                isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][i][j];
+        for (var y = 0; y < pieceMapNumberOfRows; y++) {
+            for (var x = 0; x < pieceMapNumberOfColumns; x++) {
+                isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][y][x];
                 if (isRectangleFilled == 1) {
-                    var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + j + yModifier - 1;
-                    var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + i;
+                    var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y + yModifier - 1;
+                    var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
                     ctx.fillStyle = "white";
                     ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize, (pixelSize - 1), (pixelSize - 1));
                 }  
@@ -706,18 +852,38 @@ var colors = [
 
     }
 
-    function drawPiece(ctx, pieceToDrawIndex, xModifier, yModifier) {
-        var localRotationIndex = 0;
-        var pieceMapNumberOfRows = Object.keys(pieceMap[pieceToDrawIndex][localRotationIndex][localRotationIndex]).length;
-        var pieceMapNumberOfColumns = Object.keys(pieceMap[pieceToDrawIndex][localRotationIndex][localRotationIndex][0]).length;
+    function drawPiece(ctx, pieceToDrawIndex, pieceToDrawRotation, xModifier, yModifier) {
+
+        var rotationIndex = pieceToDrawRotation;
+
+        var pieceMapNumberOfRows = Object.keys(pieceMap[pieceToDrawIndex][rotationIndex][rotationIndex]).length;
+        var pieceMapNumberOfColumns = Object.keys(pieceMap[pieceToDrawIndex][rotationIndex][rotationIndex][0]).length;
         for (var i = 0; i < pieceMapNumberOfRows; i++) {
             for (var j = 0; j < pieceMapNumberOfColumns; j++) {
-                isRectangleFilled = pieceMap[pieceToDrawIndex][localRotationIndex][localRotationIndex][i][j];
+                isRectangleFilled = pieceMap[pieceToDrawIndex][rotationIndex][rotationIndex][i][j];
                 if (isRectangleFilled == 1) {
+
+                    ctx.fillStyle = getPieceColor(pieceToDrawIndex);
+
+                    // draw the piece
                     var xOnCalculationArea = j + xModifier;
                     var yOnCalculationArea = i + yModifier;
-                    ctx.fillStyle = getPieceColor(pieceToDrawIndex);
                     ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize, (pixelSize - 1), (pixelSize - 1));
+
+                    // draw the piece connections
+                    rectangleConnections = pieceConnectionsMap[pieceToDrawIndex][rotationIndex][rotationIndex][i][j];
+                    if ( (rectangleConnections & 0b1000) != 0) {
+                        ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize - 1, (pixelSize - 1), 1);
+                    }
+                    if ( (rectangleConnections & 0b0100) != 0) {
+                        ctx.fillRect(xOnCalculationArea * pixelSize + pixelSize - 1, yOnCalculationArea * pixelSize, 1, (pixelSize - 1));
+                    }
+                    if ( (rectangleConnections & 0b0010) != 0) {
+                        ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize + pixelSize - 1, (pixelSize - 1), 1);
+                    }
+                    if ( (rectangleConnections & 0b0001) != 0) {
+                        ctx.fillRect(xOnCalculationArea * pixelSize - 1, yOnCalculationArea * pixelSize, 1, (pixelSize - 1));
+                    }
                 }  
             }
         }
@@ -733,9 +899,9 @@ var colors = [
 
         for (var i = 0; i < nextPieces.length; i++) {
             pieceToDrawIndex = nextPieces[i];
-            drawPiece(ctx, pieceToDrawIndex, i * 4 + 2,  2);
+            pieceToDrawRotation = 0;
+            drawPiece(ctx, pieceToDrawIndex, pieceToDrawRotation, i * 4 + 2,  2);
         }
-        
     }
 
     // this is the game loop, it runs every frame
@@ -769,7 +935,7 @@ var colors = [
         }
 
         // draw the pixel perfect playArea
-        drawPlayArea(window.pieceIndex, window.rotationIndex, xPlayArea, yPlayArea);
+        drawPlayArea();
 
         // draw the calculationArea
         drawCurrentCalculationArea();
@@ -791,12 +957,12 @@ var colors = [
     document.onkeydown = checkKeyboardInput;
 
     // let's generate the first 3 pieces
-    window.pieceIndex = selectAPieceRandomly();
-    nextPieces.unshift(window.pieceIndex);
-    window.pieceIndex = selectAPieceRandomly();
-    nextPieces.unshift(window.pieceIndex);
-    window.pieceIndex = selectAPieceRandomly();
-    nextPieces.unshift(window.pieceIndex);
+    pieceIndex = selectAPieceRandomly();
+    nextPieces.unshift(pieceIndex);
+    pieceIndex = selectAPieceRandomly();
+    nextPieces.unshift(pieceIndex);
+    pieceIndex = selectAPieceRandomly();
+    nextPieces.unshift(pieceIndex);
 
     // start the gameloop
     requestAnimationFrame(gameLoop);
