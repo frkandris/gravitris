@@ -6,6 +6,7 @@ var playAreaHeight = 20 * pixelSize;
 var fallingSpeed = 1;
 var selectANewPieceNextFrame = true;
 var moveCanBeDone = true;
+var stopTheGameLoop = false;
 
 var pieceMap = {
     0 : [
@@ -953,8 +954,11 @@ var colors = [
             movePieceInCalculationArea("");
         }
 
-        // draw the pixel perfect playArea
-        drawPlayArea();
+        // if the current piece will be replaced next frame, don't draw the playArea
+        if (selectANewPieceNextFrame == false) {
+            // draw the pixel perfect playArea
+            drawPlayArea();
+        }
 
         // draw the calculationArea
         drawCurrentCalculationArea();
@@ -963,7 +967,9 @@ var colors = [
         drawNextPiecesArea();
     
         // let's restart the game loop in the next frame
-        requestAnimationFrame(gameLoop);
+        if (!stopTheGameLoop) {
+            requestAnimationFrame(gameLoop);
+        }
     }
 
 
