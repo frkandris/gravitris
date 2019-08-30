@@ -715,7 +715,10 @@ var colors = [
             }
         }
 
-        // draw pixelperfect moving part
+        // draw a the shadow of the moving piece
+        drawShadow();
+
+        // draw pixelperfect moving piece
 
         var xModifier = xPlayArea / pixelSize;
         var yModifier = yPlayArea / pixelSize;
@@ -939,9 +942,6 @@ var colors = [
 
         // draw the calculationArea
         drawCurrentCalculationArea();
-
-        // draw a the shadow of the piece
-        drawShadow();
 
         // draw next pieces
         drawNextPiecesArea();
