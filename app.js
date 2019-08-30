@@ -381,6 +381,9 @@ var colors = [
     'red', 'green', 'blue', 'cyan', 'purple', 'brown', 'grey'
 ]
 
+
+    // this function handles the keyboard events
+
     function checkKeyboardInput(e) {
         e = e || window.event;
         if (e.keyCode == '38') {
@@ -415,6 +418,10 @@ var colors = [
         }
     }
 
+
+    // this function sets the next new piece 
+    // (gets the new one from the nextPieces, adds a new random piece to nextPieces, sets coordinates of the new piece)
+
     function selectANewPiece(){
 
         // get a random new piece
@@ -433,6 +440,8 @@ var colors = [
         yPlayArea = 0 * pixelSize;
     }
 
+
+    // this function calculates what happens, when the piece moves & rotates in currentCalculationArea
 
     function movePieceInCalculationArea(direction){
 
@@ -629,6 +638,9 @@ var colors = [
         }
     }
 
+
+    // this function draws the currenCalculationArea to the currentCalculationAreaCanvas
+
     function drawCurrentCalculationArea(){
 
         var numberOfRows = currentCalculationArea.length;
@@ -660,6 +672,8 @@ var colors = [
         return colors[colorCalculated];
     }
 
+
+    // this function returns the index of a randomly selected piece
 
     function selectAPieceRandomly() {
 
@@ -701,7 +715,7 @@ var colors = [
             }
         }
 
-        // draw tempCalculationArea
+        // draw tempCalculationArea to the playArea
 
         var numberOfRows = currentCalculationArea.length;
         var numberOfColumns = currentCalculationArea[0].length;
@@ -716,6 +730,7 @@ var colors = [
         }
 
         // draw a the shadow of the moving piece
+
         drawShadow();
 
         // draw pixelperfect moving piece
@@ -730,6 +745,7 @@ var colors = [
 
 
     // this function checks if we have full lines in the calculationArea and removes them
+
     function checkFullLineInCurrentCalculationArea(){
 
         do {
