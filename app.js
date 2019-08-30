@@ -494,12 +494,21 @@ var colors = [
             for (j = 0; j < numberOfColumns; j++) {
                 isRectangleFilled = currentCalculationArea[i][j];
                 if (isRectangleFilled > 0) {
-                    ctx.fillStyle = colors[isRectangleFilled - 1];
+                    ctx.fillStyle = getPieceColor(isRectangleFilled - 1);
                     ctx.fillRect(j * pixelSize, (i + 1) * pixelSize, (pixelSize - 1), (pixelSize - 1));
                 } 
             }
         }
     }
+
+
+    // this function returns the color of a piece from the colors[] array
+
+    function getPieceColor(colorIndex) {
+        var colorCalculated = colorIndex % colors.length;
+        return colors[colorCalculated];
+    }
+
 
     function selectAPieceRandomly() {
 
@@ -549,7 +558,7 @@ var colors = [
             for (j = 0; j < numberOfColumns; j++) {
                 isRectangleFilled = tempCalculationArea[i][j];
                 if (isRectangleFilled > 0) {
-                    ctx.fillStyle = colors[isRectangleFilled - 1];
+                    ctx.fillStyle = getPieceColor(isRectangleFilled - 1);
                     ctx.fillRect(j * pixelSize, (i+1) * pixelSize, (pixelSize - 1), (pixelSize - 1));
                 } 
             }
@@ -559,7 +568,7 @@ var colors = [
 
         var numberOfRows = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex]).length;
         var numberOfColumns = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex][0]).length;
-        ctx.fillStyle = colors[pieceIndex];
+        ctx.fillStyle = getPieceColor(pieceIndex);
         for (i = 0; i < numberOfRows; i++) {
             for (j = 0; j < numberOfColumns; j++) {
                 isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][i][j];
@@ -707,7 +716,7 @@ var colors = [
                 if (isRectangleFilled == 1) {
                     var xOnCalculationArea = j + xModifier;
                     var yOnCalculationArea = i + yModifier;
-                    ctx.fillStyle = colors[pieceToDrawIndex];
+                    ctx.fillStyle = getPieceColor(pieceToDrawIndex);
                     ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize, (pixelSize - 1), (pixelSize - 1));
                 }  
             }
