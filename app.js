@@ -376,6 +376,39 @@ var tempCalculationArea = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
 
+var currentConnectionCalculationArea = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+];
+
 var nextPieces = [];
 
 var colors = [
@@ -560,7 +593,7 @@ var colors = [
 
         if (moveCanBeDone == true) {
 
-            // 1.3. move can be done - remove pieceMap from currentCalculationArea
+            // 1.3. move can be done - remove pieceMap from currentCalculationArea and currentConnectionCalculationArea
 
             var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
             rotationIndex += rotationModifier;
@@ -580,11 +613,12 @@ var colors = [
                         var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y + yCalculationAreaModifier;
                         var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x + xCalculationAreaModifier;
                         currentCalculationArea[yOnCalculationArea][xOnCalculationArea] = 0;
+                        currentConnectionCalculationArea[yOnCalculationArea][xOnCalculationArea] = 0;
                     } 
                 }
             }
 
-            // 1.4. add pieceMap to currentCalculationArea
+            // 1.4. add pieceMap to currentCalculationArea and currentConnectionCalculationArea
 
             var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
             rotationIndex -= rotationModifier;
@@ -603,6 +637,9 @@ var colors = [
                         var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y;
                         var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
                         currentCalculationArea[yOnCalculationArea][xOnCalculationArea] = pieceIndex+1;
+
+                        var connectionValue = pieceConnectionsMap[pieceIndex][rotationIndex][rotationIndex][y][x];
+                        currentConnectionCalculationArea[yOnCalculationArea][xOnCalculationArea] = connectionValue;
                     } 
                 }
             }
@@ -642,29 +679,67 @@ var colors = [
 
     // this function draws the currenCalculationArea to the currentCalculationAreaCanvas
 
-    function drawCurrentCalculationArea(){
+    // function drawCurrentCalculationArea(){
 
-        var numberOfRows = currentCalculationArea.length;
-        var numberOfColumns = currentCalculationArea[0].length;
-        // console.log("numberOfRows: " + numberOfRows);
-        // console.log("numberOfColumns: " + numberOfColumns);
+    //     var numberOfRows = currentCalculationArea.length;
+    //     var numberOfColumns = currentCalculationArea[0].length;
+    //     // console.log("numberOfRows: " + numberOfRows);
+    //     // console.log("numberOfColumns: " + numberOfColumns);
 
-        var c = document.getElementById("currentCalculationAreaCanvas");
+    //     var c = document.getElementById("currentCalculationAreaCanvas");
+    //     var ctx = c.getContext("2d");
+        
+    //     ctx.clearRect(0, 0, c.width, c.height);
+
+    //     for (var y = 0; y < numberOfRows; y++) {
+    //         for (var x = 0; x < numberOfColumns; x++) {
+    //             isRectangleFilled = currentCalculationArea[y][x];
+    //             if (isRectangleFilled > 0) {
+    //                 ctx.fillStyle = getPieceColor(isRectangleFilled - 1);
+    //                 ctx.fillRect(x * pixelSize, (y + 1) * pixelSize, (pixelSize - 1), (pixelSize - 1));
+    //             } 
+    //         }
+    //     }
+    // }
+
+    // this function draws the currenCalculationArea to the currentCalculationAreaCanvas
+
+    function drawCurrentConnectionCalculationArea(){
+
+        var numberOfRows = currentConnectionCalculationArea.length;
+        var numberOfColumns = currentConnectionCalculationArea[0].length;
+
+        var c = document.getElementById("currentConnectionCalculationAreaCanvas");
         var ctx = c.getContext("2d");
         
         ctx.clearRect(0, 0, c.width, c.height);
 
         for (var y = 0; y < numberOfRows; y++) {
             for (var x = 0; x < numberOfColumns; x++) {
-                isRectangleFilled = currentCalculationArea[y][x];
+                isRectangleFilled = currentConnectionCalculationArea[y][x];
                 if (isRectangleFilled > 0) {
                     ctx.fillStyle = getPieceColor(isRectangleFilled - 1);
                     ctx.fillRect(x * pixelSize, (y + 1) * pixelSize, (pixelSize - 1), (pixelSize - 1));
+
+                    // draw the piece connections
+                    // rectangleConnections = isRectangleFilled;
+                    // if ( (rectangleConnections & 0b1000) != 0) {
+                    //     ctx.fillRect(x * pixelSize, y * pixelSize - 1, (pixelSize - 1), 1);
+                    // }
+                    // if ( (rectangleConnections & 0b0100) != 0) {
+                    //     ctx.fillRect(x * pixelSize + pixelSize - 1, y * pixelSize, 1, (pixelSize - 1));
+                    // }
+                    // if ( (rectangleConnections & 0b0010) != 0) {
+                    //     ctx.fillRect(x * pixelSize, y * pixelSize + pixelSize - 1, (pixelSize - 1), 1);
+                    // }
+                    // if ( (rectangleConnections & 0b0001) != 0) {
+                    //     ctx.fillRect(x * pixelSize - 1, y * pixelSize, 1, (pixelSize - 1));
+                    // }
+
                 } 
             }
         }
-    }
-
+    }    
 
     // this function returns the color of a piece from the colors[] array
 
@@ -961,7 +1036,10 @@ var colors = [
         }
 
         // draw the calculationArea
-        drawCurrentCalculationArea();
+        // drawCurrentCalculationArea();
+
+        // draw the currentConnectionCalculationArea
+        drawCurrentConnectionCalculationArea();
 
         // draw next pieces
         drawNextPiecesArea();
