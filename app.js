@@ -409,11 +409,46 @@ var currentConnectionCalculationArea = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
 
+var currentGravityCalculationArea = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+];
+
 var nextPieces = [];
 
 var colors = [
     'red', 'green', 'blue', 'cyan', 'purple', 'brown', 'grey'
-]
+];
+
+var listOfPiecesInThePlayingArea = [];
 
 
     // this function handles the keyboard events
@@ -999,6 +1034,67 @@ var colors = [
         }
     }
 
+
+    // this function saves the piece that has completed its journey to listOfPiecesInThePlayingArea
+
+    function saveDonePiece() {
+
+        try {
+            listOfPiecesInThePlayingArea.push({ 
+                pieceMap: pieceMap[pieceIndex][rotationIndex][rotationIndex],
+                pieceIndex: pieceIndex,
+                pieceX: Math.floor(xPlayArea / pixelSize),
+                pieceY: Math.floor(yPlayArea / pixelSize) - 1
+            });
+            // console.log(listOfPiecesInThePlayingArea[listOfPiecesInThePlayingArea.length-1]);
+        } catch { }
+
+    }
+
+
+    // this function draws the currentGravityCalculationArea
+    
+    function drawCurrentGravityCalculationArea() {
+
+        var numberOfRows = currentGravityCalculationArea.length;
+        var numberOfColumns = currentGravityCalculationArea[0].length;
+
+        var c = document.getElementById("currentGravityCalculationAreaCanvas");
+        var ctx = c.getContext("2d");
+        
+        ctx.clearRect(0, 0, c.width, c.height);
+
+        for (var y = 0; y < numberOfRows; y++) {
+            for (var x = 0; x < numberOfColumns; x++) {
+                currentGravityCalculationArea[y][x] = 0;
+            }
+        }
+        
+        for (var i = 0; i < listOfPiecesInThePlayingArea.length; i++) {
+            var pieceMapNumberOfRows = Object.keys(listOfPiecesInThePlayingArea[i].pieceMap).length;
+            var pieceMapNumberOfColumns = Object.keys(listOfPiecesInThePlayingArea[i].pieceMap[0]).length;
+            for (var y = 0; y < pieceMapNumberOfRows; y++) {
+                for (var x = 0; x < pieceMapNumberOfColumns; x++) {
+                    isRectangleFilled = listOfPiecesInThePlayingArea[i].pieceMap[y][x];
+                    if (isRectangleFilled == 1) {
+                        currentGravityCalculationArea[listOfPiecesInThePlayingArea[i].pieceY + y][listOfPiecesInThePlayingArea[i].pieceX + x] = listOfPiecesInThePlayingArea[i].pieceIndex + 1;
+                    }
+                }
+            }
+        }
+
+        for (var y = 0; y < numberOfRows; y++) {
+            for (var x = 0; x < numberOfColumns; x++) {
+                isRectangleFilled = currentGravityCalculationArea[y][x];
+                if (isRectangleFilled > 0) {
+                    ctx.fillStyle = getPieceColor(isRectangleFilled - 1);
+                    ctx.fillRect(x * pixelSize, (y + 1) * pixelSize, (pixelSize - 1), (pixelSize - 1));
+                } 
+            }
+        }
+    }
+
+
     // this is the game loop, it runs every frame
 
     function gameLoop() {
@@ -1006,8 +1102,13 @@ var colors = [
         // check if we have full lines, if we have them, remove them
         checkFullLineInCurrentCalculationArea();
 
-        // if we need to set a new piece, set one
+        // if we need to set a new piece, save the old one and set a new one
         if (selectANewPieceNextFrame == true) {
+
+            // save old one
+            saveDonePiece();
+
+            // select a new one
             selectANewPiece();
             selectANewPieceNextFrame = false;
         }
@@ -1044,6 +1145,9 @@ var colors = [
         // draw next pieces
         drawNextPiecesArea();
     
+        // draw currentGravityCalculationArea
+        drawCurrentGravityCalculationArea();
+
         // let's restart the game loop in the next frame
         if (!stopTheGameLoop) {
             requestAnimationFrame(gameLoop);
