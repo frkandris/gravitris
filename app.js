@@ -7,6 +7,7 @@ var fallingSpeed = 1;
 var selectANewPieceNextFrame = true;
 var moveCanBeDone = true;
 var stopTheGameLoop = false;
+var pieceCounter = 0;
 
 var pieceMap = {
     0 : [
@@ -159,157 +160,6 @@ var pieceMap = {
     ],
 };
 
-var pieceConnectionsMap = {
-    0 : [
-        { 
-            0 : [
-                [0, 0b0010, 0, 0],
-                [0, 0b1010, 0, 0],
-                [0, 0b1100, 0b0001, 0]
-            ]
-        },
-        { 
-            1 : [
-                [0, 0, 0, 0],
-                [1, 1, 1, 0],
-                [1, 0, 0, 0]
-            ]
-        },
-        { 
-            2 : [
-                [1, 1, 0, 0],
-                [0, 1, 0, 0],
-                [0, 1, 0, 0]
-            ]
-        },
-        { 
-            3 : [
-                [0, 0, 1, 0],
-                [1, 1, 1, 0],
-                [0, 0, 0, 0]
-            ]
-        }
-    ],
-    1 : [
-        { 
-            0 : [
-                [0, 0, 0b0010, 0],
-                [0, 0, 0b1010, 0],
-                [0, 0, 0b1010, 0],
-                [0, 0, 0b1000, 0]
-            ]
-        },
-        { 
-            1 : [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [1, 1, 1, 1],
-                [0, 0, 0, 0]
-            ]
-        }
-    ],
-    2 : [
-        { 
-            0 : [
-                [0, 0b0110, 0b0011, 0],
-                [0, 0b1100, 0b1001, 0]
-            ]
-        }
-    ],
-    3 : [
-        { 
-            0 : [
-                [0, 0, 0b0010, 0],
-                [0, 0, 0b1010, 0],
-                [0, 0b0100, 0b1001, 0]
-            ]
-        },
-        { 
-            1 : [
-                [0, 1, 0, 0],
-                [0, 1, 1, 1],
-                [0, 0, 0, 0]
-            ]
-        },
-        { 
-            2 : [
-                [0, 0, 1, 1],
-                [0, 0, 1, 0],
-                [0, 0, 1, 0]
-            ]
-        },
-        { 
-            3 : [
-                [0, 0, 0, 0],
-                [0, 1, 1, 1],
-                [0, 0, 0, 1]
-            ]
-        }
-    ],
-    4 : [
-        { 
-            0 : [
-                [0, 0b0010, 0, 0],
-                [0b0100, 0b1101, 0b0001, 0],
-                [0, 0, 0, 0]
-            ]
-        },
-        { 
-            1 : [
-                [0, 1, 0, 0],
-                [0, 1, 1, 0],
-                [0, 1, 0, 0]
-            ]
-        },
-        { 
-            2 : [
-                [0, 0, 0, 0],
-                [1, 1, 1, 0],
-                [0, 1, 0, 0]
-            ]
-        },
-        { 
-            3 : [
-                [0, 1, 0, 0],
-                [1, 1, 0, 0],
-                [0, 1, 0, 0]
-            ]
-        }
-    ],
-    5 : [
-        { 
-            0 : [
-                [0, 0b0010, 0, 0],
-                [0, 0b1100, 0b0011, 0],
-                [0, 0, 0b1000, 0]
-            ]
-        },
-        { 
-            1 : [
-                [0, 0, 1, 1],
-                [0, 1, 1, 0],
-                [0, 0, 0, 0]
-            ]
-        }
-    ],
-    6 : [
-        { 
-            0 : [
-                [0, 0, 0b0010, 0],
-                [0, 0b0110, 0b1001, 0],
-                [0, 0b1000, 0, 0]
-            ]
-        },
-        { 
-            1 : [
-                [0, 1, 1, 0],
-                [0, 0, 1, 1],
-                [0, 0, 0, 0]
-            ]
-        }
-    ],
-};
-
 var currentCalculationArea = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -344,39 +194,6 @@ var currentCalculationArea = [
 ];
 
 var tempCalculationArea = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-];
-
-var currentConnectionCalculationArea = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -456,27 +273,27 @@ var listOfPiecesInThePlayingArea = [];
     function checkKeyboardInput(e) {
         e = e || window.event;
         if (e.keyCode == '38') {
-            // console.log('up');
+            // up
             movePieceInCalculationArea("rotateRight");
             event.preventDefault();
         }
         else if (e.keyCode == '40') {
-            // console.log('down');
+            // down
             movePieceInCalculationArea("rotateLeft");
             event.preventDefault();
         }
         else if (e.keyCode == '37') {
-            // console.log('left');
+            // left
             movePieceInCalculationArea("left");
             event.preventDefault();
         }
         else if (e.keyCode == '39') {
-            // console.log('right');
+            // right
             movePieceInCalculationArea("right");
             event.preventDefault();
         }
         else if (e.keyCode == '32 ') {
-            // console.log('space');
+            // space
 
             // instant drop
             while (moveCanBeDone == true) {
@@ -507,6 +324,8 @@ var listOfPiecesInThePlayingArea = [];
         rotationIndex = 0;
         xPlayArea = (playAreaWidth / 2) - (2 * pixelSize);
         yPlayArea = 0 * pixelSize;
+
+        pieceCounter++;
     }
 
 
@@ -628,7 +447,7 @@ var listOfPiecesInThePlayingArea = [];
 
         if (moveCanBeDone == true) {
 
-            // 1.3. move can be done - remove pieceMap from currentCalculationArea and currentConnectionCalculationArea
+            // 1.3. move can be done - remove pieceMap from currentCalculationArea
 
             var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
             rotationIndex += rotationModifier;
@@ -648,12 +467,11 @@ var listOfPiecesInThePlayingArea = [];
                         var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y + yCalculationAreaModifier;
                         var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x + xCalculationAreaModifier;
                         currentCalculationArea[yOnCalculationArea][xOnCalculationArea] = 0;
-                        currentConnectionCalculationArea[yOnCalculationArea][xOnCalculationArea] = 0;
                     } 
                 }
             }
 
-            // 1.4. add pieceMap to currentCalculationArea and currentConnectionCalculationArea
+            // 1.4. add pieceMap to currentCalculationArea
 
             var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
             rotationIndex -= rotationModifier;
@@ -672,9 +490,6 @@ var listOfPiecesInThePlayingArea = [];
                         var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y;
                         var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
                         currentCalculationArea[yOnCalculationArea][xOnCalculationArea] = pieceIndex+1;
-
-                        var connectionValue = pieceConnectionsMap[pieceIndex][rotationIndex][rotationIndex][y][x];
-                        currentConnectionCalculationArea[yOnCalculationArea][xOnCalculationArea] = connectionValue;
                     } 
                 }
             }
@@ -683,8 +498,6 @@ var listOfPiecesInThePlayingArea = [];
         else {
             // move can not be done
             
-            // console.log("move can not be done");
-
             if (direction == "down") {
                 selectANewPieceNextFrame = true;
             }
@@ -711,70 +524,6 @@ var listOfPiecesInThePlayingArea = [];
         }
     }
 
-
-    // this function draws the currenCalculationArea to the currentCalculationAreaCanvas
-
-    // function drawCurrentCalculationArea(){
-
-    //     var numberOfRows = currentCalculationArea.length;
-    //     var numberOfColumns = currentCalculationArea[0].length;
-    //     // console.log("numberOfRows: " + numberOfRows);
-    //     // console.log("numberOfColumns: " + numberOfColumns);
-
-    //     var c = document.getElementById("currentCalculationAreaCanvas");
-    //     var ctx = c.getContext("2d");
-        
-    //     ctx.clearRect(0, 0, c.width, c.height);
-
-    //     for (var y = 0; y < numberOfRows; y++) {
-    //         for (var x = 0; x < numberOfColumns; x++) {
-    //             isRectangleFilled = currentCalculationArea[y][x];
-    //             if (isRectangleFilled > 0) {
-    //                 ctx.fillStyle = getPieceColor(isRectangleFilled - 1);
-    //                 ctx.fillRect(x * pixelSize, (y + 1) * pixelSize, (pixelSize - 1), (pixelSize - 1));
-    //             } 
-    //         }
-    //     }
-    // }
-
-    // this function draws the currenCalculationArea to the currentCalculationAreaCanvas
-
-    function drawCurrentConnectionCalculationArea(){
-
-        var numberOfRows = currentConnectionCalculationArea.length;
-        var numberOfColumns = currentConnectionCalculationArea[0].length;
-
-        var c = document.getElementById("currentConnectionCalculationAreaCanvas");
-        var ctx = c.getContext("2d");
-        
-        ctx.clearRect(0, 0, c.width, c.height);
-
-        for (var y = 0; y < numberOfRows; y++) {
-            for (var x = 0; x < numberOfColumns; x++) {
-                isRectangleFilled = currentConnectionCalculationArea[y][x];
-                if (isRectangleFilled > 0) {
-                    ctx.fillStyle = getPieceColor(isRectangleFilled - 1);
-                    ctx.fillRect(x * pixelSize, (y + 1) * pixelSize, (pixelSize - 1), (pixelSize - 1));
-
-                    // draw the piece connections
-                    // rectangleConnections = isRectangleFilled;
-                    // if ( (rectangleConnections & 0b1000) != 0) {
-                    //     ctx.fillRect(x * pixelSize, y * pixelSize - 1, (pixelSize - 1), 1);
-                    // }
-                    // if ( (rectangleConnections & 0b0100) != 0) {
-                    //     ctx.fillRect(x * pixelSize + pixelSize - 1, y * pixelSize, 1, (pixelSize - 1));
-                    // }
-                    // if ( (rectangleConnections & 0b0010) != 0) {
-                    //     ctx.fillRect(x * pixelSize, y * pixelSize + pixelSize - 1, (pixelSize - 1), 1);
-                    // }
-                    // if ( (rectangleConnections & 0b0001) != 0) {
-                    //     ctx.fillRect(x * pixelSize - 1, y * pixelSize, 1, (pixelSize - 1));
-                    // }
-
-                } 
-            }
-        }
-    }    
 
     // this function returns the color of a piece from the colors[] array
 
@@ -883,52 +632,22 @@ var listOfPiecesInThePlayingArea = [];
                         currentCalculationArea[i][l] = 0;
                         currentCalculationArea[0][l] = 0;
                     }
+                    // move everything above the line 1 row down
                     for (var k = i; k > 0; k--) {
                         for (var l = 0; l < numberOfColumns; l++) {
                             currentCalculationArea[k][l] = currentCalculationArea[k-1][l];
                         }
                     }
-                    selectANewPieceNextFrame = true;          
+
+                    saveDonePiece();
+
+                    // modify listOfPiecesInThePlayingArea because of full line
+                    modifylistOfPiecesInThePlayingAreaBecauseOfFullLine(i);
+
+                    // we need a new piece
+                    selectANewPieceNextFrame = true;
                 }
             }
-
-            // if (fullLineFound == true) {
-
-                // // do {
-
-                //     var fallingRectangleFound = false;
-
-                //     // copy currentCalculationArea to tempCalculationArea
-
-                //     var numberOfRows = currentCalculationArea.length;
-                //     var numberOfColumns = currentCalculationArea[0].length;
-                //     for (i = 0; i < numberOfRows; i++) {
-                //         for (j = 0; j < numberOfColumns; j++) {
-                //             tempCalculationArea[i][j] = currentCalculationArea[i][j];
-                //         }
-                //     }
-
-                //     // let's check for orphan rectangles that can fall down
-                //     for (i = 0; i < (numberOfRows-1); i++) {
-                //         for (j = 0; j < (numberOfColumns-1); j++) {
-                //             isRectangleFilled = tempCalculationArea[i][j];
-                //             isRectangleRightNeighbourFilled = tempCalculationArea[i][j+1];
-                //             isRectangleBottomNeighbourFilled = tempCalculationArea[i+1][j];
-                //             if (
-                //                 (isRectangleFilled > 0) && 
-                //                 (isRectangleFilled != isRectangleRightNeighbourFilled) &&
-                //                 (isRectangleBottomNeighbourFilled == 0)
-                //             ) {
-                //                 fallingRectangleFound = true;
-                //                 console.log("falling piece found");
-                //                 // currentCalculationArea[i+1][j] = currentCalculationArea[i][j];
-                //                 currentCalculationArea[i][j] = 1;
-                //                 drawCurrentCalculationArea();
-                //             }
-                //         }
-                //     }
-                // } while (fallingRectangleFound == true)
-            // }
 
         } while (fullLineFound == true);
     }
@@ -1000,20 +719,6 @@ var listOfPiecesInThePlayingArea = [];
                     var yOnCalculationArea = i + yModifier;
                     ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize, (pixelSize - 1), (pixelSize - 1));
 
-                    // draw the piece connections
-                    rectangleConnections = pieceConnectionsMap[pieceToDrawIndex][rotationIndex][rotationIndex][i][j];
-                    if ( (rectangleConnections & 0b1000) != 0) {
-                        ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize - 1, (pixelSize - 1), 1);
-                    }
-                    if ( (rectangleConnections & 0b0100) != 0) {
-                        ctx.fillRect(xOnCalculationArea * pixelSize + pixelSize - 1, yOnCalculationArea * pixelSize, 1, (pixelSize - 1));
-                    }
-                    if ( (rectangleConnections & 0b0010) != 0) {
-                        ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize + pixelSize - 1, (pixelSize - 1), 1);
-                    }
-                    if ( (rectangleConnections & 0b0001) != 0) {
-                        ctx.fillRect(xOnCalculationArea * pixelSize - 1, yOnCalculationArea * pixelSize, 1, (pixelSize - 1));
-                    }
                 }  
             }
         }
@@ -1039,15 +744,31 @@ var listOfPiecesInThePlayingArea = [];
 
     function saveDonePiece() {
 
+
         try {
+    
             listOfPiecesInThePlayingArea.push({ 
                 pieceMap: pieceMap[pieceIndex][rotationIndex][rotationIndex],
                 pieceIndex: pieceIndex,
                 pieceX: Math.floor(xPlayArea / pixelSize),
-                pieceY: Math.floor(yPlayArea / pixelSize) - 1
+                pieceY: Math.floor(yPlayArea / pixelSize) - 1,
+                pieceCounter: pieceCounter
             });
-            // console.log(listOfPiecesInThePlayingArea[listOfPiecesInThePlayingArea.length-1]);
-        } catch { }
+
+            // check for situations, where we accidentally try to insert the piece multiple times
+
+            var lastItem = listOfPiecesInThePlayingArea[listOfPiecesInThePlayingArea.length - 1];
+            var secondLastItem = listOfPiecesInThePlayingArea[listOfPiecesInThePlayingArea.length - 2];
+
+            if (lastItem && secondLastItem) {
+                if (lastItem.pieceCounter == secondLastItem.pieceCounter) {
+                    // multiple insert, remove the last piece
+                    listOfPiecesInThePlayingArea.splice(-1,1);
+                }
+            }
+
+        } catch(error) { 
+        }
 
     }
 
@@ -1056,20 +777,22 @@ var listOfPiecesInThePlayingArea = [];
     
     function drawCurrentGravityCalculationArea() {
 
-        var numberOfRows = currentGravityCalculationArea.length;
-        var numberOfColumns = currentGravityCalculationArea[0].length;
-
         var c = document.getElementById("currentGravityCalculationAreaCanvas");
         var ctx = c.getContext("2d");
-        
+
+        // clear the canvas
         ctx.clearRect(0, 0, c.width, c.height);
 
+        // clear currentGravityCalculationArea
+        var numberOfRows = currentGravityCalculationArea.length;
+        var numberOfColumns = currentGravityCalculationArea[0].length;
         for (var y = 0; y < numberOfRows; y++) {
             for (var x = 0; x < numberOfColumns; x++) {
                 currentGravityCalculationArea[y][x] = 0;
             }
         }
         
+        // go thru the pieces one by one in listOfPiecesInThePlayingArea
         for (var i = 0; i < listOfPiecesInThePlayingArea.length; i++) {
             var pieceMapNumberOfRows = Object.keys(listOfPiecesInThePlayingArea[i].pieceMap).length;
             var pieceMapNumberOfColumns = Object.keys(listOfPiecesInThePlayingArea[i].pieceMap[0]).length;
@@ -1077,12 +800,14 @@ var listOfPiecesInThePlayingArea = [];
                 for (var x = 0; x < pieceMapNumberOfColumns; x++) {
                     isRectangleFilled = listOfPiecesInThePlayingArea[i].pieceMap[y][x];
                     if (isRectangleFilled == 1) {
+                        // copy the map of the piece to currentGravityCalculationArea
                         currentGravityCalculationArea[listOfPiecesInThePlayingArea[i].pieceY + y][listOfPiecesInThePlayingArea[i].pieceX + x] = listOfPiecesInThePlayingArea[i].pieceIndex + 1;
                     }
                 }
             }
         }
 
+        // draw currentGravityCalculationArea
         for (var y = 0; y < numberOfRows; y++) {
             for (var x = 0; x < numberOfColumns; x++) {
                 isRectangleFilled = currentGravityCalculationArea[y][x];
@@ -1090,6 +815,98 @@ var listOfPiecesInThePlayingArea = [];
                     ctx.fillStyle = getPieceColor(isRectangleFilled - 1);
                     ctx.fillRect(x * pixelSize, (y + 1) * pixelSize, (pixelSize - 1), (pixelSize - 1));
                 } 
+            }
+        }
+    }
+
+
+    // this function modifies pieces in the listOfPiecesInThePlayingArea in case there was a full line
+
+    function modifylistOfPiecesInThePlayingAreaBecauseOfFullLine(fullLineIndex) {
+
+        // go thru the pieces one by one in listOfPiecesInThePlayingArea 
+        // (we iterate backwards, so when we remove an item reindexing the array will not break the loop)
+        var numberOfItemsInTheList = listOfPiecesInThePlayingArea.length - 1;
+        for (var i = numberOfItemsInTheList; i >= 0; i--) {
+            pieceIsAffected = false;
+            var pieceMapNumberOfRows = Object.keys(listOfPiecesInThePlayingArea[i].pieceMap).length;
+            var pieceMapNumberOfColumns = Object.keys(listOfPiecesInThePlayingArea[i].pieceMap[0]).length;
+            for (var y = 0; y < pieceMapNumberOfRows; y++) {
+                for (var x = 0; x < pieceMapNumberOfColumns; x++) {
+                    isRectangleFilled = listOfPiecesInThePlayingArea[i].pieceMap[y][x];
+                    if (isRectangleFilled == 1) {
+                        if (fullLineIndex == (listOfPiecesInThePlayingArea[i].pieceY + y)) {
+                            // the y coordinate of the pixel matches the full line row number
+                            pieceIsAffected = true;
+                            lineAffected = y;
+                        }
+                    }
+                }
+                if (pieceIsAffected == true) { break; }
+            }
+            if (pieceIsAffected == true) {
+                thereWerePixelsAboveTheCut = false;
+                for (var y = 0; y < lineAffected; y++) {
+                    for (var x = 0; x < pieceMapNumberOfColumns; x++) {
+                        isRectangleFilled = listOfPiecesInThePlayingArea[i].pieceMap[y][x];
+                        if (isRectangleFilled == 1) {
+                            thereWerePixelsAboveTheCut = true;
+                        }
+                    }
+                }
+                if (thereWerePixelsAboveTheCut == true) {
+                    var newPieceMap = [];
+                    for (var y = 0; y < lineAffected; y++) {
+                        newPieceMap[y] = [];
+                        for (var x = 0; x < pieceMapNumberOfColumns; x++) {
+                            newPieceMap[y][x] = 0;
+                        }
+                    }
+                    listOfPiecesInThePlayingArea.push({ 
+                        pieceMap: newPieceMap,
+                        pieceIndex: listOfPiecesInThePlayingArea[i].pieceIndex,
+                        pieceX: listOfPiecesInThePlayingArea[i].pieceX,
+                        pieceY: listOfPiecesInThePlayingArea[i].pieceY + 1,
+                        pieceCounter: listOfPiecesInThePlayingArea[i].pieceCounter + 0.001
+                    });
+                    for (var y = 0; y < lineAffected; y++) {
+                        for (var x = 0; x < pieceMapNumberOfColumns; x++) {
+                            listOfPiecesInThePlayingArea[listOfPiecesInThePlayingArea.length-1].pieceMap[y][x] = listOfPiecesInThePlayingArea[i].pieceMap[y][x];
+                        }
+                    }    
+                }
+                thereWerePixelsUnderTheCut = false;
+                for (var y = lineAffected + 1; y < pieceMapNumberOfRows; y++) {
+                    for (var x = 0; x < pieceMapNumberOfColumns; x++) {
+                        isRectangleFilled = listOfPiecesInThePlayingArea[i].pieceMap[y][x];
+                        if (isRectangleFilled == 1) {
+                            thereWerePixelsUnderTheCut = true;
+                        }
+                    }
+                }
+                if (thereWerePixelsUnderTheCut == true) {
+                    var newPieceMap = [];
+                    for (var y = lineAffected + 1; y < pieceMapNumberOfRows; y++) {
+                        newPieceMap[y - (lineAffected + 1)] = [];
+                        for (var x = 0; x < pieceMapNumberOfColumns; x++) {
+                            newPieceMap[y - (lineAffected + 1)][x] = 0;
+                        }
+                    }
+                    listOfPiecesInThePlayingArea.push({ 
+                        pieceMap: newPieceMap,
+                        pieceIndex: listOfPiecesInThePlayingArea[i].pieceIndex,
+                        pieceX: listOfPiecesInThePlayingArea[i].pieceX,
+                        pieceY: listOfPiecesInThePlayingArea[i].pieceY + lineAffected + 1,
+                        pieceCounter: listOfPiecesInThePlayingArea[i].pieceCounter + 0.002
+                    });
+                    for (var y = lineAffected + 1; y < pieceMapNumberOfRows; y++) {
+                        for (var x = 0; x < pieceMapNumberOfColumns; x++) {
+                            listOfPiecesInThePlayingArea[listOfPiecesInThePlayingArea.length-1].pieceMap[y - (lineAffected + 1)][x] = listOfPiecesInThePlayingArea[i].pieceMap[y][x];
+                        }
+                    }    
+                }
+                // remove the old item from the list
+                listOfPiecesInThePlayingArea.splice(i, 1);
             }
         }
     }
@@ -1139,9 +956,6 @@ var listOfPiecesInThePlayingArea = [];
         // draw the calculationArea
         // drawCurrentCalculationArea();
 
-        // draw the currentConnectionCalculationArea
-        drawCurrentConnectionCalculationArea();
-
         // draw next pieces
         drawNextPiecesArea();
     
@@ -1152,6 +966,7 @@ var listOfPiecesInThePlayingArea = [];
         if (!stopTheGameLoop) {
             requestAnimationFrame(gameLoop);
         }
+        
     }
 
 
