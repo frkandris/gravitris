@@ -826,8 +826,7 @@ var listOfPiecesInThePlayingArea = [];
 
         // go thru the pieces one by one in listOfPiecesInThePlayingArea 
         // (we iterate backwards, so when we remove an item reindexing the array will not break the loop)
-        var numberOfItemsInTheList = listOfPiecesInThePlayingArea.length - 1;
-        for (var i = numberOfItemsInTheList; i >= 0; i--) {
+        for (var i = listOfPiecesInThePlayingArea.length - 1; i >= 0; i--) {
             pieceIsAffected = false;
             var pieceMapNumberOfRows = Object.keys(listOfPiecesInThePlayingArea[i].pieceMap).length;
             var pieceMapNumberOfColumns = Object.keys(listOfPiecesInThePlayingArea[i].pieceMap[0]).length;
