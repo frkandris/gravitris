@@ -641,11 +641,12 @@ var listOfPiecesInThePlayingArea = [];
 
                     saveDonePiece();
 
+                    // we need a new piece
+                    selectANewPieceNextFrame = true;
+
                     // modify listOfPiecesInThePlayingArea because of full line
                     modifylistOfPiecesInThePlayingAreaBecauseOfFullLine(i);
 
-                    // we need a new piece
-                    selectANewPieceNextFrame = true;
                 }
             }
 
@@ -744,32 +745,28 @@ var listOfPiecesInThePlayingArea = [];
 
     function saveDonePiece() {
 
-
-        try {
-    
-            listOfPiecesInThePlayingArea.push({ 
-                pieceMap: pieceMap[pieceIndex][rotationIndex][rotationIndex],
-                pieceIndex: pieceIndex,
-                pieceX: Math.floor(xPlayArea / pixelSize),
-                pieceY: Math.floor(yPlayArea / pixelSize) - 1,
-                pieceCounter: pieceCounter
-            });
-
-            // check for situations, where we accidentally try to insert the piece multiple times
-
-            var lastItem = listOfPiecesInThePlayingArea[listOfPiecesInThePlayingArea.length - 1];
-            var secondLastItem = listOfPiecesInThePlayingArea[listOfPiecesInThePlayingArea.length - 2];
-
-            if (lastItem && secondLastItem) {
-                if (lastItem.pieceCounter == secondLastItem.pieceCounter) {
-                    // multiple insert, remove the last piece
-                    listOfPiecesInThePlayingArea.splice(-1,1);
-                }
+        var pieceAlreadyInserted = false;
+        for (var i = 0; i < listOfPiecesInThePlayingArea.length; i++) {
+            if (listOfPiecesInThePlayingArea[i].pieceCounter == pieceCounter) {
+                pieceAlreadyInserted = true;
+                console.log("multiple insert");
             }
-
-        } catch(error) { 
         }
 
+        if (pieceAlreadyInserted == false) {
+            try {
+        
+                listOfPiecesInThePlayingArea.push({ 
+                    pieceMap: pieceMap[pieceIndex][rotationIndex][rotationIndex],
+                    pieceIndex: pieceIndex,
+                    pieceX: Math.floor(xPlayArea / pixelSize),
+                    pieceY: Math.floor(yPlayArea / pixelSize) - 1,
+                    pieceCounter: pieceCounter,
+                    wasChecked: false
+                });
+            } catch(error) { 
+            }
+        }
     }
 
 
@@ -828,6 +825,7 @@ var listOfPiecesInThePlayingArea = [];
         // (we iterate backwards, so when we remove an item reindexing the array will not break the loop)
         for (var i = listOfPiecesInThePlayingArea.length - 1; i >= 0; i--) {
             pieceIsAffected = false;
+            listOfPiecesInThePlayingArea[i].wasChecked = true;
             var pieceMapNumberOfRows = Object.keys(listOfPiecesInThePlayingArea[i].pieceMap).length;
             var pieceMapNumberOfColumns = Object.keys(listOfPiecesInThePlayingArea[i].pieceMap[0]).length;
             for (var y = 0; y < pieceMapNumberOfRows; y++) {
@@ -866,7 +864,7 @@ var listOfPiecesInThePlayingArea = [];
                         pieceIndex: listOfPiecesInThePlayingArea[i].pieceIndex,
                         pieceX: listOfPiecesInThePlayingArea[i].pieceX,
                         pieceY: listOfPiecesInThePlayingArea[i].pieceY + 1,
-                        pieceCounter: listOfPiecesInThePlayingArea[i].pieceCounter + 0.001
+                        pieceCounter: listOfPiecesInThePlayingArea[i].pieceCounter
                     });
                     for (var y = 0; y < lineAffected; y++) {
                         for (var x = 0; x < pieceMapNumberOfColumns; x++) {
@@ -896,7 +894,7 @@ var listOfPiecesInThePlayingArea = [];
                         pieceIndex: listOfPiecesInThePlayingArea[i].pieceIndex,
                         pieceX: listOfPiecesInThePlayingArea[i].pieceX,
                         pieceY: listOfPiecesInThePlayingArea[i].pieceY + lineAffected + 1,
-                        pieceCounter: listOfPiecesInThePlayingArea[i].pieceCounter + 0.002
+                        pieceCounter: listOfPiecesInThePlayingArea[i].pieceCounter
                     });
                     for (var y = lineAffected + 1; y < pieceMapNumberOfRows; y++) {
                         for (var x = 0; x < pieceMapNumberOfColumns; x++) {
@@ -908,6 +906,10 @@ var listOfPiecesInThePlayingArea = [];
                 listOfPiecesInThePlayingArea.splice(i, 1);
             }
         }
+        // console.log(listOfPiecesInThePlayingArea);
+        // selectANewPieceNextFrame = false;
+        // stopTheGameLoop = true;
+        
     }
 
 
