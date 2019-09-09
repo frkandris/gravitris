@@ -2,7 +2,7 @@ console.log("start");
 
 var pixelSize = 20;
 var playAreaWidth = 16 * pixelSize;
-var playAreaHeight = 20 * pixelSize;
+var playAreaHeight = 30 * pixelSize;
 var fallingSpeed = 1;
 var selectANewPieceNextFrame = true;
 var moveCanBeDone = true;
@@ -609,48 +609,61 @@ var listOfPiecesInThePlayingArea = [];
     function checkFullLineInCurrentCalculationArea(){
 
         do {
-            var fullLineFound = false;
+            var thereWasMovement = false;
 
-            var numberOfRows = currentCalculationArea.length;
-            var numberOfColumns = currentCalculationArea[0].length;
+            do {
+                var fullLineFound = false;
 
-            // let's check for full lines
-            for (var i = 0; i < numberOfRows; i++) {
-                numberOfEmptyRectanglesInRow = 0;
-                for (var j = 0; j < numberOfColumns; j++) {
-                    isRectangleFilled = currentCalculationArea[i][j];
-                    if (isRectangleFilled > 0) {
-                        numberOfEmptyRectanglesInRow++;
-                    } 
-                }
-                if (numberOfEmptyRectanglesInRow == numberOfColumns) {
-                    // we've found a full line in row i
-                    fullLineFound = true;
-                    
-                    // remove it
-                    for (var l = 0; l < numberOfColumns; l++) {
-                        currentCalculationArea[i][l] = 0;
-                        currentCalculationArea[0][l] = 0;
+                var numberOfRows = currentCalculationArea.length;
+                var numberOfColumns = currentCalculationArea[0].length;
+
+                // let's check for full lines
+                for (var i = 0; i < numberOfRows; i++) {
+                    numberOfFilledRectanglesInRow = 0;
+                    for (var j = 0; j < numberOfColumns; j++) {
+                        isRectangleFilled = currentCalculationArea[i][j];
+                        if (isRectangleFilled > 0) {
+                            numberOfFilledRectanglesInRow++;
+                        } 
                     }
-                    // move everything above the line 1 row down
-                    for (var k = i; k > 0; k--) {
+                    if (numberOfFilledRectanglesInRow == numberOfColumns) {
+                        // we've found a full line in row i
+                        fullLineFound = true;
+                        
+                        // remove it
                         for (var l = 0; l < numberOfColumns; l++) {
-                            currentCalculationArea[k][l] = currentCalculationArea[k-1][l];
+                            currentCalculationArea[i][l] = 0;
+                            currentCalculationArea[0][l] = 0;
                         }
+                        // move everything above the line 1 row down
+                        for (var k = i; k > 0; k--) {
+                            for (var l = 0; l < numberOfColumns; l++) {
+                                currentCalculationArea[k][l] = currentCalculationArea[k-1][l];
+                            }
+                        }
+
+                        saveDonePiece();
+
+                        // we need a new piece
+                        selectANewPieceNextFrame = true;
+
+                        // modify listOfPiecesInThePlayingArea because of full line
+                        modifylistOfPiecesInThePlayingAreaBecauseOfFullLine(i);
+
+                        thereWasMovement = true;
                     }
-
-                    saveDonePiece();
-
-                    // we need a new piece
-                    selectANewPieceNextFrame = true;
-
-                    // modify listOfPiecesInThePlayingArea because of full line
-                    modifylistOfPiecesInThePlayingAreaBecauseOfFullLine(i);
-
                 }
+
+            } while (fullLineFound == true);
+
+            if (thereWasMovement == true) {
+                // check if any piece can fall down and let's run the fullLineChecker again
+                checkIfAnyPieceCanFallDown();
+                copyCurrentGravityCalculationAreaToCurrentCalculationArea();
             }
 
-        } while (fullLineFound == true);
+        } while (thereWasMovement == true)
+
     }
 
     // this function draws a shadow of the piece
@@ -749,13 +762,11 @@ var listOfPiecesInThePlayingArea = [];
         for (var i = 0; i < listOfPiecesInThePlayingArea.length; i++) {
             if (listOfPiecesInThePlayingArea[i].pieceCounter == pieceCounter) {
                 pieceAlreadyInserted = true;
-                console.log("multiple insert");
             }
         }
 
         if (pieceAlreadyInserted == false) {
-            try {
-        
+            try {        
                 listOfPiecesInThePlayingArea.push({ 
                     pieceMap: pieceMap[pieceIndex][rotationIndex][rotationIndex],
                     pieceIndex: pieceIndex,
@@ -774,12 +785,6 @@ var listOfPiecesInThePlayingArea = [];
     
     function drawCurrentGravityCalculationArea() {
 
-        var c = document.getElementById("currentGravityCalculationAreaCanvas");
-        var ctx = c.getContext("2d");
-
-        // clear the canvas
-        ctx.clearRect(0, 0, c.width, c.height);
-
         // clear currentGravityCalculationArea
         var numberOfRows = currentGravityCalculationArea.length;
         var numberOfColumns = currentGravityCalculationArea[0].length;
@@ -788,6 +793,11 @@ var listOfPiecesInThePlayingArea = [];
                 currentGravityCalculationArea[y][x] = 0;
             }
         }
+
+        // clear the canvas
+        var c = document.getElementById("currentGravityCalculationAreaCanvas");
+        var ctx = c.getContext("2d");
+        ctx.clearRect(0, 0, c.width, c.height);
         
         // go thru the pieces one by one in listOfPiecesInThePlayingArea
         for (var i = 0; i < listOfPiecesInThePlayingArea.length; i++) {
@@ -798,22 +808,22 @@ var listOfPiecesInThePlayingArea = [];
                     isRectangleFilled = listOfPiecesInThePlayingArea[i].pieceMap[y][x];
                     if (isRectangleFilled == 1) {
                         // copy the map of the piece to currentGravityCalculationArea
-                        currentGravityCalculationArea[listOfPiecesInThePlayingArea[i].pieceY + y][listOfPiecesInThePlayingArea[i].pieceX + x] = listOfPiecesInThePlayingArea[i].pieceIndex + 1;
-                    }
+                        var yOnGravityCalculationArea = listOfPiecesInThePlayingArea[i].pieceY + y;
+                        var xOnGravityCalculationArea = listOfPiecesInThePlayingArea[i].pieceX + x;
+                        var colorOnGravityCalculationArea = listOfPiecesInThePlayingArea[i].pieceIndex + 1;
+                        currentGravityCalculationArea[yOnGravityCalculationArea][xOnGravityCalculationArea] = colorOnGravityCalculationArea;
+
+                        // add the number
+                        ctx.fillStyle = getPieceColor(colorOnGravityCalculationArea - 1);
+                        ctx.fillRect(xOnGravityCalculationArea * pixelSize, (yOnGravityCalculationArea + 1) * pixelSize, (pixelSize-1), (pixelSize-1));
+                        ctx.fillStyle = "white";
+                        ctx.font = "10px Arial";
+                        ctx.fillText(i, xOnGravityCalculationArea * pixelSize + 5, (yOnGravityCalculationArea + 1) * pixelSize + 10);
+        }
                 }
             }
         }
 
-        // draw currentGravityCalculationArea
-        for (var y = 0; y < numberOfRows; y++) {
-            for (var x = 0; x < numberOfColumns; x++) {
-                isRectangleFilled = currentGravityCalculationArea[y][x];
-                if (isRectangleFilled > 0) {
-                    ctx.fillStyle = getPieceColor(isRectangleFilled - 1);
-                    ctx.fillRect(x * pixelSize, (y + 1) * pixelSize, (pixelSize - 1), (pixelSize - 1));
-                } 
-            }
-        }
     }
 
 
@@ -863,7 +873,7 @@ var listOfPiecesInThePlayingArea = [];
                         pieceMap: newPieceMap,
                         pieceIndex: listOfPiecesInThePlayingArea[i].pieceIndex,
                         pieceX: listOfPiecesInThePlayingArea[i].pieceX,
-                        pieceY: listOfPiecesInThePlayingArea[i].pieceY + 1,
+                        pieceY: listOfPiecesInThePlayingArea[i].pieceY,
                         pieceCounter: listOfPiecesInThePlayingArea[i].pieceCounter
                     });
                     for (var y = 0; y < lineAffected; y++) {
@@ -909,9 +919,138 @@ var listOfPiecesInThePlayingArea = [];
         // console.log(listOfPiecesInThePlayingArea);
         // selectANewPieceNextFrame = false;
         // stopTheGameLoop = true;
-        
+
     }
 
+
+    // this function checks if any of the pieces can fall down
+
+    function checkIfAnyPieceCanFallDown() {
+        console.log(listOfPiecesInThePlayingArea);
+        
+        do {
+            thereWasMovementInThisRound = false;
+
+            // let's iterate thru all the pieces
+            for (var i = 0; i < listOfPiecesInThePlayingArea.length; i++) {
+
+                // clear currentGravityCalculationArea
+                var numberOfRows = currentGravityCalculationArea.length;
+                var numberOfColumns = currentGravityCalculationArea[0].length;
+                for (var y = 0; y < numberOfRows; y++) {
+                    for (var x = 0; x < numberOfColumns; x++) {
+                        currentGravityCalculationArea[y][x] = 0;
+                    }
+                }
+
+                // draw currentGravityCalculationArea
+                // clear the canvas
+                var c = document.getElementById("currentGravityCalculationAreaCanvas");
+                var ctx = c.getContext("2d");
+                ctx.clearRect(0, 0, c.width, c.height);
+                
+                // go thru the pieces one by one in listOfPiecesInThePlayingArea
+                // draw every piece except the one we calculate now
+                for (var k = 0; k < listOfPiecesInThePlayingArea.length; k++) {
+                    if (k != i) {
+                        var pieceMapNumberOfRows = Object.keys(listOfPiecesInThePlayingArea[k].pieceMap).length;
+                        var pieceMapNumberOfColumns = Object.keys(listOfPiecesInThePlayingArea[k].pieceMap[0]).length;
+                        for (var y = 0; y < pieceMapNumberOfRows; y++) {
+                            for (var x = 0; x < pieceMapNumberOfColumns; x++) {
+                                isRectangleFilled = listOfPiecesInThePlayingArea[k].pieceMap[y][x];
+                                if (isRectangleFilled == 1) {
+                                    // copy the map of the piece to currentGravityCalculationArea
+                                    var yOnGravityCalculationArea = listOfPiecesInThePlayingArea[k].pieceY + y;
+                                    var xOnGravityCalculationArea = listOfPiecesInThePlayingArea[k].pieceX + x;
+                                    var colorOnGravityCalculationArea = listOfPiecesInThePlayingArea[k].pieceIndex + 1;
+                                    currentGravityCalculationArea[yOnGravityCalculationArea][xOnGravityCalculationArea] = colorOnGravityCalculationArea;
+
+                                    ctx.fillStyle = getPieceColor(colorOnGravityCalculationArea - 1);
+                                    ctx.fillRect(xOnGravityCalculationArea * pixelSize, (yOnGravityCalculationArea + 1) * pixelSize, (pixelSize-1), (pixelSize-1));
+                                    ctx.fillStyle = "white";
+                                    ctx.font = "10px Arial";
+                                    ctx.fillText(k, xOnGravityCalculationArea * pixelSize + 5, (yOnGravityCalculationArea + 1) * pixelSize + 10);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // let's try to move the piece downwards and look for overlap
+                console.log("--");
+                console.log(i);
+                console.log(listOfPiecesInThePlayingArea[i]);
+                
+                var numberOfRows = currentGravityCalculationArea.length;
+                var numberOfColumns = currentGravityCalculationArea[0].length;
+                for (var y = 0; y < numberOfRows; y++) {
+                    var line = '';
+                    for (var x = 0; x < numberOfColumns; x++) {
+                        line = line + currentGravityCalculationArea[y][x];
+                    }
+                    // console.log(line);
+                }
+
+                var yModifier = 0;
+                do {
+                    var pieceCanBeMoved = true;
+                    var numberOfRows = currentGravityCalculationArea.length;
+                    var pieceMapNumberOfRows = Object.keys(listOfPiecesInThePlayingArea[i].pieceMap).length;
+                    var pieceMapNumberOfColumns = Object.keys(listOfPiecesInThePlayingArea[i].pieceMap[0]).length;
+                    for (var y = 0; y < pieceMapNumberOfRows; y++) {
+                        for (var x = 0; x < pieceMapNumberOfColumns; x++) {
+                            isRectangleFilled = listOfPiecesInThePlayingArea[i].pieceMap[y][x];
+                            if (isRectangleFilled == 1) {
+                                var yOnCalculationArea = listOfPiecesInThePlayingArea[i].pieceY + y + yModifier + 1;
+                                var xOnCalculationArea = listOfPiecesInThePlayingArea[i].pieceX + x;
+                                if (yOnCalculationArea > (numberOfRows - 2)) {
+                                    pieceCanBeMoved = false;
+                                    console.log(yModifier, "bottom");
+                                    break;
+                                }
+                                if (currentGravityCalculationArea[yOnCalculationArea][xOnCalculationArea] != 0) {
+                                    pieceCanBeMoved = false;
+                                    console.log(yModifier, "collision");
+                                };
+                                if (pieceCanBeMoved == true) {
+                                    console.log(yModifier, x, y, "no problem");
+                                }
+                            } 
+                        }
+                    }
+                    console.log(yModifier, "yModifier");
+                    if (pieceCanBeMoved == true) {
+                        yModifier++;
+                        console.log("oldY: " + listOfPiecesInThePlayingArea[i].pieceY);
+                        listOfPiecesInThePlayingArea[i].pieceY++;
+                        console.log("newY: " + listOfPiecesInThePlayingArea[i].pieceY);
+                        thereWasMovementInThisRound = true;
+                        drawCurrentGravityCalculationArea();
+                    } else {
+                        console.log("piece can not be moved");
+                        drawCurrentGravityCalculationArea();
+                    }
+                }
+                while (pieceCanBeMoved == true);
+
+            }
+
+        } while (thereWasMovementInThisRound == true);
+
+        drawCurrentGravityCalculationArea();
+
+    }
+
+    function copyCurrentGravityCalculationAreaToCurrentCalculationArea() {
+        var numberOfRows = currentGravityCalculationArea.length;
+        var numberOfColumns = currentGravityCalculationArea[0].length;
+        for (var y = 0; y < numberOfRows; y++) {
+            for (var x = 0; x < numberOfColumns; x++) {
+                currentCalculationArea[y][x] = currentGravityCalculationArea[y][x];
+            }
+        }
+        console.log("copyCurrentGravityCalculationAreaToCurrentCalculationArea");
+    }
 
     // this is the game loop, it runs every frame
 
