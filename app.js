@@ -977,9 +977,9 @@ var listOfPiecesInThePlayingArea = [];
                 }
 
                 // let's try to move the piece downwards and look for overlap
-                console.log("--");
-                console.log(i);
-                console.log(listOfPiecesInThePlayingArea[i]);
+                // console.log("--");
+                // console.log(i);
+                // console.log(listOfPiecesInThePlayingArea[i]);
                 
                 var numberOfRows = currentGravityCalculationArea.length;
                 var numberOfColumns = currentGravityCalculationArea[0].length;
@@ -1005,29 +1005,29 @@ var listOfPiecesInThePlayingArea = [];
                                 var xOnCalculationArea = listOfPiecesInThePlayingArea[i].pieceX + x;
                                 if (yOnCalculationArea > (numberOfRows - 2)) {
                                     pieceCanBeMoved = false;
-                                    console.log(yModifier, "bottom");
+                                    // console.log(yModifier, "bottom");
                                     break;
                                 }
                                 if (currentGravityCalculationArea[yOnCalculationArea][xOnCalculationArea] != 0) {
                                     pieceCanBeMoved = false;
-                                    console.log(yModifier, "collision");
+                                    // console.log(yModifier, "collision");
                                 };
                                 if (pieceCanBeMoved == true) {
-                                    console.log(yModifier, x, y, "no problem");
+                                    // console.log(yModifier, x, y, "no problem");
                                 }
                             } 
                         }
                     }
-                    console.log(yModifier, "yModifier");
+                    // console.log(yModifier, "yModifier");
                     if (pieceCanBeMoved == true) {
                         yModifier++;
-                        console.log("oldY: " + listOfPiecesInThePlayingArea[i].pieceY);
+                        // console.log("oldY: " + listOfPiecesInThePlayingArea[i].pieceY);
                         listOfPiecesInThePlayingArea[i].pieceY++;
-                        console.log("newY: " + listOfPiecesInThePlayingArea[i].pieceY);
+                        // console.log("newY: " + listOfPiecesInThePlayingArea[i].pieceY);
                         thereWasMovementInThisRound = true;
                         drawCurrentGravityCalculationArea();
                     } else {
-                        console.log("piece can not be moved");
+                        // console.log("piece can not be moved");
                         drawCurrentGravityCalculationArea();
                     }
                 }
