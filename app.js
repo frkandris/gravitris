@@ -8,6 +8,7 @@ var selectANewPieceNextFrame = true;
 var moveCanBeDone = true;
 var stopTheGameLoop = false;
 var pieceCounter = 0;
+var frameNumber = 0;
 
 var pieceMap = {
     0 : [
@@ -269,6 +270,8 @@ var shadowColor = '#2c2c2c';
 
 var listOfPiecesInThePlayingArea = [];
 
+var logOfEvents = [];
+
 
     // this function handles the keyboard events
 
@@ -276,31 +279,55 @@ var listOfPiecesInThePlayingArea = [];
         e = e || window.event;
         if (e.keyCode == '38') {
             // up
-            movePieceInCalculationArea("rotateRight");
+            logOfEvents.push({
+                frameNumber: frameNumber,
+                event: 'keyPressed',
+                eventValue: 'rotateRight'
+            });
+            movePieceInCalculationArea('rotateRight');
             event.preventDefault();
         }
         else if (e.keyCode == '40') {
             // down
-            movePieceInCalculationArea("rotateLeft");
+            logOfEvents.push({
+                frameNumber: frameNumber,
+                event: 'keyPressed',
+                eventValue: 'rotateLeft'
+            });
+            movePieceInCalculationArea('rotateLeft');
             event.preventDefault();
         }
         else if (e.keyCode == '37') {
             // left
-            movePieceInCalculationArea("left");
+            logOfEvents.push({
+                frameNumber: frameNumber,
+                event: 'keyPressed',
+                eventValue: 'moveLeft'
+            });
+            movePieceInCalculationArea('moveLeft');
             event.preventDefault();
         }
         else if (e.keyCode == '39') {
             // right
-            movePieceInCalculationArea("right");
+            logOfEvents.push({
+                frameNumber: frameNumber,
+                event: 'keyPressed',
+                eventValue: 'moveRight'
+            });
+            movePieceInCalculationArea('moveRight');
             event.preventDefault();
         }
         else if (e.keyCode == '32 ') {
             // space
-
+            logOfEvents.push({
+                frameNumber: frameNumber,
+                event: 'keyPressed',
+                eventValue: 'instantDrop'
+            });
             // instant drop
             while (moveCanBeDone == true) {
                 yPlayArea = yPlayArea + pixelSize;
-                movePieceInCalculationArea("down");
+                movePieceInCalculationArea('moveDown');
             }
             event.preventDefault();
         }
@@ -328,6 +355,13 @@ var listOfPiecesInThePlayingArea = [];
         yPlayArea = 0 * pixelSize;
 
         pieceCounter++;
+
+        logOfEvents.push({
+            frameNumber: frameNumber,
+            event: 'newPiece',
+            eventValue: pieceIndex
+        });
+
     }
 
 
@@ -339,23 +373,23 @@ var listOfPiecesInThePlayingArea = [];
         var yCalculationAreaModifier = 0;
         var rotationModifier = 0;
 
-        if (direction == "down") {
+        if (direction == 'moveDown') {
             // calculationArea modifications
             yCalculationAreaModifier = -1;
         }
-        if (direction == "left") {
+        if (direction == 'moveLeft') {
             // calculationArea modifications
             xCalculationAreaModifier = 1;
             // playArea modifications
             xPlayArea = xPlayArea - pixelSize;
         }
-        if (direction == "right") {
+        if (direction == 'moveRight') {
             // calculationArea modifications
             xCalculationAreaModifier = -1;
             // playArea modifications
             xPlayArea = xPlayArea + pixelSize;
         }
-        if (direction == "rotateLeft") {
+        if (direction == 'rotateLeft') {
             // calculationArea modifications
             var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
             rotationIndex++;
@@ -364,7 +398,7 @@ var listOfPiecesInThePlayingArea = [];
             };
             rotationModifier = -1;
         }
-        if (direction == "rotateRight") {
+        if (direction == 'rotateRight') {
             // calculationArea modifications
             var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
             rotationIndex--;
@@ -500,23 +534,23 @@ var listOfPiecesInThePlayingArea = [];
         else {
             // move can not be done
             
-            if (direction == "down") {
+            if (direction == 'moveDown') {
                 selectANewPieceNextFrame = true;
             }
-            if (direction == "left") {
+            if (direction == 'moveLeft') {
                 xPlayArea = xPlayArea + pixelSize;
             }
-            if (direction == "right") {
+            if (direction == 'moveRight') {
                 xPlayArea = xPlayArea - pixelSize;
             }
-            if (direction == "rotateLeft") {
+            if (direction == 'rotateLeft') {
                 var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
                 rotationIndex--;
                 if (rotationIndex < 0) {
                     rotationIndex = numberOfRotations - 1;
                 };
             }
-            if (direction == "rotateRight") {
+            if (direction == 'rotateRight') {
                 var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
                 rotationIndex++;
                 if (rotationIndex == numberOfRotations) {
@@ -1059,10 +1093,10 @@ var listOfPiecesInThePlayingArea = [];
         // do we need to move down the piece in the calculationArea
         if (previousYCalculationArea != currentYCalculationArea) {
             // yes, try to do the move in calculationArea
-            movePieceInCalculationArea("down");
+            movePieceInCalculationArea('moveDown');
         } else {
             // no, just recalculate calculationArea
-            movePieceInCalculationArea("");
+            movePieceInCalculationArea('');
         }
 
         // if the current piece will be replaced next frame, don't draw the playArea
@@ -1079,6 +1113,9 @@ var listOfPiecesInThePlayingArea = [];
     
         // draw currentGravityCalculationArea
         drawCurrentGravityCalculationArea();
+
+        // increase frameNumber
+        frameNumber++;
 
         // let's restart the game loop in the next frame
         if (!stopTheGameLoop) {
