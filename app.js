@@ -916,9 +916,6 @@ var listOfPiecesInThePlayingArea = [];
                 listOfPiecesInThePlayingArea.splice(i, 1);
             }
         }
-        // console.log(listOfPiecesInThePlayingArea);
-        // selectANewPieceNextFrame = false;
-        // stopTheGameLoop = true;
 
     }
 
@@ -926,12 +923,11 @@ var listOfPiecesInThePlayingArea = [];
     // this function checks if any of the pieces can fall down
 
     function checkIfAnyPieceCanFallDown() {
-        // console.log(listOfPiecesInThePlayingArea);
         
         do {
             thereWasMovementInThisRound = false;
 
-            // let's iterate thru all the pieces
+            // let's iterate thru all the pieces we have in listOfPiecesInThePlayingArea
             for (var i = 0; i < listOfPiecesInThePlayingArea.length; i++) {
 
                 // clear currentGravityCalculationArea
@@ -943,11 +939,7 @@ var listOfPiecesInThePlayingArea = [];
                     }
                 }
 
-                // draw currentGravityCalculationArea
-                // clear the canvas
-                var c = document.getElementById("currentGravityCalculationAreaCanvas");
-                var ctx = c.getContext("2d");
-                ctx.clearRect(0, 0, c.width, c.height);
+                // calculate currentGravityCalculationArea, without the current piece
                 
                 // go thru the pieces one by one in listOfPiecesInThePlayingArea
                 // draw every piece except the one we calculate now
@@ -964,12 +956,6 @@ var listOfPiecesInThePlayingArea = [];
                                     var xOnGravityCalculationArea = listOfPiecesInThePlayingArea[k].pieceX + x;
                                     var colorOnGravityCalculationArea = listOfPiecesInThePlayingArea[k].pieceIndex + 1;
                                     currentGravityCalculationArea[yOnGravityCalculationArea][xOnGravityCalculationArea] = colorOnGravityCalculationArea;
-
-                                    ctx.fillStyle = getPieceColor(colorOnGravityCalculationArea - 1);
-                                    ctx.fillRect(xOnGravityCalculationArea * pixelSize, (yOnGravityCalculationArea + 1) * pixelSize, (pixelSize-1), (pixelSize-1));
-                                    ctx.fillStyle = "white";
-                                    ctx.font = "10px Arial";
-                                    ctx.fillText(k, xOnGravityCalculationArea * pixelSize + 5, (yOnGravityCalculationArea + 1) * pixelSize + 10);
                                 }
                             }
                         }
@@ -977,9 +963,6 @@ var listOfPiecesInThePlayingArea = [];
                 }
 
                 // let's try to move the piece downwards and look for overlap
-                // console.log("--");
-                // console.log(i);
-                // console.log(listOfPiecesInThePlayingArea[i]);
                 
                 var numberOfRows = currentGravityCalculationArea.length;
                 var numberOfColumns = currentGravityCalculationArea[0].length;
@@ -988,7 +971,6 @@ var listOfPiecesInThePlayingArea = [];
                     for (var x = 0; x < numberOfColumns; x++) {
                         line = line + currentGravityCalculationArea[y][x];
                     }
-                    // console.log(line);
                 }
 
                 var yModifier = 0;
@@ -1004,31 +986,26 @@ var listOfPiecesInThePlayingArea = [];
                                 var yOnCalculationArea = listOfPiecesInThePlayingArea[i].pieceY + y + yModifier + 1;
                                 var xOnCalculationArea = listOfPiecesInThePlayingArea[i].pieceX + x;
                                 if (yOnCalculationArea > (numberOfRows - 2)) {
+                                    // piece reached the bottom
                                     pieceCanBeMoved = false;
-                                    // console.log(yModifier, "bottom");
                                     break;
                                 }
                                 if (currentGravityCalculationArea[yOnCalculationArea][xOnCalculationArea] != 0) {
+                                    // piece collided with another piece
                                     pieceCanBeMoved = false;
-                                    // console.log(yModifier, "collision");
                                 };
                                 if (pieceCanBeMoved == true) {
-                                    // console.log(yModifier, x, y, "no problem");
+                                    // no problem
                                 }
                             } 
                         }
                     }
-                    // console.log(yModifier, "yModifier");
                     if (pieceCanBeMoved == true) {
                         yModifier++;
-                        // console.log("oldY: " + listOfPiecesInThePlayingArea[i].pieceY);
                         listOfPiecesInThePlayingArea[i].pieceY++;
-                        // console.log("newY: " + listOfPiecesInThePlayingArea[i].pieceY);
                         thereWasMovementInThisRound = true;
-                        drawCurrentGravityCalculationArea();
                     } else {
-                        // console.log("piece can not be moved");
-                        drawCurrentGravityCalculationArea();
+                        // piece could not be moved
                     }
                 }
                 while (pieceCanBeMoved == true);
@@ -1049,7 +1026,6 @@ var listOfPiecesInThePlayingArea = [];
                 currentCalculationArea[y][x] = currentGravityCalculationArea[y][x];
             }
         }
-        // console.log("copyCurrentGravityCalculationAreaToCurrentCalculationArea");
     }
 
     // this is the game loop, it runs every frame
