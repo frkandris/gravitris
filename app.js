@@ -926,7 +926,7 @@ var listOfPiecesInThePlayingArea = [];
     // this function checks if any of the pieces can fall down
 
     function checkIfAnyPieceCanFallDown() {
-        console.log(listOfPiecesInThePlayingArea);
+        // console.log(listOfPiecesInThePlayingArea);
         
         do {
             thereWasMovementInThisRound = false;
@@ -1049,7 +1049,7 @@ var listOfPiecesInThePlayingArea = [];
                 currentCalculationArea[y][x] = currentGravityCalculationArea[y][x];
             }
         }
-        console.log("copyCurrentGravityCalculationAreaToCurrentCalculationArea");
+        // console.log("copyCurrentGravityCalculationAreaToCurrentCalculationArea");
     }
 
     // this is the game loop, it runs every frame
