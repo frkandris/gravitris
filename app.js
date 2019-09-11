@@ -265,6 +265,8 @@ var colors = [
     'red', 'green', 'blue', 'cyan', 'purple', 'brown', 'grey'
 ];
 
+var shadowColor = '#2c2c2c';
+
 var listOfPiecesInThePlayingArea = [];
 
 
@@ -707,7 +709,7 @@ var listOfPiecesInThePlayingArea = [];
                 if (isRectangleFilled == 1) {
                     var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y + yModifier - 1;
                     var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
-                    ctx.fillStyle = "white";
+                    ctx.fillStyle = shadowColor;
                     ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize, (pixelSize - 1), (pixelSize - 1));
                 }  
             }
