@@ -9,6 +9,10 @@ var moveCanBeDone = true;
 var stopTheGameLoop = false;
 var pieceCounter = 0;
 var frameNumber = 0;
+var playAreaMode = '';
+var fullLines = [];
+var fullLineFadeAnimationLength = 30;
+var fullLineFadeAnimationCounter = fullLineFadeAnimationLength;
 
 var pieceMap = {
     0 : [
@@ -263,7 +267,13 @@ var currentGravityCalculationArea = [
 var nextPieces = [];
 
 var colors = [
-    'red', 'green', 'blue', 'cyan', 'purple', 'brown', 'grey'
+    '#ff0000', 
+    '#00ff00', 
+    '#0000ff', 
+    '#00ffff', 
+    '#800080', 
+    '#a52a2a', 
+    '#808080'
 ];
 
 var shadowColor = '#2c2c2c';
@@ -272,6 +282,22 @@ var listOfPiecesInThePlayingArea = [];
 
 var logOfEvents = [];
 
+
+
+    // this function converts a hexadecimal color code to RGBA with opacity
+
+    function hexToRGB(hex, alpha) {
+        var r = parseInt(hex.slice(1, 3), 16),
+            g = parseInt(hex.slice(3, 5), 16),
+            b = parseInt(hex.slice(5, 7), 16);
+    
+        if (alpha) {
+            return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
+        } else {
+            return "rgb(" + r + ", " + g + ", " + b + ")";
+        }
+    }
+    
 
     // this function handles the keyboard events
 
@@ -579,7 +605,10 @@ var logOfEvents = [];
         return pieceIndex;
     }
 
-    function drawPlayArea() {
+
+    // this function draws the playArea, the shadow and the pixelperfect falling piece
+
+    function drawPlayAreaWithFallingPiece() {
 
         var c = document.getElementById("playAreaCanvas");
         var ctx = c.getContext("2d");
@@ -640,65 +669,115 @@ var logOfEvents = [];
     }
 
 
+    // this function 
+    function drawPlayArea() {
+
+        var c = document.getElementById("playAreaCanvas");
+        var ctx = c.getContext("2d");
+        
+        ctx.clearRect(0, 0, c.width, c.height);
+
+        // draw currentCalculationArea to the playArea
+
+        var numberOfRows = currentCalculationArea.length;
+        var numberOfColumns = currentCalculationArea[0].length;
+        for (var y = 0; y < numberOfRows; y++) {
+            for (var x = 0; x < numberOfColumns; x++) {
+                isRectangleFilled = currentCalculationArea[y][x];
+                if (isRectangleFilled > 0) {
+                    var pieceColor = getPieceColor(isRectangleFilled - 1);
+                    if (fullLines.includes(y)) {
+                        var opacity = fullLineFadeAnimationCounter/fullLineFadeAnimationLength;
+                    } else {
+                        opacity = 1;
+                    }
+                    var fillStyle = hexToRGB(pieceColor, opacity);
+                    ctx.fillStyle = fillStyle;
+                    ctx.fillRect(x * pixelSize, (y + 1) * pixelSize, (pixelSize - 1), (pixelSize - 1));
+                } 
+            }
+        }
+    }
+
+
     // this function checks if we have full lines in the calculationArea and removes them
 
     function checkFullLineInCurrentCalculationArea(){
 
-        do {
-            var thereWasMovement = false;
+        fullLines = [];
+        fullLineFound = false;
 
-            do {
-                var fullLineFound = false;
+        var numberOfRows = currentCalculationArea.length;
+        var numberOfColumns = currentCalculationArea[0].length;
 
-                var numberOfRows = currentCalculationArea.length;
-                var numberOfColumns = currentCalculationArea[0].length;
+        // let's check all rows for full lines
+        for (var i = 0; i < numberOfRows; i++) {
+            numberOfFilledRectanglesInRow = 0;
+            for (var j = 0; j < numberOfColumns; j++) {
+                isRectangleFilled = currentCalculationArea[i][j];
+                if (isRectangleFilled > 0) {
+                    numberOfFilledRectanglesInRow++;
+                } 
+            }
+            if (numberOfFilledRectanglesInRow == numberOfColumns) {
+                // we've found a full line in row i
+                fullLineFound = true;
+                fullLines.push(i);                        
+            }
+        }
+        if (fullLineFound == true) {
+            playAreaMode = 'fullLineRemove';
+        }
+    }
 
-                // let's check for full lines
-                for (var i = 0; i < numberOfRows; i++) {
-                    numberOfFilledRectanglesInRow = 0;
-                    for (var j = 0; j < numberOfColumns; j++) {
-                        isRectangleFilled = currentCalculationArea[i][j];
-                        if (isRectangleFilled > 0) {
-                            numberOfFilledRectanglesInRow++;
-                        } 
-                    }
-                    if (numberOfFilledRectanglesInRow == numberOfColumns) {
-                        // we've found a full line in row i
-                        fullLineFound = true;
-                        
-                        // remove it
-                        for (var l = 0; l < numberOfColumns; l++) {
-                            currentCalculationArea[i][l] = 0;
-                            currentCalculationArea[0][l] = 0;
-                        }
-                        // move everything above the line 1 row down
-                        for (var k = i; k > 0; k--) {
-                            for (var l = 0; l < numberOfColumns; l++) {
-                                currentCalculationArea[k][l] = currentCalculationArea[k-1][l];
-                            }
-                        }
 
-                        saveDonePiece();
+    // this function animates the full lines, until they are nonvisible
 
-                        // we need a new piece
-                        selectANewPieceNextFrame = true;
+    function animateFullLines(fullLines) {
 
-                        // modify listOfPiecesInThePlayingArea because of full line
-                        modifylistOfPiecesInThePlayingAreaBecauseOfFullLine(i);
+        fullLineFadeAnimationCounter--;
 
-                        thereWasMovement = true;
-                    }
+        if (fullLineFadeAnimationCounter == 0) {
+            fullLineFadeAnimationCounter = fullLineFadeAnimationLength;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    // this function removes the full lines
+
+    function hideFullLines(fullLines) {
+
+        var numberOfRows = currentCalculationArea.length;
+        var numberOfColumns = currentCalculationArea[0].length;
+
+        for (p = 0; p < fullLines.length; p++) {
+            
+            fullLine = fullLines[p];
+
+            // remove it
+            for (var l = 0; l < numberOfColumns; l++) {
+                currentCalculationArea[fullLine][l] = 0;
+                currentCalculationArea[0][l] = 0;
+            }
+            // move everything above the line 1 row down
+            for (var k = fullLine; k > 0; k--) {
+                for (var l = 0; l < numberOfColumns; l++) {
+                    currentCalculationArea[k][l] = currentCalculationArea[k-1][l];
                 }
-
-            } while (fullLineFound == true);
-
-            if (thereWasMovement == true) {
-                // check if any piece can fall down and let's run the fullLineChecker again
-                checkIfAnyPieceCanFallDown();
-                copyCurrentGravityCalculationAreaToCurrentCalculationArea();
             }
 
-        } while (thereWasMovement == true)
+            // modify listOfPiecesInThePlayingArea because of full line
+            modifylistOfPiecesInThePlayingAreaBecauseOfFullLine(fullLine);
+        }
+
+        // check if any piece can fall down
+        checkIfAnyPieceCanFallDown();
+        copyCurrentGravityCalculationAreaToCurrentCalculationArea();
+
+        playAreaMode = 'pieceFalling';
 
     }
 
@@ -855,11 +934,10 @@ var logOfEvents = [];
                         ctx.fillStyle = "white";
                         ctx.font = "10px Arial";
                         ctx.fillText(i, xOnGravityCalculationArea * pixelSize + 5, (yOnGravityCalculationArea + 1) * pixelSize + 10);
-        }
+                    }
                 }
             }
         }
-
     }
 
 
@@ -1068,51 +1146,59 @@ var logOfEvents = [];
 
     function gameLoop() {
 
-        // check if we have full lines, if we have them, remove them
-        checkFullLineInCurrentCalculationArea();
+        if (playAreaMode == 'pieceFalling') {
 
-        // if we need to set a new piece, save the old one and set a new one
-        if (selectANewPieceNextFrame == true) {
+            // check if we have full lines, if we have them, remove them
+            checkFullLineInCurrentCalculationArea();
 
-            // save old one
-            saveDonePiece();
+            // if we need to set a new piece, save the old one and set a new one
+            if (selectANewPieceNextFrame == true) {
 
-            // select a new one
-            selectANewPiece();
-            selectANewPieceNextFrame = false;
-        }
+                // save old one
+                saveDonePiece();
+
+                // select a new one
+                selectANewPiece();
+                selectANewPieceNextFrame = false;
+            }
+            
+            // let's move the current piece down
+
+            // y previously in the calculationArea
+            previousYCalculationArea = Math.floor(yPlayArea / pixelSize);
+            // y in the playArea
+            yPlayArea = yPlayArea + fallingSpeed;
+            // y now in the calculationArea
+            currentYCalculationArea = Math.floor(yPlayArea / pixelSize);
+            // do we need to move down the piece in the calculationArea
+            if (previousYCalculationArea != currentYCalculationArea) {
+                // yes, try to do the move in calculationArea
+                movePieceInCalculationArea('moveDown');
+            } else {
+                // no, just recalculate calculationArea
+                movePieceInCalculationArea('');
+            }
+
+            // if the current piece will be replaced next frame, don't draw the playArea
+            if (selectANewPieceNextFrame == false) {
+                // draw the pixel perfect playArea
+                drawPlayAreaWithFallingPiece();
+            }
+
+            // draw the calculationArea
+            // drawCurrentCalculationArea();
+
+            // draw next pieces
+            drawNextPiecesArea();
         
-        // let's move the current piece down
-
-        // y previously in the calculationArea
-        previousYCalculationArea = Math.floor(yPlayArea / pixelSize);
-        // y in the playArea
-        yPlayArea = yPlayArea + fallingSpeed;
-        // y now in the calculationArea
-        currentYCalculationArea = Math.floor(yPlayArea / pixelSize);
-        // do we need to move down the piece in the calculationArea
-        if (previousYCalculationArea != currentYCalculationArea) {
-            // yes, try to do the move in calculationArea
-            movePieceInCalculationArea('moveDown');
-        } else {
-            // no, just recalculate calculationArea
-            movePieceInCalculationArea('');
-        }
-
-        // if the current piece will be replaced next frame, don't draw the playArea
-        if (selectANewPieceNextFrame == false) {
-            // draw the pixel perfect playArea
+            // draw currentGravityCalculationArea
+            drawCurrentGravityCalculationArea();
+        } else if (playAreaMode == 'fullLineRemove') {
             drawPlayArea();
+            if (animateFullLines(fullLines) == true) {
+                hideFullLines(fullLines);
+            };
         }
-
-        // draw the calculationArea
-        // drawCurrentCalculationArea();
-
-        // draw next pieces
-        drawNextPiecesArea();
-    
-        // draw currentGravityCalculationArea
-        drawCurrentGravityCalculationArea();
 
         // increase frameNumber
         frameNumber++;
@@ -1137,6 +1223,9 @@ var logOfEvents = [];
     nextPieces.unshift(pieceIndex);
     pieceIndex = selectAPieceRandomly();
     nextPieces.unshift(pieceIndex);
+
+    // set playAreaMode
+    playAreaMode = 'pieceFalling';
 
     // start the gameloop
     requestAnimationFrame(gameLoop);
