@@ -726,7 +726,7 @@ var logOfEvents = [];
             }
         }
         if (fullLineFound == true) {
-            playAreaMode = 'fullLineRemove';
+            playAreaMode = 'fullLineRemoveAnimation';
         }
     }
 
@@ -777,7 +777,7 @@ var logOfEvents = [];
         checkIfAnyPieceCanFallDown();
         copyCurrentGravityCalculationAreaToCurrentCalculationArea();
 
-        playAreaMode = 'pieceFalling';
+        playAreaMode = 'gravityAnimation';
 
     }
 
@@ -1142,12 +1142,10 @@ var logOfEvents = [];
         }
     }
 
-    // this is the game loop, it runs every frame
 
-    function gameLoop() {
+    // this function does the "pieceFallingAnimation" routine
 
-        if (playAreaMode == 'pieceFalling') {
-
+    function pieceFallingRoutine() {
             // check if we have full lines, if we have them, remove them
             checkFullLineInCurrentCalculationArea();
 
@@ -1192,12 +1190,28 @@ var logOfEvents = [];
             drawNextPiecesArea();
         
             // draw currentGravityCalculationArea
-            drawCurrentGravityCalculationArea();
-        } else if (playAreaMode == 'fullLineRemove') {
-            drawPlayArea();
-            if (animateFullLines(fullLines) == true) {
-                hideFullLines(fullLines);
-            };
+            drawCurrentGravityCalculationArea();        
+    }
+
+
+    // this is the game loop, it runs every frame
+
+    function gameLoop() {
+
+        switch (playAreaMode) {
+            case 'pieceFallingAnimation': 
+                pieceFallingRoutine();
+                break;
+            case 'fullLineRemoveAnimation':
+                drawPlayArea();
+                if (animateFullLines(fullLines) == true) {
+                    hideFullLines(fullLines);
+                };
+                break;
+            case 'gravityAnimation':
+                console.log('gravityAnimation');
+                playAreaMode = 'pieceFallingAnimation';
+                break;
         }
 
         // increase frameNumber
@@ -1225,7 +1239,7 @@ var logOfEvents = [];
     nextPieces.unshift(pieceIndex);
 
     // set playAreaMode
-    playAreaMode = 'pieceFalling';
+    playAreaMode = 'pieceFallingAnimation';
 
     // start the gameloop
     requestAnimationFrame(gameLoop);
