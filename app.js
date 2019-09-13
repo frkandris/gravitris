@@ -13,6 +13,11 @@ var playAreaMode = '';
 var fullLines = [];
 var fullLineFadeAnimationLength = 30;
 var fullLineFadeAnimationCounter = fullLineFadeAnimationLength;
+var listOfPiecesThatCanBeMoved = [];
+var gravityAnimationFallingSpeed = 2;
+var gravityAnimationYModifier = 0;
+
+var debugShowPieceNumbers = false; 
 
 var pieceMap = {
     0 : [
@@ -927,9 +932,11 @@ var logOfEvents = [];
                         // add the number
                         ctx.fillStyle = getPieceColor(colorOnGravityCalculationArea - 1);
                         ctx.fillRect(xOnGravityCalculationArea * pixelSize, (yOnGravityCalculationArea + 1) * pixelSize, (pixelSize-1), (pixelSize-1));
-                        ctx.fillStyle = "white";
-                        ctx.font = "10px Arial";
-                        ctx.fillText(i, xOnGravityCalculationArea * pixelSize + 5, (yOnGravityCalculationArea + 1) * pixelSize + 10);
+                        if (debugShowPieceNumbers == true) {
+                            ctx.fillStyle = "white";
+                            ctx.font = "10px Arial";
+                            ctx.fillText(i, xOnGravityCalculationArea * pixelSize + 5, (yOnGravityCalculationArea + 1) * pixelSize + 10);
+                        }
                     }
                 }
             }
@@ -1034,98 +1041,95 @@ var logOfEvents = [];
 
     function checkIfAnyPieceCanFallDown() {
         
-        do {
-            thereWasMovementInThisRound = false;
+        thereWasMovementInThisRound = false;
+        listOfPiecesThatCanBeMoved = [];
 
-            // let's iterate thru all the pieces we have in listOfPiecesInThePlayingArea
-            for (var i = 0; i < listOfPiecesInThePlayingArea.length; i++) {
+        // let's iterate thru all the pieces we have in listOfPiecesInThePlayingArea
+        for (var i = 0; i < listOfPiecesInThePlayingArea.length; i++) {
 
-                // clear currentGravityCalculationArea
-                var numberOfRows = currentGravityCalculationArea.length;
-                var numberOfColumns = currentGravityCalculationArea[0].length;
-                for (var y = 0; y < numberOfRows; y++) {
-                    for (var x = 0; x < numberOfColumns; x++) {
-                        currentGravityCalculationArea[y][x] = 0;
-                    }
+            // clear currentGravityCalculationArea
+            var numberOfRows = currentGravityCalculationArea.length;
+            var numberOfColumns = currentGravityCalculationArea[0].length;
+            for (var y = 0; y < numberOfRows; y++) {
+                for (var x = 0; x < numberOfColumns; x++) {
+                    currentGravityCalculationArea[y][x] = 0;
                 }
+            }
 
-                // calculate currentGravityCalculationArea, without the current piece
-                
-                // go thru the pieces one by one in listOfPiecesInThePlayingArea
-                // draw every piece except the one we calculate now
-                for (var k = 0; k < listOfPiecesInThePlayingArea.length; k++) {
-                    if (k != i) {
-                        var pieceMapNumberOfRows = Object.keys(listOfPiecesInThePlayingArea[k].pieceMap).length;
-                        var pieceMapNumberOfColumns = Object.keys(listOfPiecesInThePlayingArea[k].pieceMap[0]).length;
-                        for (var y = 0; y < pieceMapNumberOfRows; y++) {
-                            for (var x = 0; x < pieceMapNumberOfColumns; x++) {
-                                isRectangleFilled = listOfPiecesInThePlayingArea[k].pieceMap[y][x];
-                                if (isRectangleFilled == 1) {
-                                    // copy the map of the piece to currentGravityCalculationArea
-                                    var yOnGravityCalculationArea = listOfPiecesInThePlayingArea[k].pieceY + y;
-                                    var xOnGravityCalculationArea = listOfPiecesInThePlayingArea[k].pieceX + x;
-                                    var colorOnGravityCalculationArea = listOfPiecesInThePlayingArea[k].pieceIndex + 1;
-                                    currentGravityCalculationArea[yOnGravityCalculationArea][xOnGravityCalculationArea] = colorOnGravityCalculationArea;
-                                }
+            // calculate currentGravityCalculationArea, without the current piece
+            
+            // go thru the pieces one by one in listOfPiecesInThePlayingArea
+            // draw every piece except the one we calculate now
+            for (var k = 0; k < listOfPiecesInThePlayingArea.length; k++) {
+                if (k != i) {
+                    var pieceMapNumberOfRows = Object.keys(listOfPiecesInThePlayingArea[k].pieceMap).length;
+                    var pieceMapNumberOfColumns = Object.keys(listOfPiecesInThePlayingArea[k].pieceMap[0]).length;
+                    for (var y = 0; y < pieceMapNumberOfRows; y++) {
+                        for (var x = 0; x < pieceMapNumberOfColumns; x++) {
+                            isRectangleFilled = listOfPiecesInThePlayingArea[k].pieceMap[y][x];
+                            if (isRectangleFilled == 1) {
+                                // copy the map of the piece to currentGravityCalculationArea
+                                var yOnGravityCalculationArea = listOfPiecesInThePlayingArea[k].pieceY + y;
+                                var xOnGravityCalculationArea = listOfPiecesInThePlayingArea[k].pieceX + x;
+                                var colorOnGravityCalculationArea = listOfPiecesInThePlayingArea[k].pieceIndex + 1;
+                                currentGravityCalculationArea[yOnGravityCalculationArea][xOnGravityCalculationArea] = colorOnGravityCalculationArea;
                             }
                         }
                     }
                 }
-
-                // let's try to move the piece downwards and look for overlap
-                
-                var numberOfRows = currentGravityCalculationArea.length;
-                var numberOfColumns = currentGravityCalculationArea[0].length;
-                for (var y = 0; y < numberOfRows; y++) {
-                    var line = '';
-                    for (var x = 0; x < numberOfColumns; x++) {
-                        line = line + currentGravityCalculationArea[y][x];
-                    }
-                }
-
-                var yModifier = 0;
-                do {
-                    var pieceCanBeMoved = true;
-                    var numberOfRows = currentGravityCalculationArea.length;
-                    var pieceMapNumberOfRows = Object.keys(listOfPiecesInThePlayingArea[i].pieceMap).length;
-                    var pieceMapNumberOfColumns = Object.keys(listOfPiecesInThePlayingArea[i].pieceMap[0]).length;
-                    for (var y = 0; y < pieceMapNumberOfRows; y++) {
-                        for (var x = 0; x < pieceMapNumberOfColumns; x++) {
-                            isRectangleFilled = listOfPiecesInThePlayingArea[i].pieceMap[y][x];
-                            if (isRectangleFilled == 1) {
-                                var yOnCalculationArea = listOfPiecesInThePlayingArea[i].pieceY + y + yModifier + 1;
-                                var xOnCalculationArea = listOfPiecesInThePlayingArea[i].pieceX + x;
-                                if (yOnCalculationArea > (numberOfRows - 2)) {
-                                    // piece reached the bottom
-                                    pieceCanBeMoved = false;
-                                    break;
-                                }
-                                if (currentGravityCalculationArea[yOnCalculationArea][xOnCalculationArea] != 0) {
-                                    // piece collided with another piece
-                                    pieceCanBeMoved = false;
-                                };
-                                if (pieceCanBeMoved == true) {
-                                    // no problem
-                                }
-                            } 
-                        }
-                    }
-                    if (pieceCanBeMoved == true) {
-                        yModifier++;
-                        listOfPiecesInThePlayingArea[i].pieceY++;
-                        thereWasMovementInThisRound = true;
-                    } else {
-                        // piece could not be moved
-                    }
-                }
-                while (pieceCanBeMoved == true);
-
             }
 
-        } while (thereWasMovementInThisRound == true);
+            // let's try to move the piece downwards and look for overlap
+            
+            var numberOfRows = currentGravityCalculationArea.length;
+            var numberOfColumns = currentGravityCalculationArea[0].length;
+            for (var y = 0; y < numberOfRows; y++) {
+                var line = '';
+                for (var x = 0; x < numberOfColumns; x++) {
+                    line = line + currentGravityCalculationArea[y][x];
+                }
+            }
+
+            var pieceCanBeMoved = true;
+            var yModifier = 0;
+            var numberOfRows = currentGravityCalculationArea.length;
+            var pieceMapNumberOfRows = Object.keys(listOfPiecesInThePlayingArea[i].pieceMap).length;
+            var pieceMapNumberOfColumns = Object.keys(listOfPiecesInThePlayingArea[i].pieceMap[0]).length;
+
+            for (var y = 0; y < pieceMapNumberOfRows; y++) {
+                for (var x = 0; x < pieceMapNumberOfColumns; x++) {
+                    isRectangleFilled = listOfPiecesInThePlayingArea[i].pieceMap[y][x];
+                    if (isRectangleFilled == 1) {
+                        var yOnCalculationArea = listOfPiecesInThePlayingArea[i].pieceY + y + yModifier + 1;
+                        var xOnCalculationArea = listOfPiecesInThePlayingArea[i].pieceX + x;
+                        if (yOnCalculationArea > (numberOfRows - 2)) {
+                            // piece reached the bottom
+                            pieceCanBeMoved = false;
+                            break;
+                        }
+                        if (currentGravityCalculationArea[yOnCalculationArea][xOnCalculationArea] != 0) {
+                            // piece collided with another piece
+                            pieceCanBeMoved = false;
+                        };
+                        if (pieceCanBeMoved == true) {
+                            // no problem
+                        }
+                    } 
+                }
+            }
+            if (pieceCanBeMoved == true) {
+                listOfPiecesThatCanBeMoved.push(i);
+                // yModifier++;
+                // listOfPiecesInThePlayingArea[i].pieceY++;
+                thereWasMovementInThisRound = true;
+            } else {
+                // piece could not be moved
+            }
+        }
 
         drawCurrentGravityCalculationArea();
 
+        return thereWasMovementInThisRound;
     }
 
     function copyCurrentGravityCalculationAreaToCurrentCalculationArea() {
@@ -1139,54 +1143,108 @@ var logOfEvents = [];
     }
 
 
+    // this function draws the currentGravityCalculationField with falling pieces
+
+    function drawPlayAreaWithFallingPieces() {
+
+        // clear currentGravityCalculationArea
+        var numberOfRows = currentGravityCalculationArea.length;
+        var numberOfColumns = currentGravityCalculationArea[0].length;
+        for (var y = 0; y < numberOfRows; y++) {
+            for (var x = 0; x < numberOfColumns; x++) {
+                currentGravityCalculationArea[y][x] = 0;
+            }
+        }
+
+        // clear the canvas
+        var c = document.getElementById("playAreaCanvas");
+        var ctx = c.getContext("2d");
+        ctx.clearRect(0, 0, c.width, c.height);
+        
+        // go thru the pieces one by one in listOfPiecesInThePlayingArea
+        for (var i = 0; i < listOfPiecesInThePlayingArea.length; i++) {
+            var pieceMapNumberOfRows = Object.keys(listOfPiecesInThePlayingArea[i].pieceMap).length;
+            var pieceMapNumberOfColumns = Object.keys(listOfPiecesInThePlayingArea[i].pieceMap[0]).length;
+            for (var y = 0; y < pieceMapNumberOfRows; y++) {
+                for (var x = 0; x < pieceMapNumberOfColumns; x++) {
+                    isRectangleFilled = listOfPiecesInThePlayingArea[i].pieceMap[y][x];
+                    if (isRectangleFilled == 1) {
+                        // copy the map of the piece to currentGravityCalculationArea
+                        var yOnGravityCalculationArea = listOfPiecesInThePlayingArea[i].pieceY + y;
+                        var xOnGravityCalculationArea = listOfPiecesInThePlayingArea[i].pieceX + x;
+                        var colorOnGravityCalculationArea = listOfPiecesInThePlayingArea[i].pieceIndex + 1;
+                        currentGravityCalculationArea[yOnGravityCalculationArea][xOnGravityCalculationArea] = colorOnGravityCalculationArea;
+
+                        // add the number
+
+                        if (listOfPiecesThatCanBeMoved.includes(i)) {
+                            yModifierInPixels = gravityAnimationYModifier;
+                        } else {
+                            yModifierInPixels = 0;
+                        }
+                        ctx.fillStyle = getPieceColor(colorOnGravityCalculationArea - 1);
+                        ctx.fillRect(xOnGravityCalculationArea * pixelSize, (yOnGravityCalculationArea + 1) * pixelSize + yModifierInPixels, (pixelSize-1), (pixelSize-1));
+
+                        if (debugShowPieceNumbers == true) {
+                            ctx.fillStyle = "white";
+                            ctx.font = "10px Arial";
+                            ctx.fillText(i, xOnGravityCalculationArea * pixelSize + 5, (yOnGravityCalculationArea + 1) * pixelSize + 10 + yModifierInPixels);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     // this function does the "pieceFallingAnimation" routine
 
     function pieceFallingRoutine() {
-            // check if we have full lines, if we have them, remove them
-            checkFullLineInCurrentCalculationArea();
 
-            // if we need to set a new piece, save the old one and set a new one
-            if (selectANewPieceNextFrame == true) {
+        // check if we have full lines, if we have them, remove them
+        checkFullLineInCurrentCalculationArea();
 
-                // save old one
-                saveDonePiece();
+        // if we need to set a new piece, save the old one and set a new one
+        if (selectANewPieceNextFrame == true) {
 
-                // select a new one
-                selectANewPiece();
-                selectANewPieceNextFrame = false;
-            }
-            
-            // let's move the current piece down
+            // save old one
+            saveDonePiece();
 
-            // y previously in the calculationArea
-            previousYCalculationArea = Math.floor(yPlayArea / pixelSize);
-            // y in the playArea
-            yPlayArea = yPlayArea + fallingSpeed;
-            // y now in the calculationArea
-            currentYCalculationArea = Math.floor(yPlayArea / pixelSize);
-            // do we need to move down the piece in the calculationArea
-            if (previousYCalculationArea != currentYCalculationArea) {
-                // yes, try to do the move in calculationArea
-                movePieceInCalculationArea('moveDown');
-            } else {
-                // no, just recalculate calculationArea
-                movePieceInCalculationArea('');
-            }
-
-            // if the current piece will be replaced next frame, don't draw the playArea
-            if (selectANewPieceNextFrame == false) {
-                // draw the pixel perfect playArea
-                drawPlayAreaWithFallingPiece();
-            }
-
-            // draw the calculationArea
-            // drawCurrentCalculationArea();
-
-            // draw next pieces
-            drawNextPiecesArea();
+            // select a new one
+            selectANewPiece();
+            selectANewPieceNextFrame = false;
+        }
         
-            // draw currentGravityCalculationArea
-            drawCurrentGravityCalculationArea();        
+        // let's move the current piece down
+
+        // y previously in the calculationArea
+        previousYCalculationArea = Math.floor(yPlayArea / pixelSize);
+        // y in the playArea
+        yPlayArea = yPlayArea + fallingSpeed;
+        // y now in the calculationArea
+        currentYCalculationArea = Math.floor(yPlayArea / pixelSize);
+        // do we need to move down the piece in the calculationArea
+        if (previousYCalculationArea != currentYCalculationArea) {
+            // yes, try to do the move in calculationArea
+            movePieceInCalculationArea('moveDown');
+        } else {
+            // no, just recalculate calculationArea
+            movePieceInCalculationArea('');
+        }
+
+        // if the current piece will be replaced next frame, don't draw the playArea
+        if (selectANewPieceNextFrame == false) {
+            // draw the pixel perfect playArea
+            drawPlayAreaWithFallingPiece();
+        }
+
+        // draw the calculationArea
+        // drawCurrentCalculationArea();
+
+        // draw next pieces
+        drawNextPiecesArea();
+    
+        // draw currentGravityCalculationArea
+        drawCurrentGravityCalculationArea();
     }
 
 
@@ -1196,6 +1254,14 @@ var logOfEvents = [];
         drawPlayArea();
         if (animateFullLines(fullLines) == true) {
             hideFullLines(fullLines);
+
+            // check if any piece can fall down
+            var isThereAPieceThatCanBeMoved = checkIfAnyPieceCanFallDown();
+            if (isThereAPieceThatCanBeMoved == true) {
+                playAreaMode = 'gravityAnimation';
+            } else {
+                playAreaMode = 'pieceFallingAnimation';
+            }
         };
     }
 
@@ -1203,16 +1269,31 @@ var logOfEvents = [];
     // this function does the "gravityAnimation" routine
 
     function gravityAnimationRoutine() {
-        console.log('gravityAnimation');
 
-        // check if any piece can fall down
-        checkIfAnyPieceCanFallDown();
-        copyCurrentGravityCalculationAreaToCurrentCalculationArea();
+        gravityAnimationYModifier = gravityAnimationYModifier + gravityAnimationFallingSpeed;
+        if (gravityAnimationYModifier < pixelSize) {
+            drawPlayAreaWithFallingPieces();
+        } else {
+            for (var i = 0; i < listOfPiecesThatCanBeMoved.length; i++) {
+                listOfPiecesInThePlayingArea[listOfPiecesThatCanBeMoved[i]].pieceY++;
+            }
+            drawCurrentGravityCalculationArea();
+            copyCurrentGravityCalculationAreaToCurrentCalculationArea();
 
-        playAreaMode = 'pieceFallingAnimation';
+            gravityAnimationYModifier = 0;
+
+            var isThereAPieceThatCanBeMoved = checkIfAnyPieceCanFallDown();
+            if (isThereAPieceThatCanBeMoved == true) {
+                playAreaMode = 'gravityAnimation';
+            } else {
+                playAreaMode = 'pieceFallingAnimation';
+            }
+
+        }
+
     }
 
-    
+
     // this is the game loop, it runs every frame
 
     function gameLoop() {
