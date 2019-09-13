@@ -773,10 +773,6 @@ var logOfEvents = [];
             modifylistOfPiecesInThePlayingAreaBecauseOfFullLine(fullLine);
         }
 
-        // check if any piece can fall down
-        checkIfAnyPieceCanFallDown();
-        copyCurrentGravityCalculationAreaToCurrentCalculationArea();
-
         playAreaMode = 'gravityAnimation';
 
     }
@@ -1194,6 +1190,29 @@ var logOfEvents = [];
     }
 
 
+    // this function does the "fullLineRemoveAnimation" routine
+
+    function fullLineRemoveRoutine() {
+        drawPlayArea();
+        if (animateFullLines(fullLines) == true) {
+            hideFullLines(fullLines);
+        };
+    }
+
+
+    // this function does the "gravityAnimation" routine
+
+    function gravityAnimationRoutine() {
+        console.log('gravityAnimation');
+
+        // check if any piece can fall down
+        checkIfAnyPieceCanFallDown();
+        copyCurrentGravityCalculationAreaToCurrentCalculationArea();
+
+        playAreaMode = 'pieceFallingAnimation';
+    }
+
+    
     // this is the game loop, it runs every frame
 
     function gameLoop() {
@@ -1203,14 +1222,10 @@ var logOfEvents = [];
                 pieceFallingRoutine();
                 break;
             case 'fullLineRemoveAnimation':
-                drawPlayArea();
-                if (animateFullLines(fullLines) == true) {
-                    hideFullLines(fullLines);
-                };
+                fullLineRemoveRoutine();
                 break;
             case 'gravityAnimation':
-                console.log('gravityAnimation');
-                playAreaMode = 'pieceFallingAnimation';
+                gravityAnimationRoutine();
                 break;
         }
 
