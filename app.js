@@ -11,10 +11,10 @@ var pieceCounter = 0;
 var frameNumber = 0;
 var playAreaMode = '';
 var fullLines = [];
-var fullLineFadeAnimationLength = 30;
+var fullLineFadeAnimationLength = 10;
 var fullLineFadeAnimationCounter = fullLineFadeAnimationLength;
 var listOfPiecesThatCanBeMoved = [];
-var gravityAnimationFallingSpeed = 2;
+var gravityAnimationFallingSpeed = 4;
 var gravityAnimationYModifier = 0;
 
 var debugShowPieceNumbers = false; 
