@@ -3,7 +3,6 @@ console.log("start");
 var pieceMap = require('./includes/pieceMap');
 
 var colorRelated = require('./includes/colorRelated');
-var shadowColor = colorRelated.shadowColor;
 
 var pixelSize = 20;
 var playAreaWidth = 16 * pixelSize;
@@ -1171,7 +1170,7 @@ var logOfEvents = [];
 
     }
 
-    
+
     // this is the game loop, it runs every frame
 
     function gameLoop() {
