@@ -1,5 +1,8 @@
 console.log("start");
 
+var pieceMap = require('./pieceMap');
+var hexToRGB = require('./hexToRGB');
+
 var pixelSize = 20;
 var playAreaWidth = 16 * pixelSize;
 var playAreaHeight = 30 * pixelSize;
@@ -18,157 +21,6 @@ var gravityAnimationFallingSpeed = 4;
 var gravityAnimationYModifier = 0;
 
 var debugShowPieceNumbers = false; 
-
-var pieceMap = {
-    0 : [
-        { 
-            0 : [
-                [0, 1, 0, 0],
-                [0, 1, 0, 0],
-                [0, 1, 1, 0]
-            ]
-        },
-        { 
-            1 : [
-                [0, 0, 0, 0],
-                [1, 1, 1, 0],
-                [1, 0, 0, 0]
-            ]
-        },
-        { 
-            2 : [
-                [1, 1, 0, 0],
-                [0, 1, 0, 0],
-                [0, 1, 0, 0]
-            ]
-        },
-        { 
-            3 : [
-                [0, 0, 1, 0],
-                [1, 1, 1, 0],
-                [0, 0, 0, 0]
-            ]
-        }
-    ],
-    1 : [
-        { 
-            0 : [
-                [0, 0, 1, 0],
-                [0, 0, 1, 0],
-                [0, 0, 1, 0],
-                [0, 0, 1, 0]
-            ]
-        },
-        { 
-            1 : [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [1, 1, 1, 1],
-                [0, 0, 0, 0]
-            ]
-        }
-    ],
-    2 : [
-        { 
-            0 : [
-                [0, 1, 1, 0],
-                [0, 1, 1, 0]
-            ]
-        }
-    ],
-    3 : [
-        { 
-            0 : [
-                [0, 0, 1, 0],
-                [0, 0, 1, 0],
-                [0, 1, 1, 0]
-            ]
-        },
-        { 
-            1 : [
-                [0, 1, 0, 0],
-                [0, 1, 1, 1],
-                [0, 0, 0, 0]
-            ]
-        },
-        { 
-            2 : [
-                [0, 0, 1, 1],
-                [0, 0, 1, 0],
-                [0, 0, 1, 0]
-            ]
-        },
-        { 
-            3 : [
-                [0, 0, 0, 0],
-                [0, 1, 1, 1],
-                [0, 0, 0, 1]
-            ]
-        }
-    ],
-    4 : [
-        { 
-            0 : [
-                [0, 1, 0, 0],
-                [1, 1, 1, 0],
-                [0, 0, 0, 0]
-            ]
-        },
-        { 
-            1 : [
-                [0, 1, 0, 0],
-                [0, 1, 1, 0],
-                [0, 1, 0, 0]
-            ]
-        },
-        { 
-            2 : [
-                [0, 0, 0, 0],
-                [1, 1, 1, 0],
-                [0, 1, 0, 0]
-            ]
-        },
-        { 
-            3 : [
-                [0, 1, 0, 0],
-                [1, 1, 0, 0],
-                [0, 1, 0, 0]
-            ]
-        }
-    ],
-    5 : [
-        { 
-            0 : [
-                [0, 1, 0, 0],
-                [0, 1, 1, 0],
-                [0, 0, 1, 0]
-            ]
-        },
-        { 
-            1 : [
-                [0, 0, 1, 1],
-                [0, 1, 1, 0],
-                [0, 0, 0, 0]
-            ]
-        }
-    ],
-    6 : [
-        { 
-            0 : [
-                [0, 0, 1, 0],
-                [0, 1, 1, 0],
-                [0, 1, 0, 0]
-            ]
-        },
-        { 
-            1 : [
-                [0, 1, 1, 0],
-                [0, 0, 1, 1],
-                [0, 0, 0, 0]
-            ]
-        }
-    ],
-};
 
 var currentCalculationArea = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -287,22 +139,6 @@ var listOfPiecesInThePlayingArea = [];
 
 var logOfEvents = [];
 
-
-
-    // this function converts a hexadecimal color code to RGBA with opacity
-
-    function hexToRGB(hex, alpha) {
-        var r = parseInt(hex.slice(1, 3), 16),
-            g = parseInt(hex.slice(3, 5), 16),
-            b = parseInt(hex.slice(5, 7), 16);
-    
-        if (alpha) {
-            return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
-        } else {
-            return "rgb(" + r + ", " + g + ", " + b + ")";
-        }
-    }
-    
 
     // this function handles the keyboard events
 
