@@ -253,7 +253,7 @@ var logOfEvents = [];
             rotationIndex++;
             if (rotationIndex == numberOfRotations) {
                 rotationIndex = 0;
-            };
+            }
             rotationModifier = -1;
         }
         if (direction == 'rotateRight') {
@@ -262,7 +262,7 @@ var logOfEvents = [];
             rotationIndex--;
             if (rotationIndex < 0) {
                 rotationIndex = numberOfRotations - 1;
-            };
+            }
             rotationModifier = 1;
         }
         if (direction == "") {
@@ -289,10 +289,10 @@ var logOfEvents = [];
         rotationIndex += rotationModifier;
         if (rotationIndex < 0) {
             rotationIndex = numberOfRotations - 1;
-        };
+        }
         if (rotationIndex == numberOfRotations) {
             rotationIndex = 0;
-        };
+        }
 
         var pieceMapNumberOfRows = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex]).length;
         var pieceMapNumberOfColumns = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex][0]).length;
@@ -313,10 +313,10 @@ var logOfEvents = [];
         rotationIndex -= rotationModifier;
         if (rotationIndex < 0) {
             rotationIndex = numberOfRotations - 1;
-        };
+        }
         if (rotationIndex == numberOfRotations) {
             rotationIndex = 0;
-        };
+        }
         var pieceMapNumberOfRows = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex]).length;
         var pieceMapNumberOfColumns = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex][0]).length;
 
@@ -334,7 +334,7 @@ var logOfEvents = [];
                     if (tempCalculationArea[yOnCalculationArea][xOnCalculationArea] != 0) {
                         // move can not be done, as the piece in the new position would overlap with something
                         moveCanBeDone = false;
-                    };
+                    }
                 } 
             }
         }
@@ -347,10 +347,10 @@ var logOfEvents = [];
             rotationIndex += rotationModifier;
             if (rotationIndex < 0) {
                 rotationIndex = numberOfRotations - 1;
-            };
+            }
             if (rotationIndex == numberOfRotations) {
                 rotationIndex = 0;
-            };
+            }
             var pieceMapNumberOfRows = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex]).length;
             var pieceMapNumberOfColumns = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex][0]).length;
 
@@ -371,10 +371,10 @@ var logOfEvents = [];
             rotationIndex -= rotationModifier;
             if (rotationIndex < 0) {
                 rotationIndex = numberOfRotations - 1;
-            };
+            }
             if (rotationIndex == numberOfRotations) {
                 rotationIndex = 0;
-            };
+            }
             var pieceMapNumberOfRows = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex]).length;
             var pieceMapNumberOfColumns = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex][0]).length;
             for (var y = 0; y < pieceMapNumberOfRows; y++) {
@@ -406,14 +406,14 @@ var logOfEvents = [];
                 rotationIndex--;
                 if (rotationIndex < 0) {
                     rotationIndex = numberOfRotations - 1;
-                };
+                }
             }
             if (direction == 'rotateRight') {
                 var numberOfRotations = Object.keys(pieceMap[pieceIndex]).length;
                 rotationIndex++;
                 if (rotationIndex == numberOfRotations) {
                     rotationIndex = 0;
-                };
+                }
             }            
         }
     }
@@ -623,7 +623,7 @@ var logOfEvents = [];
                         }
                         if (tempCalculationArea[yOnCalculationArea][xOnCalculationArea] != 0) {
                             shadowCanBeMoved = false;
-                        };
+                        }
                     } 
                 }
             }
@@ -928,7 +928,7 @@ var logOfEvents = [];
                         if (currentGravityCalculationArea[yOnCalculationArea][xOnCalculationArea] != 0) {
                             // piece collided with another piece
                             pieceCanBeMoved = false;
-                        };
+                        }
                         if (pieceCanBeMoved == true) {
                             // no problem
                         }
@@ -1080,7 +1080,7 @@ var logOfEvents = [];
             } else {
                 playAreaMode = 'pieceFallingAnimation';
             }
-        };
+        }
     }
 
 
