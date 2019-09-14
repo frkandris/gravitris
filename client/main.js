@@ -1,7 +1,12 @@
 console.log("start");
 
 var pieceMap = require('./pieceMap');
-var hexToRGB = require('./hexToRGB');
+
+var colorRelated = require('./colorRelated');
+var colors = colorRelated.colors;
+var shadowColor = colorRelated.shadowColor;
+var hexToRGB = colorRelated.hexToRGB;
+var getPieceColor = colorRelated.getPieceColor;
 
 var pixelSize = 20;
 var playAreaWidth = 16 * pixelSize;
@@ -122,18 +127,6 @@ var currentGravityCalculationArea = [
 ];
 
 var nextPieces = [];
-
-var colors = [
-    '#ff0000', 
-    '#00ff00', 
-    '#0000ff', 
-    '#00ffff', 
-    '#800080', 
-    '#a52a2a', 
-    '#808080'
-];
-
-var shadowColor = '#2c2c2c';
 
 var listOfPiecesInThePlayingArea = [];
 
@@ -425,14 +418,6 @@ var logOfEvents = [];
                 };
             }            
         }
-    }
-
-
-    // this function returns the color of a piece from the colors[] array
-
-    function getPieceColor(colorIndex) {
-        var colorCalculated = colorIndex % colors.length;
-        return colors[colorCalculated];
     }
 
 
