@@ -20,6 +20,8 @@ var fullLineFadeAnimationCounter = fullLineFadeAnimationLength;
 var listOfPiecesThatCanBeMoved = [];
 var gravityAnimationFallingSpeed = 4;
 var gravityAnimationYModifier = 0;
+var gameEndFadeAnimationLength = 100;
+var gameEndFadeAnimationCounter = gameEndFadeAnimationLength;
 
 var debugShowPieceNumbers = false; 
 
@@ -210,6 +212,11 @@ var logOfEvents = [];
         xPlayArea = (playAreaWidth / 2) - (2 * pixelSize);
         yPlayArea = 0 * pixelSize;
 
+        var moveCanBeDone = checkIfPieceOverlapsAnythingOnACalculationArea();
+        if (moveCanBeDone == false) {
+            playAreaMode = 'gameEndFadeOutAnimation';
+        }
+
         pieceCounter++;
 
         logOfEvents.push({
@@ -218,6 +225,33 @@ var logOfEvents = [];
             eventValue: pieceIndex
         });
 
+    }
+
+
+    // this function checks if a piece overlaps anything on a calculation area
+
+    function checkIfPieceOverlapsAnythingOnACalculationArea() {
+
+        var moveCanBeDone = true;
+
+        var pieceMapNumberOfRows = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex]).length;
+        var pieceMapNumberOfColumns = Object.keys(pieceMap[pieceIndex][rotationIndex][rotationIndex][0]).length;
+
+        for (var y = 0; y < pieceMapNumberOfRows; y++) {
+            for (var x = 0; x < pieceMapNumberOfColumns; x++) {
+                isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][y][x];
+                if (isRectangleFilled == 1) {
+                    var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y;
+                    var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
+                    if (currentCalculationArea[yOnCalculationArea][xOnCalculationArea] != 0) {
+                        // move can not be done, as the piece in the new position would overlap with something
+                        moveCanBeDone = false;
+                    }
+                } 
+            }
+        }
+
+        return moveCanBeDone;
     }
 
 
@@ -491,7 +525,8 @@ var logOfEvents = [];
     }
 
 
-    // this function 
+    // this function draws the play area, sometimes with opacity
+
     function drawPlayArea() {
 
         var c = document.getElementById("playAreaCanvas");
@@ -508,7 +543,9 @@ var logOfEvents = [];
                 isRectangleFilled = currentCalculationArea[y][x];
                 if (isRectangleFilled > 0) {
                     var pieceColor = colorRelated.getPieceColor(isRectangleFilled - 1);
-                    if (fullLines.includes(y)) {
+                    if (playAreaMode == 'gameEndFadeOutAnimation') {
+                        var opacity = gameEndFadeAnimationCounter/gameEndFadeAnimationLength;                        
+                    } else if (fullLines.includes(y)) {
                         var opacity = fullLineFadeAnimationCounter/fullLineFadeAnimationLength;
                     } else {
                         opacity = 1;
@@ -1110,6 +1147,31 @@ var logOfEvents = [];
     }
 
 
+    function gameEndAnimationRoutine() {
+
+        // no more moves
+        document.onkeydown = null;
+
+        // draw the play area
+        drawPlayArea();
+
+        // increase opacity
+        gameEndFadeAnimationCounter--;
+
+        // check if everything has faded out properly
+        if (gameEndFadeAnimationCounter == 0) {
+
+            gameEndFadeAnimationCounter = gameEndFadeAnimationLength;
+            
+            // stop the game loop
+            stopTheGameLoop = true;
+        } else {
+            // 
+        }
+
+    }
+
+    
     // this is the game loop, it runs every frame
 
     function gameLoop() {
@@ -1124,6 +1186,8 @@ var logOfEvents = [];
             case 'gravityAnimation':
                 gravityAnimationRoutine();
                 break;
+            case 'gameEndFadeOutAnimation':
+                gameEndAnimationRoutine();
         }
 
         // increase frameNumber
