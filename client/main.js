@@ -4,8 +4,6 @@ var pieceMap = require('./includes/pieceMap');
 
 var colorRelated = require('./includes/colorRelated');
 var shadowColor = colorRelated.shadowColor;
-var hexToRGB = colorRelated.hexToRGB;
-var getPieceColor = colorRelated.getPieceColor;
 
 var pixelSize = 20;
 var playAreaWidth = 16 * pixelSize;
@@ -472,7 +470,7 @@ var logOfEvents = [];
             for (var x = 0; x < numberOfColumns; x++) {
                 isRectangleFilled = tempCalculationArea[y][x];
                 if (isRectangleFilled > 0) {
-                    ctx.fillStyle = getPieceColor(isRectangleFilled - 1);
+                    ctx.fillStyle = colorRelated.getPieceColor(isRectangleFilled - 1);
                     ctx.fillRect(x * pixelSize, (y + 1) * pixelSize, (pixelSize - 1), (pixelSize - 1));
                 } 
             }
@@ -509,13 +507,13 @@ var logOfEvents = [];
             for (var x = 0; x < numberOfColumns; x++) {
                 isRectangleFilled = currentCalculationArea[y][x];
                 if (isRectangleFilled > 0) {
-                    var pieceColor = getPieceColor(isRectangleFilled - 1);
+                    var pieceColor = colorRelated.getPieceColor(isRectangleFilled - 1);
                     if (fullLines.includes(y)) {
                         var opacity = fullLineFadeAnimationCounter/fullLineFadeAnimationLength;
                     } else {
                         opacity = 1;
                     }
-                    var fillStyle = hexToRGB(pieceColor, opacity);
+                    var fillStyle = colorRelated.convertColorHexToRGB(pieceColor, opacity);
                     ctx.fillStyle = fillStyle;
                     ctx.fillRect(x * pixelSize, (y + 1) * pixelSize, (pixelSize - 1), (pixelSize - 1));
                 } 
@@ -641,7 +639,7 @@ var logOfEvents = [];
                 if (isRectangleFilled == 1) {
                     var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y + yModifier - 1;
                     var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
-                    ctx.fillStyle = shadowColor;
+                    ctx.fillStyle = colorRelated.getPieceColor('shadow');
                     ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize, (pixelSize - 1), (pixelSize - 1));
                 }  
             }
@@ -660,7 +658,7 @@ var logOfEvents = [];
                 isRectangleFilled = pieceMap[pieceToDrawIndex][rotationIndex][rotationIndex][i][j];
                 if (isRectangleFilled == 1) {
 
-                    ctx.fillStyle = getPieceColor(pieceToDrawIndex);
+                    ctx.fillStyle = colorRelated.getPieceColor(pieceToDrawIndex);
 
                     // draw the piece
                     var xOnCalculationArea = j + xModifier;
@@ -748,7 +746,7 @@ var logOfEvents = [];
                         currentGravityCalculationArea[yOnGravityCalculationArea][xOnGravityCalculationArea] = colorOnGravityCalculationArea;
 
                         // add the number
-                        ctx.fillStyle = getPieceColor(colorOnGravityCalculationArea - 1);
+                        ctx.fillStyle = colorRelated.getPieceColor(colorOnGravityCalculationArea - 1);
                         ctx.fillRect(xOnGravityCalculationArea * pixelSize, (yOnGravityCalculationArea + 1) * pixelSize, (pixelSize-1), (pixelSize-1));
                         if (debugShowPieceNumbers == true) {
                             ctx.fillStyle = "white";
@@ -1000,7 +998,7 @@ var logOfEvents = [];
                         } else {
                             yModifierInPixels = 0;
                         }
-                        ctx.fillStyle = getPieceColor(colorOnGravityCalculationArea - 1);
+                        ctx.fillStyle = colorRelated.getPieceColor(colorOnGravityCalculationArea - 1);
                         ctx.fillRect(xOnGravityCalculationArea * pixelSize, (yOnGravityCalculationArea + 1) * pixelSize + yModifierInPixels, (pixelSize-1), (pixelSize-1));
 
                         if (debugShowPieceNumbers == true) {
