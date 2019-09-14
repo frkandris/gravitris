@@ -3,14 +3,12 @@ console.log("start");
 var pieceMap = require('./includes/pieceMap');
 
 var colorRelated = require('./includes/colorRelated');
-var colors = colorRelated.colors;
 var shadowColor = colorRelated.shadowColor;
 var hexToRGB = colorRelated.hexToRGB;
 var getPieceColor = colorRelated.getPieceColor;
 
 var pixelSize = 20;
 var playAreaWidth = 16 * pixelSize;
-var playAreaHeight = 30 * pixelSize;
 var fallingSpeed = 1;
 var selectANewPieceNextFrame = true;
 var moveCanBeDone = true;
@@ -576,7 +574,6 @@ var logOfEvents = [];
 
     function hideFullLines(fullLines) {
 
-        var numberOfRows = currentCalculationArea.length;
         var numberOfColumns = currentCalculationArea[0].length;
 
         for (p = 0; p < fullLines.length; p++) {
