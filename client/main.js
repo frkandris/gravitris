@@ -1,8 +1,8 @@
 console.log("start");
 
-var pieceMap = require('./pieceMap');
+var pieceMap = require('./includes/pieceMap');
 
-var colorRelated = require('./colorRelated');
+var colorRelated = require('./includes/colorRelated');
 var colors = colorRelated.colors;
 var shadowColor = colorRelated.shadowColor;
 var hexToRGB = colorRelated.hexToRGB;
