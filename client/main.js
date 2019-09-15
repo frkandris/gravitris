@@ -1,5 +1,3 @@
-console.log("start");
-
 var pieceMap = require('./includes/pieceMap');
 
 var colorRelated = require('./includes/colorRelated');
@@ -1213,23 +1211,21 @@ var logOfEvents = [];
     }
 
 
-    // we start everything here
+// we start everything here
 
-    // the checkKeyboardInput() function will take care of the keyboard interactions
-    document.onkeydown = checkKeyboardInput;
+// the checkKeyboardInput() function will take care of the keyboard interactions
+document.onkeydown = checkKeyboardInput;
 
-    // let's generate the first 3 pieces
-    pieceIndex = selectAPieceRandomly();
-    nextPieces.unshift(pieceIndex);
-    pieceIndex = selectAPieceRandomly();
-    nextPieces.unshift(pieceIndex);
-    pieceIndex = selectAPieceRandomly();
-    nextPieces.unshift(pieceIndex);
+// let's generate the first 3 pieces
+pieceIndex = selectAPieceRandomly();
+nextPieces.unshift(pieceIndex);
+pieceIndex = selectAPieceRandomly();
+nextPieces.unshift(pieceIndex);
+pieceIndex = selectAPieceRandomly();
+nextPieces.unshift(pieceIndex);
 
-    // set playAreaMode
-    playAreaMode = 'pieceFallingAnimation';
+// set playAreaMode
+playAreaMode = 'pieceFallingAnimation';
 
-    // start the gameloop
-    requestAnimationFrame(gameLoop);
-
-console.log("end");
+// start the gameloop
+requestAnimationFrame(gameLoop);
