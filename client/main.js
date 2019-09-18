@@ -7,9 +7,6 @@ var tempCalculationArea = calculationAreaDefinitions.tempCalculationArea;
 var currentGravityCalculationArea = calculationAreaDefinitions.currentGravityCalculationArea;
 
 var statRelated = require('./includes/statRelated');
-var gameStartTime;
-var gameEndTime;
-var numberOfLinesCleared = 0;
 
 var pixelSize = 20;
 var playAreaWidth = 16 * pixelSize;
@@ -122,19 +119,7 @@ var logOfEvents = [];
         var moveCanBeDone = checkIfPieceOverlapsAnythingOnACalculationArea();
         if (moveCanBeDone == false) {
             playAreaMode = 'gameEndFadeOutAnimation';
-
-            gameEndTime = statRelated.getGameEndTime();
-
-            var gameTimeInSeconds = statRelated.getGameTimeInSeconds(gameStartTime, gameEndTime);
-            console.log("Game time in seconds: " + gameTimeInSeconds);
-
-            console.log("Number of pieces: " + pieceCounter);
-
-            var blocksPerMinute = statRelated.getBlocksPerMinute(pieceCounter, gameTimeInSeconds);
-            console.log("BPM: " + blocksPerMinute);
-
-            console.log("Lines cleared: " + numberOfLinesCleared);
-
+            statRelated.setGameEndTime();
         }
 
         pieceCounter++;
@@ -506,8 +491,7 @@ var logOfEvents = [];
         }
         if (fullLineFound == true) {
             playAreaMode = 'fullLineRemoveAnimation';
-            numberOfLinesCleared = numberOfLinesCleared + fullLines.length;
-            console.log("Lines cleared: " + numberOfLinesCleared);
+            statRelated.increaseNumberOfLinesCreated(fullLines.length);
         }
     }
 
@@ -1098,6 +1082,8 @@ var logOfEvents = [];
 
             gameEndFadeAnimationCounter = gameEndFadeAnimationLength;
             
+            statRelated.displayGameEndStats(pieceCounter);
+
             // stop the game loop
             stopTheGameLoop = true;
         } else {
@@ -1153,7 +1139,7 @@ nextPieces.unshift(pieceIndex);
 playAreaMode = 'pieceFallingAnimation';
 
 // record game start time
-gameStartTime = statRelated.getGameStartTime();
+statRelated.setGameStartTime();
 
 // start the gameloop
 requestAnimationFrame(gameLoop);
