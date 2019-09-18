@@ -624,7 +624,7 @@ var logOfEvents = [];
         for (var i = 0; i < nextPieces.length; i++) {
             pieceToDrawIndex = nextPieces[i];
             pieceToDrawRotation = 0;
-            drawPiece(ctx, pieceToDrawIndex, pieceToDrawRotation, i * 4 + 2,  2);
+            drawPiece(ctx, pieceToDrawIndex, pieceToDrawRotation, i * 4 + 2,  1);
         }
     }
 
@@ -1084,8 +1084,12 @@ var logOfEvents = [];
             
             statRelated.displayGameEndStats(pieceCounter);
 
+            $('#gamestartbutton').css('visibility','visible');
+            
             // stop the game loop
             stopTheGameLoop = true;
+
+            
         } else {
             // 
         }

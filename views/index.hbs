@@ -1,7 +1,15 @@
-  <div style="margin:auto;text-align:center;">
-      <canvas id="nextPiecesAreaCanvas" width="320" height="600" style="border:1px solid #cccccc;"></canvas>
-      <canvas id="playAreaCanvas" width="320" height="600" style="border:1px solid #cccccc;"></canvas>
+  <div id="gamecontainer">
+
+      <div>
+        <canvas id="nextPiecesAreaCanvas" width="320" height="100"></canvas>
+      </div>
+      <div>
+        <canvas id="playAreaCanvas" width="320" height="600" style="border:1px solid #cccccc;"></canvas>
+        <button id="gamestartbutton" type="button" class="btn btn-primary" onClick="window.location.reload();">Start a new game</button>
+      </div>
       <span style="display:none"><canvas id="currentGravityCalculationAreaCanvas" width="320" height="600" style="border:1px solid #cccccc;"></canvas></span>
+  
+
   </div>
 
   <script src='/javascripts/bundle.js'></script>
