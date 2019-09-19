@@ -10,9 +10,6 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
-// set port to 8081 to run fine on AWS
-app.set('port', 8081);
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
