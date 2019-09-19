@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www app.js"
+    "start": "node app.js"
   },
   "dependencies": {
     "browserify-middleware": "^8.1.1",
