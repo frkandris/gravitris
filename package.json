@@ -8,20 +8,24 @@
   },
   "scripts": {
     "start": "npm run start-local",
-    "start-local": "npm install && nodemon ./bin/app.js",
-    "start-development": "npm install && nodemon ./bin/app.js",
-    "start-production": "node bin/app",
-    "debug": "nodemon --inspect=3330 ./bin/app.js"
+    "start-local": "npm install && cross-env NODE_ENV=local nodemon ./app/index.js",
+    "start-development": "npm install && cross-env NODE_ENV=development nodemon ./app/index.js",
+    "start-production": "cross-env NODE_ENV=production node app/index.js"
   },
   "dependencies": {
     "browserify-middleware": "^8.1.1",
     "cookie-parser": "~1.4.4",
+    "cross-env": "^6.0.0",
     "debug": "~2.6.9",
     "express": "~4.16.1",
+    "express-handlebars": "^3.1.0",
+    "fs": "0.0.1-security",
     "hbs": "~4.0.4",
     "http-errors": "~1.6.3",
+    "moment": "^2.24.0",
     "morgan": "~1.9.1",
-    "nconf": "^0.10.0"
+    "nconf": "^0.10.0",
+    "promise": "^8.0.3"
   },
   "devDependencies": {
     "nodemon": "^1.19.2"
