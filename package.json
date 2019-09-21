@@ -1,9 +1,17 @@
 {
   "name": "gravitris",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frkandris/gravitris"
+  },
   "scripts": {
-    "start": "node bin/app"
+    "start": "npm run start-local",
+    "start-local": "npm install && nodemon ./bin/app.js",
+    "start-development": "npm install && nodemon ./bin/app.js",
+    "start-production": "node bin/app",
+    "debug": "nodemon --inspect=3330 ./bin/app.js"
   },
   "dependencies": {
     "browserify-middleware": "^8.1.1",
