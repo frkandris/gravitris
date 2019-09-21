@@ -1,11 +1,20 @@
+// piece order:
+//   - 1: L
+//   - 2: long
+//   - 3: square
+//   - 4: reverse L
+//   - 5: threeway
+//   - 6: z
+//   - 7: inverse z 
+
 var pieceColors = [
-    '#ff0000', // red
-    '#00ff00', // green
-    '#0000ff', // blue
-    '#00ffff', // cyan
-    '#800080', // purple
-    '#a52a2a', // brown
-    '#808080'  // grey
+    '#8f008f', // purple
+    '#008f00', // green
+    '#ff531b', // orange
+    '#8f8f00', // yellow
+    '#00008f', // blue
+    '#008b8f', // cyan
+    '#8f0000'  // red
 ];
 
 var shadowColor = '#2c2c2c';
