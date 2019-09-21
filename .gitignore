@@ -1,2 +1,11 @@
+
+# VSCode workspace file
 *.code-workspace
+
+# Node.js compiled modules
+
 node_modules/*
+
+# Environment files, except env.default.json
+env.*.json
+!env.default.json
