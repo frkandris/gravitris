@@ -11,7 +11,7 @@ phases:
     commands:
       - echo Phase - pre_build - `date`
       - npm install
-      - git clone https://63552f0ce7b8c5a771cb62a7977a2326802c9d8a@github.com/frkandris/gravitris-env.git
+      - git clone https://frkandris:ca112700a06db393f7ecbd747add8aa01f5eb8ef@github.com/frkandris/gravitris-env.git
       - cp ./gravitris-env/env.production.json ./env.production.json
   build:
     commands:
