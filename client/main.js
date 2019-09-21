@@ -1,3 +1,7 @@
+var gameWidth = 10; // how many columns do we have
+
+var pixelSize = 20;
+
 var pieceMap = require('./includes/pieceMap');
 var colorRelated = require('./includes/colorRelated');
 
@@ -8,8 +12,8 @@ var currentGravityCalculationArea = calculationAreaDefinitions.currentGravityCal
 
 var statRelated = require('./includes/statRelated');
 
-var pixelSize = 20;
-var playAreaWidth = 16 * pixelSize;
+var playAreaWidth = gameWidth * pixelSize;
+
 var fallingSpeed = 1;
 var selectANewPieceNextFrame = true;
 var moveCanBeDone = true;
@@ -624,7 +628,7 @@ var logOfEvents = [];
         for (var i = 0; i < nextPieces.length; i++) {
             pieceToDrawIndex = nextPieces[i];
             pieceToDrawRotation = 0;
-            drawPiece(ctx, pieceToDrawIndex, pieceToDrawRotation, i * 4 + 2,  1);
+            drawPiece(ctx, pieceToDrawIndex, pieceToDrawRotation, i * 3,  1);
         }
     }
 
