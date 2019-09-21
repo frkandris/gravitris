@@ -4,7 +4,7 @@ var gameStartTime;
 var numberOfLinesCleared = 0;
 
 var statLineCounter = 0;
-var statPositionX = 50;
+var statPositionX = 5;
 var statPositionY = 150;
 var lineHeight = 20;
 
@@ -34,11 +34,11 @@ function displayGameEndStats(pieceCounter) {
     ctx.fillStyle = "white";
     ctx.font = "14px Consolas";
 
-    ctx.fillText("Number of lines cleared: " + numberOfLinesCleared, statPositionX, statPositionY + statLineCounter * lineHeight);
+    ctx.fillText("Lines cleared: " + numberOfLinesCleared, statPositionX, statPositionY + statLineCounter * lineHeight);
     statLineCounter++;
 
     var gameTimeInSeconds = getGameTimeInSeconds(gameStartTime, gameEndTime);
-    ctx.fillText("Game time in seconds: " + gameTimeInSeconds, statPositionX, statPositionY + statLineCounter * lineHeight);
+    ctx.fillText("Game time: " + gameTimeInSeconds, statPositionX, statPositionY + statLineCounter * lineHeight);
     statLineCounter++;
 
     ctx.fillText("Number of blocks: " + pieceCounter, statPositionX, statPositionY + statLineCounter * lineHeight);
