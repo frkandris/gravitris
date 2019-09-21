@@ -429,7 +429,7 @@ var logOfEvents = [];
         var yModifier = yPlayArea / pixelSize;
         var pieceToDrawIndex = pieceIndex;
         var pieceToDrawRotation = rotationIndex;
-        drawPiece(ctx, pieceToDrawIndex, pieceToDrawRotation, xModifier, yModifier);
+        drawPiece(ctx, pieceToDrawIndex, pieceToDrawRotation, xModifier, yModifier, true);
 
     }
 
@@ -594,16 +594,20 @@ var logOfEvents = [];
 
     }
 
-    function drawPiece(ctx, pieceToDrawIndex, pieceToDrawRotation, xModifier, yModifier) {
+    function drawPiece(ctx, pieceToDrawIndex, pieceToDrawRotation, xModifier, yModifier, drawEmptyLines) {
 
         var rotationIndex = pieceToDrawRotation;
 
         var pieceMapNumberOfRows = Object.keys(pieceMap[pieceToDrawIndex][rotationIndex][rotationIndex]).length;
         var pieceMapNumberOfColumns = Object.keys(pieceMap[pieceToDrawIndex][rotationIndex][rotationIndex][0]).length;
+
+        var lineIsEmpty = true;
         for (var i = 0; i < pieceMapNumberOfRows; i++) {
             for (var j = 0; j < pieceMapNumberOfColumns; j++) {
                 isRectangleFilled = pieceMap[pieceToDrawIndex][rotationIndex][rotationIndex][i][j];
                 if (isRectangleFilled == 1) {
+
+                    lineIsEmpty = false;
 
                     ctx.fillStyle = colorRelated.getPieceColor(pieceToDrawIndex);
 
@@ -611,8 +615,10 @@ var logOfEvents = [];
                     var xOnCalculationArea = j + xModifier;
                     var yOnCalculationArea = i + yModifier;
                     ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize, (pixelSize - 1), (pixelSize - 1));
-
-                }  
+                }
+            }
+            if ((drawEmptyLines == false) && (lineIsEmpty == true)) {
+                yModifier--;
             }
         }
     }
@@ -628,7 +634,7 @@ var logOfEvents = [];
         for (var i = 0; i < nextPieces.length; i++) {
             pieceToDrawIndex = nextPieces[i];
             pieceToDrawRotation = 0;
-            drawPiece(ctx, pieceToDrawIndex, pieceToDrawRotation, i * 3,  1);
+            drawPiece(ctx, pieceToDrawIndex, pieceToDrawRotation, i * 5,  0, false);
         }
     }
 
