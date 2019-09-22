@@ -28,12 +28,13 @@ artifacts:
     - package.json
     - env.default.json
     - env.production.json
-    - client/includes/*
-    - client/*
-    - node_modules/*
-    - public/stylesheets/*
-    - public/*
-    - routes/*
-    - views/*
     - app/*
+    - app/client/*
+    - app/client/includes/*
+    - app/models/*
+    - app/routes/*
     - app/services/*    
+    - app/views/*
+    - node_modules/*
+    - public/*
+    - public/stylesheets/*
