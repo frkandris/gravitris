@@ -26,6 +26,8 @@ phases:
 artifacts:
   files:
     - package.json
+    - env.default.json
+    - env.production.json
     - client/includes/*
     - client/*
     - node_modules/*
