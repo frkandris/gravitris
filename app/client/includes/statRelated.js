@@ -1,3 +1,5 @@
+var axios = require('axios');
+
 var gameEndTime;
 var gameStartTime;
 
@@ -26,6 +28,19 @@ function getBlocksPerMinute(numberOfBlocks, gameTimeInSeconds) {
 
 function increaseNumberOfLinesCreated(numberOfNewLinesCleared) {
     numberOfLinesCleared += numberOfNewLinesCleared;
+
+    // ajax load URL and increase global linesCleared counter
+    axios.get('/increase-linesCleared-counter/' + numberOfNewLinesCleared)
+    .then(function (response) {
+      // handle success
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+    .finally(function () {
+      // always executed
+    });    
 }
 
 function displayGameEndStats(pieceCounter) {

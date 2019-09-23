@@ -14,7 +14,8 @@ const siteConfig = require('./services/config');
 
 /* Init NCONF, make sure that all of our configuration is ready */
 siteConfig.initNconf().then(function() {
-    console.log("NCONF | " + process.env.NODE_ENV + " configuration loaded.");
+    console.log("APP | process.env.NODE_ENV is '" + process.env.NODE_ENV + "'");
+    console.log("NCONF | env." + nconf.get('app:APP_ENVIRONMENT') + ".json configuration loaded.");
 }).then(function() {
 
     /* Start app */
