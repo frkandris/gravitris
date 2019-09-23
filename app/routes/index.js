@@ -3,6 +3,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var Counter = require('../models/Counter.model');
 var nconf = require('nconf');
+var assert = require('assert');
 
 var dbURL = nconf.get('database:MONGODB_URL');
 mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -10,24 +11,60 @@ mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true });
 
 /* GET welcome page. */
 router.get('/', function(req, res, next) {
-  Counter.findOne( {
-    counterName: 'linesCleared'
-  }, function(err, counter) {
-    if (err) {
-      console.log('stat | error | could not find linesCleared counter');
-      res.send('stat | error | could not find linesCleared counter');
-    } else {
-      res.render('index', { 
-        title: 'Gravitris',
-        numberOfLinesCleared: counter.counterValue 
-      });
+
+  var numberOfLinesCleared = 1;
+  var gamesPlayed = 1;
+
+  var query1 = Counter.findOne({counterName: 'linesCleared'});
+  var promise1 = query1.exec();
+  assert.ok(promise1 instanceof Promise);
+
+  var query2 = Counter.findOne({counterName: 'gamesPlayed'});
+  var promise2 = query2.exec();
+  assert.ok(promise2 instanceof Promise);
+  
+  Promise.all([promise1, promise2]).then(function (result) {
+    for (var i = 0; i < result.length; i++) {
+      if (result[i].counterName == 'linesCleared') { numberOfLinesCleared = result[i].counterValue; };
+      if (result[i].counterName == 'gamesPlayed') { gamesPlayed = result[i].counterValue; };
     }
-  })
+
+    res.render('index', { 
+      title: 'Gravitris',
+      numberOfLinesCleared: numberOfLinesCleared,
+      gamesPlayed: gamesPlayed
+    });
+
+  });
+
 });
 
 
 /* GET game page. */
 router.get('/game', function(req, res, next) {
+
+  // increase gamesPlayed
+  Counter.findOneAndUpdate(
+    {
+      counterName: 'gamesPlayed'
+    }, 
+    { 
+      $inc: { 
+        counterValue: 1
+      } 
+    }, 
+    { 
+      upsert: true,
+      new: true
+    },
+    function(err, counter) {
+    if (err) {
+      console.log('game | error | could not increase gamesPlayed counter');
+    } else {
+      // success
+    }
+  });
+
   res.render('game', { title: 'Gravitris' });
 });
 
