@@ -24,3 +24,10 @@ canvas {
   position: absolute;
   margin: -20px 0 0 -90px;
 }
+
+.vertical-center {
+  min-height: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}

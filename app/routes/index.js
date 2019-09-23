@@ -8,13 +8,8 @@ var dbURL = nconf.get('database:MONGODB_URL');
 mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true });
 
 
-/* GET home page. */
+/* GET welcome page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Gravitris' });
-});
-
-/* GET stat page. */
-router.get('/stat', function(req, res, next) {
   Counter.findOne( {
     counterName: 'linesCleared'
   }, function(err, counter) {
@@ -22,10 +17,20 @@ router.get('/stat', function(req, res, next) {
       console.log('stat | error | could not find linesCleared counter');
       res.send('stat | error | could not find linesCleared counter');
     } else {
-      res.send(counter.counterValue + " lines have been cleared since the beginning of time.");
+      res.render('index', { 
+        title: 'Gravitris',
+        numberOfLinesCleared: counter.counterValue 
+      });
     }
   })
 });
+
+
+/* GET game page. */
+router.get('/game', function(req, res, next) {
+  res.render('game', { title: 'Gravitris' });
+});
+
 
 /* Increase the linesCleared counter */
 router.get('/increase-linesCleared-counter/:numberOfLinesCleared', function(req, res, next) {
