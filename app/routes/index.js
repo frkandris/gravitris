@@ -3,7 +3,6 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var Counter = require('../models/Counter.model');
 var nconf = require('nconf');
-var assert = require('assert');
 
 var dbURL = nconf.get('database:MONGODB_URL');
 mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -12,29 +11,25 @@ mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true });
 /* GET welcome page. */
 router.get('/', function(req, res, next) {
 
-  var numberOfLinesCleared = 1;
-  var gamesPlayed = 1;
-
-  var query1 = Counter.findOne({counterName: 'linesCleared'});
-  var promise1 = query1.exec();
-  assert.ok(promise1 instanceof Promise);
-
-  var query2 = Counter.findOne({counterName: 'gamesPlayed'});
-  var promise2 = query2.exec();
-  assert.ok(promise2 instanceof Promise);
-  
-  Promise.all([promise1, promise2]).then(function (result) {
-    for (var i = 0; i < result.length; i++) {
-      if (result[i].counterName == 'linesCleared') { numberOfLinesCleared = result[i].counterValue; };
-      if (result[i].counterName == 'gamesPlayed') { gamesPlayed = result[i].counterValue; };
+  Promise.all([
+    Counter.find({ counterName: 'linesCleared' }),
+    Counter.find({ counterName: 'gamesPlayed'})
+  ]).then( ([ linesCleared, gamesPlayed ]) => {
+    if (linesCleared[0]) {
+      var numberOfLinesCleared = linesCleared[0].counterValue
+    } else {
+      var numberOfLinesCleared = 1;
     }
-
+    if (gamesPlayed[0]) {
+      var numberOfGamesPlayed = gamesPlayed[0].counterValue
+    } else {
+      var numberOfGamesPlayed = 1;
+    }
     res.render('index', { 
       title: 'Gravitris',
       numberOfLinesCleared: numberOfLinesCleared,
-      gamesPlayed: gamesPlayed
+      numberOfGamesPlayed: numberOfGamesPlayed
     });
-
   });
 
 });
