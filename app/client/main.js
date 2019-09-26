@@ -405,19 +405,7 @@ var logOfEvents = [];
             }
         }
 
-        // draw tempCalculationArea to the playArea
-
-        var numberOfRows = currentCalculationArea.length;
-        var numberOfColumns = currentCalculationArea[0].length;
-        for (var y = 0; y < numberOfRows; y++) {
-            for (var x = 0; x < numberOfColumns; x++) {
-                isRectangleFilled = tempCalculationArea[y][x];
-                if (isRectangleFilled > 0) {
-                    ctx.fillStyle = colorRelated.getPieceColor(isRectangleFilled - 1);
-                    ctx.fillRect(x * pixelSize, (y + 1) * pixelSize, (pixelSize - 1), (pixelSize - 1));
-                } 
-            }
-        }
+        drawAllBlocksToPlayArea(ctx);
 
         // draw a the shadow of the moving piece
 
@@ -429,10 +417,76 @@ var logOfEvents = [];
         var yModifier = yPlayArea / pixelSize;
         var pieceToDrawIndex = pieceIndex;
         var pieceToDrawRotation = rotationIndex;
-        drawPiece(ctx, pieceToDrawIndex, pieceToDrawRotation, xModifier, yModifier, true);
+        var drawEmptyLines = true;
+        var isBlockAShadow = false;
+        drawPiece(ctx, pieceToDrawIndex, pieceToDrawRotation, xModifier, yModifier, drawEmptyLines, isBlockAShadow);
 
     }
 
+
+    function drawAllBlocksToPlayArea(ctx) {
+        // draw all blocks one by one to the playArea
+
+        // go thru the pieces one by one in listOfPiecesInThePlayingArea
+        for (var i = 0; i < listOfPiecesInThePlayingArea.length; i++) {
+            var pieceMapNumberOfRows = Object.keys(listOfPiecesInThePlayingArea[i].pieceMap).length;
+            var pieceMapNumberOfColumns = Object.keys(listOfPiecesInThePlayingArea[i].pieceMap[0]).length;
+            for (var y = 0; y < pieceMapNumberOfRows; y++) {
+                for (var x = 0; x < pieceMapNumberOfColumns; x++) {
+                    isRectangleFilled = listOfPiecesInThePlayingArea[i].pieceMap[y][x];
+                    if (isRectangleFilled == 1) {
+                        // copy the map of the piece to currentGravityCalculationArea
+                        var yOnCalculationArea = listOfPiecesInThePlayingArea[i].pieceY + y;
+                        var xOnCalculationArea = listOfPiecesInThePlayingArea[i].pieceX + x;
+                        var colorOnCalculationArea = listOfPiecesInThePlayingArea[i].pieceIndex + 1;
+                        currentGravityCalculationArea[yOnCalculationArea][xOnCalculationArea] = colorOnCalculationArea;
+
+                        // calculate color of the pixel
+                        var pieceColor = colorRelated.getPieceColor(colorOnCalculationArea - 1);
+                        if (playAreaMode == 'gameEndFadeOutAnimation') {
+                            var opacity = gameEndFadeAnimationCounter/gameEndFadeAnimationLength;                        
+                        } else if (fullLines.includes(yOnCalculationArea)) {
+                            var opacity = fullLineFadeAnimationCounter/fullLineFadeAnimationLength;
+                        } else {
+                            opacity = 1;
+                        }
+                        var fillStyle = colorRelated.convertColorHexToRGB(pieceColor, opacity);
+                        ctx.fillStyle = fillStyle;
+
+                        // fill the pixel
+                        ctx.fillRect(xOnCalculationArea * pixelSize, (yOnCalculationArea + 1) * pixelSize, (pixelSize-1), (pixelSize-1));
+
+                        // add the number
+                        if (debugShowPieceNumbers == true) {
+                            ctx.fillStyle = "white";
+                            ctx.font = "10px Arial";
+                            ctx.fillText(i, xOnCalculationArea * pixelSize + 5, (yOnCalculationArea + 1) * pixelSize + 10);
+                        }
+
+                        // check if the block has another pixel on the right this one
+                        try {
+                            var isRightSiblingFilled = listOfPiecesInThePlayingArea[i].pieceMap[y][x + 1];
+                            if (isRightSiblingFilled == 1) {
+                                ctx.fillRect(xOnCalculationArea * pixelSize + pixelSize - 1, (yOnCalculationArea + 1) * pixelSize, 1, (pixelSize - 1));
+                            }
+                        } catch {
+                            //
+                        }
+
+                        // check if the block has another pixel underneath this one
+                        try {
+                            var isBottomSiblingFilled = listOfPiecesInThePlayingArea[i].pieceMap[y + 1][x];
+                            if (isBottomSiblingFilled == 1) {
+                                ctx.fillRect(xOnCalculationArea * pixelSize, (yOnCalculationArea + 1) * pixelSize + pixelSize - 1, (pixelSize - 1), 1);
+                            }
+                        } catch {
+                            //
+                        }
+                    }
+                }
+            }
+        }        
+    }
 
     // this function draws the play area, sometimes with opacity
 
@@ -443,28 +497,32 @@ var logOfEvents = [];
         
         ctx.clearRect(0, 0, c.width, c.height);
 
+        // FIXME3
         // draw currentCalculationArea to the playArea
 
-        var numberOfRows = currentCalculationArea.length;
-        var numberOfColumns = currentCalculationArea[0].length;
-        for (var y = 0; y < numberOfRows; y++) {
-            for (var x = 0; x < numberOfColumns; x++) {
-                isRectangleFilled = currentCalculationArea[y][x];
-                if (isRectangleFilled > 0) {
-                    var pieceColor = colorRelated.getPieceColor(isRectangleFilled - 1);
-                    if (playAreaMode == 'gameEndFadeOutAnimation') {
-                        var opacity = gameEndFadeAnimationCounter/gameEndFadeAnimationLength;                        
-                    } else if (fullLines.includes(y)) {
-                        var opacity = fullLineFadeAnimationCounter/fullLineFadeAnimationLength;
-                    } else {
-                        opacity = 1;
-                    }
-                    var fillStyle = colorRelated.convertColorHexToRGB(pieceColor, opacity);
-                    ctx.fillStyle = fillStyle;
-                    ctx.fillRect(x * pixelSize, (y + 1) * pixelSize, (pixelSize - 1), (pixelSize - 1));
-                } 
-            }
-        }
+        drawAllBlocksToPlayArea(ctx);
+
+        // var numberOfRows = currentCalculationArea.length;
+        // var numberOfColumns = currentCalculationArea[0].length;
+        // for (var y = 0; y < numberOfRows; y++) {
+        //     for (var x = 0; x < numberOfColumns; x++) {
+        //         isRectangleFilled = currentCalculationArea[y][x];
+        //         if (isRectangleFilled > 0) {
+        //             var pieceColor = colorRelated.getPieceColor(isRectangleFilled - 1);
+        //             if (playAreaMode == 'gameEndFadeOutAnimation') {
+        //                 var opacity = gameEndFadeAnimationCounter/gameEndFadeAnimationLength;                        
+        //             } else if (fullLines.includes(y)) {
+        //                 var opacity = fullLineFadeAnimationCounter/fullLineFadeAnimationLength;
+        //             } else {
+        //                 opacity = 1;
+        //             }
+        //             var fillStyle = colorRelated.convertColorHexToRGB(pieceColor, opacity);
+        //             ctx.fillStyle = fillStyle;
+        //             ctx.fillRect(x * pixelSize, (y + 1) * pixelSize, (pixelSize - 1), (pixelSize - 1));
+        //         } 
+        //     }
+        // }
+
     }
 
 
@@ -580,21 +638,17 @@ var logOfEvents = [];
         var c = document.getElementById("playAreaCanvas");
         var ctx = c.getContext("2d");
 
-        for (var y = 0; y < pieceMapNumberOfRows; y++) {
-            for (var x = 0; x < pieceMapNumberOfColumns; x++) {
-                isRectangleFilled = pieceMap[pieceIndex][rotationIndex][rotationIndex][y][x];
-                if (isRectangleFilled == 1) {
-                    var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y + yModifier - 1;
-                    var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
-                    ctx.fillStyle = colorRelated.getPieceColor('shadow');
-                    ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize, (pixelSize - 1), (pixelSize - 1));
-                }  
-            }
-        }
+        var xModifier = Math.floor(xPlayArea / pixelSize);
+        var yModifier = Math.floor(yPlayArea / pixelSize) + yModifier - 1;
+        var pieceToDrawIndex = pieceIndex;
+        var pieceToDrawRotation = rotationIndex;
+        var drawEmptyLines = true;
+        var isBlockAShadow = true;
+        drawPiece(ctx, pieceToDrawIndex, pieceToDrawRotation, xModifier, yModifier, drawEmptyLines, isBlockAShadow);
 
     }
 
-    function drawPiece(ctx, pieceToDrawIndex, pieceToDrawRotation, xModifier, yModifier, drawEmptyLines) {
+    function drawPiece(ctx, pieceToDrawIndex, pieceToDrawRotation, xModifier, yModifier, drawEmptyLines, isBlockAShadow) {
 
         var rotationIndex = pieceToDrawRotation;
 
@@ -602,19 +656,44 @@ var logOfEvents = [];
         var pieceMapNumberOfColumns = Object.keys(pieceMap[pieceToDrawIndex][rotationIndex][rotationIndex][0]).length;
 
         var lineIsEmpty = true;
-        for (var i = 0; i < pieceMapNumberOfRows; i++) {
-            for (var j = 0; j < pieceMapNumberOfColumns; j++) {
-                isRectangleFilled = pieceMap[pieceToDrawIndex][rotationIndex][rotationIndex][i][j];
+        for (var y = 0; y < pieceMapNumberOfRows; y++) {
+            for (var x = 0; x < pieceMapNumberOfColumns; x++) {
+                isRectangleFilled = pieceMap[pieceToDrawIndex][rotationIndex][rotationIndex][y][x];
                 if (isRectangleFilled == 1) {
 
                     lineIsEmpty = false;
 
-                    ctx.fillStyle = colorRelated.getPieceColor(pieceToDrawIndex);
+                    if (isBlockAShadow == true) {
+                        ctx.fillStyle = colorRelated.getPieceColor('shadow');
+                    } else {
+                        ctx.fillStyle = colorRelated.getPieceColor(pieceToDrawIndex);
+                    }
 
                     // draw the piece
-                    var xOnCalculationArea = j + xModifier;
-                    var yOnCalculationArea = i + yModifier;
+                    var xOnCalculationArea = x + xModifier;
+                    var yOnCalculationArea = y + yModifier;
                     ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize, (pixelSize - 1), (pixelSize - 1));
+
+                    // check if the block has another pixel on the right this one
+                    try {
+                        var isRightSiblingFilled = pieceMap[pieceToDrawIndex][rotationIndex][rotationIndex][y][x + 1];
+                        if (isRightSiblingFilled == 1) {
+                            ctx.fillRect(xOnCalculationArea * pixelSize + pixelSize - 1, yOnCalculationArea * pixelSize, 1, (pixelSize - 1));
+                        }
+                    } catch {
+                        //
+                    }
+
+                    // check if the block has another pixel underneath this one
+                    try {
+                        var isBottomSiblingFilled = pieceMap[pieceToDrawIndex][rotationIndex][rotationIndex][y + 1][x];
+                        if (isBottomSiblingFilled == 1) {
+                            ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize + pixelSize - 1, (pixelSize - 1), 1);
+                        }
+                    } catch {
+                        //
+                    }
+
                 }
             }
             if ((drawEmptyLines == false) && (lineIsEmpty == true)) {
@@ -634,7 +713,9 @@ var logOfEvents = [];
         for (var i = 0; i < nextPieces.length; i++) {
             pieceToDrawIndex = nextPieces[i];
             pieceToDrawRotation = 0;
-            drawPiece(ctx, pieceToDrawIndex, pieceToDrawRotation, i * 5,  0, false);
+            var drawEmptyLines = false;
+            var isBlockAShadow = false;
+            drawPiece(ctx, pieceToDrawIndex, pieceToDrawRotation, i * 5,  0, drawEmptyLines, isBlockAShadow);
         }
     }
 
@@ -666,9 +747,9 @@ var logOfEvents = [];
     }
 
 
-    // this function draws the currentGravityCalculationArea
+    // this function calculates the currentGravityCalculationArea
     
-    function drawCurrentGravityCalculationArea() {
+    function calculateCurrentGravityCalculationArea() {
 
         // clear currentGravityCalculationArea
         var numberOfRows = currentGravityCalculationArea.length;
@@ -698,14 +779,16 @@ var logOfEvents = [];
                         var colorOnGravityCalculationArea = listOfPiecesInThePlayingArea[i].pieceIndex + 1;
                         currentGravityCalculationArea[yOnGravityCalculationArea][xOnGravityCalculationArea] = colorOnGravityCalculationArea;
 
-                        // add the number
-                        ctx.fillStyle = colorRelated.getPieceColor(colorOnGravityCalculationArea - 1);
-                        ctx.fillRect(xOnGravityCalculationArea * pixelSize, (yOnGravityCalculationArea + 1) * pixelSize, (pixelSize-1), (pixelSize-1));
-                        if (debugShowPieceNumbers == true) {
-                            ctx.fillStyle = "white";
-                            ctx.font = "10px Arial";
-                            ctx.fillText(i, xOnGravityCalculationArea * pixelSize + 5, (yOnGravityCalculationArea + 1) * pixelSize + 10);
-                        }
+                        // draw the pixel
+                        // ctx.fillStyle = colorRelated.getPieceColor(colorOnGravityCalculationArea - 1);
+                        // ctx.fillRect(xOnGravityCalculationArea * pixelSize, (yOnGravityCalculationArea + 1) * pixelSize, (pixelSize-1), (pixelSize-1));
+ 
+                        // draw the number
+                        // if (debugShowPieceNumbers == true) {
+                        //     ctx.fillStyle = "white";
+                        //     ctx.font = "10px Arial";
+                        //     ctx.fillText(i, xOnGravityCalculationArea * pixelSize + 5, (yOnGravityCalculationArea + 1) * pixelSize + 10);
+                        // }
                     }
                 }
             }
@@ -909,7 +992,7 @@ var logOfEvents = [];
         // }
 
 
-        drawCurrentGravityCalculationArea();
+        calculateCurrentGravityCalculationArea();
 
         return thereWasMovementInThisRound;
     }
@@ -972,6 +1055,27 @@ var logOfEvents = [];
                             ctx.font = "10px Arial";
                             ctx.fillText(i, xOnGravityCalculationArea * pixelSize + 5, (yOnGravityCalculationArea + 1) * pixelSize + 10 + yModifierInPixels);
                         }
+
+                        // check if the block has another pixel on the right this one
+                        try {
+                            var isRightSiblingFilled = listOfPiecesInThePlayingArea[i].pieceMap[y][x + 1];
+                            if (isRightSiblingFilled == 1) {
+                                ctx.fillRect(xOnGravityCalculationArea * pixelSize + pixelSize - 1, (yOnGravityCalculationArea + 1) * pixelSize + yModifierInPixels, 1, (pixelSize - 1));
+                            }
+                        } catch {
+                            //
+                        }
+
+                        // check if the block has another pixel underneath this one
+                        try {
+                            var isBottomSiblingFilled = listOfPiecesInThePlayingArea[i].pieceMap[y + 1][x];
+                            if (isBottomSiblingFilled == 1) {
+                                ctx.fillRect(xOnGravityCalculationArea * pixelSize, (yOnGravityCalculationArea + 1) * pixelSize + pixelSize - 1 + yModifierInPixels, (pixelSize - 1), 1);
+                            }
+                        } catch {
+                            //
+                        }
+
                     }
                 }
             }
@@ -1026,7 +1130,7 @@ var logOfEvents = [];
         drawNextPiecesArea();
     
         // draw currentGravityCalculationArea
-        drawCurrentGravityCalculationArea();
+        calculateCurrentGravityCalculationArea();
     }
 
 
@@ -1059,7 +1163,7 @@ var logOfEvents = [];
             for (var i = 0; i < listOfPiecesThatCanBeMoved.length; i++) {
                 listOfPiecesInThePlayingArea[listOfPiecesThatCanBeMoved[i]].pieceY++;
             }
-            drawCurrentGravityCalculationArea();
+            calculateCurrentGravityCalculationArea();
             copyCurrentGravityCalculationAreaToCurrentCalculationArea();
 
             gravityAnimationYModifier = 0;
