@@ -418,8 +418,9 @@ var logOfEvents = [];
         var blockToDrawIndex = blockIndex;
         var blockToDrawRotation = rotationIndex;
         var drawEmptyLines = true;
-        var isBlockAShadow = false;
-        drawBlock(ctx, blockToDrawIndex, blockToDrawRotation, xModifier, yModifier, drawEmptyLines, isBlockAShadow);
+        var blockMapToDraw = blockMap[blockToDrawIndex][blockToDrawRotation][blockToDrawRotation];
+        var blockToDrawColor = colorRelated.getBlockColor(blockToDrawIndex);
+        drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifier, yModifier, drawEmptyLines);
 
     }
 
@@ -626,32 +627,29 @@ var logOfEvents = [];
         var blockToDrawIndex = blockIndex;
         var blockToDrawRotation = rotationIndex;
         var drawEmptyLines = true;
-        var isBlockAShadow = true;
-        drawBlock(ctx, blockToDrawIndex, blockToDrawRotation, xModifier, yModifier, drawEmptyLines, isBlockAShadow);
+        var blockMapToDraw = blockMap[blockToDrawIndex][blockToDrawRotation][blockToDrawRotation];
+        var blockToDrawColor = colorRelated.getBlockColor('shadow');
+        drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifier, yModifier, drawEmptyLines);
 
     }
 
 
     // this function draws a block to a canvas
 
-    function drawBlock(ctx, blockToDrawIndex, blockToDrawRotation, xModifier, yModifier, drawEmptyLines, isBlockAShadow) {
+    function drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifier, yModifier, drawEmptyLines) {
 
-        var blockMapNumberOfRows = Object.keys(blockMap[blockToDrawIndex][blockToDrawRotation][blockToDrawRotation]).length;
-        var blockMapNumberOfColumns = Object.keys(blockMap[blockToDrawIndex][blockToDrawRotation][blockToDrawRotation][0]).length;
+        var blockMapNumberOfRows = blockMapToDraw.length;
+        var blockMapNumberOfColumns = blockMapToDraw[0].length;
 
         var lineIsEmpty = true;
         for (var y = 0; y < blockMapNumberOfRows; y++) {
             for (var x = 0; x < blockMapNumberOfColumns; x++) {
-                isRectangleFilled = blockMap[blockToDrawIndex][blockToDrawRotation][blockToDrawRotation][y][x];
+                isRectangleFilled = blockMapToDraw[y][x];
                 if (isRectangleFilled == 1) {
 
                     lineIsEmpty = false;
 
-                    if (isBlockAShadow == true) {
-                        ctx.fillStyle = colorRelated.getBlockColor('shadow');
-                    } else {
-                        ctx.fillStyle = colorRelated.getBlockColor(blockToDrawIndex);
-                    }
+                    ctx.fillStyle = blockToDrawColor;
 
                     // draw the block
                     var xOnCalculationArea = x + xModifier;
@@ -660,7 +658,7 @@ var logOfEvents = [];
 
                     // check if the block has another pixel on the right this one
                     try {
-                        var isRightSiblingFilled = blockMap[blockToDrawIndex][blockToDrawRotation][blockToDrawRotation][y][x + 1];
+                        var isRightSiblingFilled = blockMapToDraw[y][x + 1];
                         if (isRightSiblingFilled == 1) {
                             ctx.fillRect(xOnCalculationArea * pixelSize + pixelSize - 1, yOnCalculationArea * pixelSize, 1, (pixelSize - 1));
                         }
@@ -670,7 +668,7 @@ var logOfEvents = [];
 
                     // check if the block has another pixel underneath this one
                     try {
-                        var isBottomSiblingFilled = blockMap[blockToDrawIndex][blockToDrawRotation][blockToDrawRotation][y + 1][x];
+                        var isBottomSiblingFilled = blockMapToDraw[y + 1][x];
                         if (isBottomSiblingFilled == 1) {
                             ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize + pixelSize - 1, (pixelSize - 1), 1);
                         }
@@ -686,7 +684,9 @@ var logOfEvents = [];
         }
     }
 
+
     // this function draws the next blocks to the nextBlocksAreaCanvas
+
     function drawNextBlocksArea() {
 
         // let's draw the block
@@ -695,11 +695,14 @@ var logOfEvents = [];
         ctx.clearRect(0, 0, c.width, c.height);
 
         for (var i = 0; i < nextBlocks.length; i++) {
-            blockToDrawIndex = nextBlocks[i];
-            blockToDrawRotation = 0;
+            var blockToDrawIndex = nextBlocks[i];
+            var blockToDrawRotation = 0;
+            var xModifier = i * 5;
+            var yModifier = 0;
             var drawEmptyLines = false;
-            var isBlockAShadow = false;
-            drawBlock(ctx, blockToDrawIndex, blockToDrawRotation, i * 5,  0, drawEmptyLines, isBlockAShadow);
+            var blockMapToDraw = blockMap[blockToDrawIndex][blockToDrawRotation][blockToDrawRotation];
+            var blockToDrawColor = colorRelated.getBlockColor(blockToDrawIndex);
+            drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifier, yModifier, drawEmptyLines);
         }
     }
 
