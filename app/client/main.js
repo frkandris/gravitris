@@ -432,63 +432,14 @@ var logOfEvents = [];
         // go thru the blocks one by one in listOfBlocksInThePlayingArea
         for (var i = 0; i < listOfBlocksInThePlayingArea.length; i++) {
 
-            // map one block
-            var blockMapNumberOfRows = Object.keys(listOfBlocksInThePlayingArea[i].blockMap).length;
-            var blockMapNumberOfColumns = Object.keys(listOfBlocksInThePlayingArea[i].blockMap[0]).length;
-            for (var y = 0; y < blockMapNumberOfRows; y++) {
-                for (var x = 0; x < blockMapNumberOfColumns; x++) {
-                    isRectangleFilled = listOfBlocksInThePlayingArea[i].blockMap[y][x];
-                    if (isRectangleFilled == 1) {
-                        // copy the map of the block to currentGravityCalculationArea
-                        var yOnCalculationArea = listOfBlocksInThePlayingArea[i].blockY + y;
-                        var xOnCalculationArea = listOfBlocksInThePlayingArea[i].blockX + x;
-                        var colorOnCalculationArea = listOfBlocksInThePlayingArea[i].blockIndex + 1;
-                        currentGravityCalculationArea[yOnCalculationArea][xOnCalculationArea] = colorOnCalculationArea;
+            // draw the block
+            var xModifier = listOfBlocksInThePlayingArea[i].blockX;
+            var yModifier = listOfBlocksInThePlayingArea[i].blockY + 1;
+            var drawEmptyLines = true;
+            var blockMapToDraw = listOfBlocksInThePlayingArea[i].blockMap;
+            var blockToDrawColor = colorRelated.getBlockColor(listOfBlocksInThePlayingArea[i].blockIndex);
+            drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifier, yModifier, drawEmptyLines);
 
-                        // calculate color of the pixel
-                        var blockColor = colorRelated.getBlockColor(colorOnCalculationArea - 1);
-                        if (playAreaMode == 'gameEndFadeOutAnimation') {
-                            var opacity = gameEndFadeAnimationCounter/gameEndFadeAnimationLength;                        
-                        } else if (fullLines.includes(yOnCalculationArea)) {
-                            var opacity = fullLineFadeAnimationCounter/fullLineFadeAnimationLength;
-                        } else {
-                            opacity = 1;
-                        }
-                        var fillStyle = colorRelated.convertColorHexToRGB(blockColor, opacity);
-                        ctx.fillStyle = fillStyle;
-
-                        // fill the pixel
-                        ctx.fillRect(xOnCalculationArea * pixelSize, (yOnCalculationArea + 1) * pixelSize, (pixelSize-1), (pixelSize-1));
-
-                        // add the number
-                        if (debugShowBlockNumbers == true) {
-                            ctx.fillStyle = "white";
-                            ctx.font = "10px Arial";
-                            ctx.fillText(i, xOnCalculationArea * pixelSize + 5, (yOnCalculationArea + 1) * pixelSize + 10);
-                        }
-
-                        // check if the block has another pixel on the right this one
-                        try {
-                            var isRightSiblingFilled = listOfBlocksInThePlayingArea[i].blockMap[y][x + 1];
-                            if (isRightSiblingFilled == 1) {
-                                ctx.fillRect(xOnCalculationArea * pixelSize + pixelSize - 1, (yOnCalculationArea + 1) * pixelSize, 1, (pixelSize - 1));
-                            }
-                        } catch {
-                            //
-                        }
-
-                        // check if the block has another pixel underneath this one
-                        try {
-                            var isBottomSiblingFilled = listOfBlocksInThePlayingArea[i].blockMap[y + 1][x];
-                            if (isBottomSiblingFilled == 1) {
-                                ctx.fillRect(xOnCalculationArea * pixelSize, (yOnCalculationArea + 1) * pixelSize + pixelSize - 1, (pixelSize - 1), 1);
-                            }
-                        } catch {
-                            //
-                        }
-                    }
-                }
-            }
         }        
     }
 
@@ -649,11 +600,25 @@ var logOfEvents = [];
 
                     lineIsEmpty = false;
 
-                    ctx.fillStyle = blockToDrawColor;
+                    // determine position
 
-                    // draw the block
                     var xOnCalculationArea = x + xModifier;
                     var yOnCalculationArea = y + yModifier;
+
+                    // determine the color of the pixel
+
+                    var blockColor = blockToDrawColor;
+                    if (playAreaMode == 'gameEndFadeOutAnimation') {
+                        var opacity = gameEndFadeAnimationCounter/gameEndFadeAnimationLength;                        
+                    } else if (fullLines.includes(yOnCalculationArea -1)) {
+                        var opacity = fullLineFadeAnimationCounter/fullLineFadeAnimationLength;
+                    } else {
+                        opacity = 1;
+                    }
+                    var fillStyle = colorRelated.convertColorHexToRGB(blockColor, opacity);
+
+                    // draw the block
+                    ctx.fillStyle = fillStyle;
                     ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize, (pixelSize - 1), (pixelSize - 1));
 
                     // check if the block has another pixel on the right this one
