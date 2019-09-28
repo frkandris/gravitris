@@ -495,36 +495,15 @@ var logOfEvents = [];
 
     function drawPlayArea() {
 
+        // get the canvas
         var c = document.getElementById("playAreaCanvas");
         var ctx = c.getContext("2d");
-        
+
+        // clear the canvas
         ctx.clearRect(0, 0, c.width, c.height);
 
-        // FIXME3
-        // draw currentCalculationArea to the playArea
-
+        // draw the canvas
         drawAllBlocksToPlayArea(ctx);
-
-        // var numberOfRows = currentCalculationArea.length;
-        // var numberOfColumns = currentCalculationArea[0].length;
-        // for (var y = 0; y < numberOfRows; y++) {
-        //     for (var x = 0; x < numberOfColumns; x++) {
-        //         isRectangleFilled = currentCalculationArea[y][x];
-        //         if (isRectangleFilled > 0) {
-        //             var pieceColor = colorRelated.getPieceColor(isRectangleFilled - 1);
-        //             if (playAreaMode == 'gameEndFadeOutAnimation') {
-        //                 var opacity = gameEndFadeAnimationCounter/gameEndFadeAnimationLength;                        
-        //             } else if (fullLines.includes(y)) {
-        //                 var opacity = fullLineFadeAnimationCounter/fullLineFadeAnimationLength;
-        //             } else {
-        //                 opacity = 1;
-        //             }
-        //             var fillStyle = colorRelated.convertColorHexToRGB(pieceColor, opacity);
-        //             ctx.fillStyle = fillStyle;
-        //             ctx.fillRect(x * pixelSize, (y + 1) * pixelSize, (pixelSize - 1), (pixelSize - 1));
-        //         } 
-        //     }
-        // }
 
     }
 
