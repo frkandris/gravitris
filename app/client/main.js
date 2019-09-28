@@ -424,11 +424,14 @@ var logOfEvents = [];
     }
 
 
+    // this function draws all blocks one by one to the playArea
+
     function drawAllBlocksToPlayArea(ctx) {
-        // draw all blocks one by one to the playArea
 
         // go thru the pieces one by one in listOfPiecesInThePlayingArea
         for (var i = 0; i < listOfPiecesInThePlayingArea.length; i++) {
+
+            // map one piece
             var pieceMapNumberOfRows = Object.keys(listOfPiecesInThePlayingArea[i].pieceMap).length;
             var pieceMapNumberOfColumns = Object.keys(listOfPiecesInThePlayingArea[i].pieceMap[0]).length;
             for (var y = 0; y < pieceMapNumberOfRows; y++) {
