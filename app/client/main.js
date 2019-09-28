@@ -415,12 +415,13 @@ var logOfEvents = [];
 
         var xModifier = xPlayArea / pixelSize;
         var yModifier = yPlayArea / pixelSize;
+        var yModifierInPixels = 0;
         var blockToDrawIndex = blockIndex;
         var blockToDrawRotation = rotationIndex;
         var drawEmptyLines = true;
         var blockMapToDraw = blockMap[blockToDrawIndex][blockToDrawRotation][blockToDrawRotation];
         var blockToDrawColor = colorRelated.getBlockColor(blockToDrawIndex);
-        drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifier, yModifier, drawEmptyLines);
+        drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifier, yModifier, yModifierInPixels, drawEmptyLines);
 
     }
 
@@ -435,10 +436,11 @@ var logOfEvents = [];
             // draw the block
             var xModifier = listOfBlocksInThePlayingArea[i].blockX;
             var yModifier = listOfBlocksInThePlayingArea[i].blockY + 1;
+            var yModifierInPixels = 0;
             var drawEmptyLines = true;
             var blockMapToDraw = listOfBlocksInThePlayingArea[i].blockMap;
             var blockToDrawColor = colorRelated.getBlockColor(listOfBlocksInThePlayingArea[i].blockIndex);
-            drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifier, yModifier, drawEmptyLines);
+            drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifier, yModifier, yModifierInPixels, drawEmptyLines);
 
         }        
     }
@@ -575,19 +577,20 @@ var logOfEvents = [];
 
         var xModifier = Math.floor(xPlayArea / pixelSize);
         var yModifier = Math.floor(yPlayArea / pixelSize) + yModifier - 1;
+        var yModifierInPixels = 0;
         var blockToDrawIndex = blockIndex;
         var blockToDrawRotation = rotationIndex;
         var drawEmptyLines = true;
         var blockMapToDraw = blockMap[blockToDrawIndex][blockToDrawRotation][blockToDrawRotation];
         var blockToDrawColor = colorRelated.getBlockColor('shadow');
-        drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifier, yModifier, drawEmptyLines);
+        drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifier, yModifier, yModifierInPixels, drawEmptyLines);
 
     }
 
 
     // this function draws a block to a canvas
 
-    function drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifier, yModifier, drawEmptyLines) {
+    function drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifier, yModifier, yModifierInPixels, drawEmptyLines) {
 
         var blockMapNumberOfRows = blockMapToDraw.length;
         var blockMapNumberOfColumns = blockMapToDraw[0].length;
@@ -610,7 +613,7 @@ var logOfEvents = [];
                     var blockColor = blockToDrawColor;
                     if (playAreaMode == 'gameEndFadeOutAnimation') {
                         var opacity = gameEndFadeAnimationCounter/gameEndFadeAnimationLength;                        
-                    } else if (fullLines.includes(yOnCalculationArea -1)) {
+                    } else if (fullLines.includes(yOnCalculationArea - 1)) {
                         var opacity = fullLineFadeAnimationCounter/fullLineFadeAnimationLength;
                     } else {
                         opacity = 1;
@@ -619,13 +622,13 @@ var logOfEvents = [];
 
                     // draw the block
                     ctx.fillStyle = fillStyle;
-                    ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize, (pixelSize - 1), (pixelSize - 1));
+                    ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize + yModifierInPixels, (pixelSize - 1), (pixelSize - 1));
 
                     // check if the block has another pixel on the right this one
                     try {
                         var isRightSiblingFilled = blockMapToDraw[y][x + 1];
                         if (isRightSiblingFilled == 1) {
-                            ctx.fillRect(xOnCalculationArea * pixelSize + pixelSize - 1, yOnCalculationArea * pixelSize, 1, (pixelSize - 1));
+                            ctx.fillRect(xOnCalculationArea * pixelSize + pixelSize - 1, yOnCalculationArea * pixelSize + yModifierInPixels, 1, (pixelSize - 1));
                         }
                     } catch {
                         //
@@ -635,7 +638,7 @@ var logOfEvents = [];
                     try {
                         var isBottomSiblingFilled = blockMapToDraw[y + 1][x];
                         if (isBottomSiblingFilled == 1) {
-                            ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize + pixelSize - 1, (pixelSize - 1), 1);
+                            ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize + yModifierInPixels + pixelSize - 1, (pixelSize - 1), 1);
                         }
                     } catch {
                         //
@@ -664,10 +667,11 @@ var logOfEvents = [];
             var blockToDrawRotation = 0;
             var xModifier = i * 5;
             var yModifier = 0;
+            var yModifierInPixels = 0;
             var drawEmptyLines = false;
             var blockMapToDraw = blockMap[blockToDrawIndex][blockToDrawRotation][blockToDrawRotation];
             var blockToDrawColor = colorRelated.getBlockColor(blockToDrawIndex);
-            drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifier, yModifier, drawEmptyLines);
+            drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifier, yModifier, yModifierInPixels, drawEmptyLines);
         }
     }
 
@@ -953,15 +957,6 @@ var logOfEvents = [];
 
     function drawPlayAreaWithFallingBlocks() {
 
-        // clear currentGravityCalculationArea
-        var numberOfRows = currentGravityCalculationArea.length;
-        var numberOfColumns = currentGravityCalculationArea[0].length;
-        for (var y = 0; y < numberOfRows; y++) {
-            for (var x = 0; x < numberOfColumns; x++) {
-                currentGravityCalculationArea[y][x] = 0;
-            }
-        }
-
         // clear the canvas
         var c = document.getElementById("playAreaCanvas");
         var ctx = c.getContext("2d");
@@ -969,60 +964,22 @@ var logOfEvents = [];
         
         // go thru the blocks one by one in listOfBlocksInThePlayingArea
         for (var i = 0; i < listOfBlocksInThePlayingArea.length; i++) {
-            var blockMapNumberOfRows = Object.keys(listOfBlocksInThePlayingArea[i].blockMap).length;
-            var blockMapNumberOfColumns = Object.keys(listOfBlocksInThePlayingArea[i].blockMap[0]).length;
-            for (var y = 0; y < blockMapNumberOfRows; y++) {
-                for (var x = 0; x < blockMapNumberOfColumns; x++) {
-                    isRectangleFilled = listOfBlocksInThePlayingArea[i].blockMap[y][x];
-                    if (isRectangleFilled == 1) {
-                        // copy the map of the block to currentGravityCalculationArea
-                        var yOnGravityCalculationArea = listOfBlocksInThePlayingArea[i].blockY + y;
-                        var xOnGravityCalculationArea = listOfBlocksInThePlayingArea[i].blockX + x;
-                        var colorOnGravityCalculationArea = listOfBlocksInThePlayingArea[i].blockIndex + 1;
-                        currentGravityCalculationArea[yOnGravityCalculationArea][xOnGravityCalculationArea] = colorOnGravityCalculationArea;
 
-                        // add the number
-
-                        if (listOfBlocksThatCanBeMoved.includes(i)) {
-                            yModifierInPixels = gravityAnimationYModifier;
-                        } else {
-                            yModifierInPixels = 0;
-                        }
-                        ctx.fillStyle = colorRelated.getBlockColor(colorOnGravityCalculationArea - 1);
-                        ctx.fillRect(xOnGravityCalculationArea * pixelSize, (yOnGravityCalculationArea + 1) * pixelSize + yModifierInPixels, (pixelSize-1), (pixelSize-1));
-
-                        if (debugShowBlockNumbers == true) {
-                            ctx.fillStyle = "white";
-                            ctx.font = "10px Arial";
-                            ctx.fillText(i, xOnGravityCalculationArea * pixelSize + 5, (yOnGravityCalculationArea + 1) * pixelSize + 10 + yModifierInPixels);
-                        }
-
-                        // check if the block has another pixel on the right this one
-                        try {
-                            var isRightSiblingFilled = listOfBlocksInThePlayingArea[i].blockMap[y][x + 1];
-                            if (isRightSiblingFilled == 1) {
-                                ctx.fillRect(xOnGravityCalculationArea * pixelSize + pixelSize - 1, (yOnGravityCalculationArea + 1) * pixelSize + yModifierInPixels, 1, (pixelSize - 1));
-                            }
-                        } catch {
-                            //
-                        }
-
-                        // check if the block has another pixel underneath this one
-                        try {
-                            var isBottomSiblingFilled = listOfBlocksInThePlayingArea[i].blockMap[y + 1][x];
-                            if (isBottomSiblingFilled == 1) {
-                                ctx.fillRect(xOnGravityCalculationArea * pixelSize, (yOnGravityCalculationArea + 1) * pixelSize + pixelSize - 1 + yModifierInPixels, (pixelSize - 1), 1);
-                            }
-                        } catch {
-                            //
-                        }
-
-                    }
-                }
+            var xModifier = listOfBlocksInThePlayingArea[i].blockX;
+            var yModifier = listOfBlocksInThePlayingArea[i].blockY + 1;
+            var drawEmptyLines = true;
+            var blockMapToDraw = listOfBlocksInThePlayingArea[i].blockMap;
+            var blockToDrawColor = colorRelated.getBlockColor(listOfBlocksInThePlayingArea[i].blockIndex);
+            if (listOfBlocksThatCanBeMoved.includes(i)) {
+                yModifierInPixels = gravityAnimationYModifier;
+            } else {
+                yModifierInPixels = 0;
             }
+            drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifier, yModifier, yModifierInPixels, drawEmptyLines);
         }
     }
 
+    
     // this function does the "blockFallingAnimation" routine
 
     function blockFallingRoutine() {
@@ -1063,9 +1020,6 @@ var logOfEvents = [];
             // draw the pixel perfect playArea
             drawPlayAreaWithFallingBlock();
         }
-
-        // draw the calculationArea
-        // drawCurrentCalculationArea();
 
         // draw next blocks
         drawNextBlocksArea();
