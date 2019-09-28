@@ -540,6 +540,7 @@ var logOfEvents = [];
 
     }
 
+
     // this function draws a shadow of the block
 
     function drawShadow() {
@@ -830,7 +831,6 @@ var logOfEvents = [];
                 listOfBlocksInThePlayingArea.splice(i, 1);
             }
         }
-
     }
 
 
@@ -840,9 +840,6 @@ var logOfEvents = [];
         
         thereWasMovementInThisRound = false;
         listOfBlocksThatCanBeMoved = [];
-
-        // we may need to run 2 cycles to detect blocks that can fall down right after a block underneath them has fallen down
-        // for (var q = 0; q < 2; q++) {
             
             // let's iterate thru all the blocks we have in listOfBlocksInThePlayingArea
             for (var i = 0; i < listOfBlocksInThePlayingArea.length; i++) {
@@ -868,16 +865,7 @@ var logOfEvents = [];
                             for (var x = 0; x < blockMapNumberOfColumns; x++) {
                                 isRectangleFilled = listOfBlocksInThePlayingArea[k].blockMap[y][x];
                                 if (isRectangleFilled == 1) {
-
-                                    // if (listOfBlocksThatCanBeMoved.includes(k)) {
-                                    //     // copy the map of the block to currentGravityCalculationArea 1 line down, 
-                                    //     // because it will be there in a moment and we need to figure out if anybody
-                                    //     // above this block can fall down
-                                    //     var yOnGravityCalculationArea = listOfBlocksInThePlayingArea[k].blockY + y + 1;
-                                    // } else {
-                                        // copy the map of the block to currentGravityCalculationArea
-                                        var yOnGravityCalculationArea = listOfBlocksInThePlayingArea[k].blockY + y;
-                                    // }
+                                    var yOnGravityCalculationArea = listOfBlocksInThePlayingArea[k].blockY + y;
                                     var xOnGravityCalculationArea = listOfBlocksInThePlayingArea[k].blockX + x;
                                     var colorOnGravityCalculationArea = listOfBlocksInThePlayingArea[k].blockIndex + 1;
                                     currentGravityCalculationArea[yOnGravityCalculationArea][xOnGravityCalculationArea] = colorOnGravityCalculationArea;
@@ -927,21 +915,20 @@ var logOfEvents = [];
                 }
                 if (blockCanBeMoved == true) {
                     listOfBlocksThatCanBeMoved.push(i);
-                    // yModifier++;
-                    // listOfBlocksInThePlayingArea[i].blockY++;
                     thereWasMovementInThisRound = true;
                 } else {
                     // block could not be moved
                 }
             }
-        // }
-
 
         calculateCurrentGravityCalculationArea();
 
         return thereWasMovementInThisRound;
     }
 
+
+    // this function copies the currentGravityCalculationArea to currentCalculationArea
+    
     function copyCurrentGravityCalculationAreaToCurrentCalculationArea() {
         var numberOfRows = currentGravityCalculationArea.length;
         var numberOfColumns = currentGravityCalculationArea[0].length;
@@ -979,7 +966,7 @@ var logOfEvents = [];
         }
     }
 
-    
+
     // this function does the "blockFallingAnimation" routine
 
     function blockFallingRoutine() {
@@ -1074,6 +1061,8 @@ var logOfEvents = [];
 
     }
 
+
+    // this function does the "gameEndAnimation" routine
 
     function gameEndAnimationRoutine() {
 
