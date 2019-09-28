@@ -491,6 +491,7 @@ var logOfEvents = [];
         }        
     }
 
+
     // this function draws the play area, sometimes with opacity
 
     function drawPlayArea() {
@@ -630,17 +631,18 @@ var logOfEvents = [];
 
     }
 
+
+    // this function draws a block to a canvas
+
     function drawPiece(ctx, pieceToDrawIndex, pieceToDrawRotation, xModifier, yModifier, drawEmptyLines, isBlockAShadow) {
 
-        var rotationIndex = pieceToDrawRotation;
-
-        var pieceMapNumberOfRows = Object.keys(pieceMap[pieceToDrawIndex][rotationIndex][rotationIndex]).length;
-        var pieceMapNumberOfColumns = Object.keys(pieceMap[pieceToDrawIndex][rotationIndex][rotationIndex][0]).length;
+        var pieceMapNumberOfRows = Object.keys(pieceMap[pieceToDrawIndex][pieceToDrawRotation][pieceToDrawRotation]).length;
+        var pieceMapNumberOfColumns = Object.keys(pieceMap[pieceToDrawIndex][pieceToDrawRotation][pieceToDrawRotation][0]).length;
 
         var lineIsEmpty = true;
         for (var y = 0; y < pieceMapNumberOfRows; y++) {
             for (var x = 0; x < pieceMapNumberOfColumns; x++) {
-                isRectangleFilled = pieceMap[pieceToDrawIndex][rotationIndex][rotationIndex][y][x];
+                isRectangleFilled = pieceMap[pieceToDrawIndex][pieceToDrawRotation][pieceToDrawRotation][y][x];
                 if (isRectangleFilled == 1) {
 
                     lineIsEmpty = false;
@@ -658,7 +660,7 @@ var logOfEvents = [];
 
                     // check if the block has another pixel on the right this one
                     try {
-                        var isRightSiblingFilled = pieceMap[pieceToDrawIndex][rotationIndex][rotationIndex][y][x + 1];
+                        var isRightSiblingFilled = pieceMap[pieceToDrawIndex][pieceToDrawRotation][pieceToDrawRotation][y][x + 1];
                         if (isRightSiblingFilled == 1) {
                             ctx.fillRect(xOnCalculationArea * pixelSize + pixelSize - 1, yOnCalculationArea * pixelSize, 1, (pixelSize - 1));
                         }
@@ -668,7 +670,7 @@ var logOfEvents = [];
 
                     // check if the block has another pixel underneath this one
                     try {
-                        var isBottomSiblingFilled = pieceMap[pieceToDrawIndex][rotationIndex][rotationIndex][y + 1][x];
+                        var isBottomSiblingFilled = pieceMap[pieceToDrawIndex][pieceToDrawRotation][pieceToDrawRotation][y + 1][x];
                         if (isBottomSiblingFilled == 1) {
                             ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize + pixelSize - 1, (pixelSize - 1), 1);
                         }
