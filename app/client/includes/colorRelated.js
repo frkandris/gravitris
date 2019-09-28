@@ -1,4 +1,4 @@
-// piece order:
+// block order:
 //   - 1: L
 //   - 2: long
 //   - 3: square
@@ -7,7 +7,7 @@
 //   - 6: z
 //   - 7: inverse z 
 
-var pieceColors = [
+var blockColors = [
     '#8f008f', // purple
     '#008f00', // green
     '#ff531b', // orange
@@ -34,18 +34,18 @@ function convertColorHexToRGB(hex, alpha) {
 }
 
 
-// this function returns the color of a piece from the colors[] array
+// this function returns the color of a block from the colors[] array
 
-function getPieceColor(colorIndex) {
+function getBlockColor(colorIndex) {
     if (colorIndex == 'shadow') {
         return shadowColor;
     } else {
-        var colorCalculated = colorIndex % pieceColors.length;
-        return pieceColors[colorCalculated];
+        var colorCalculated = colorIndex % blockColors.length;
+        return blockColors[colorCalculated];
     }
 }
 
 module.exports = {
     convertColorHexToRGB,
-    getPieceColor
+    getBlockColor
 }

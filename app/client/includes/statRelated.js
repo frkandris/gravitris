@@ -43,7 +43,7 @@ function increaseNumberOfLinesCreated(numberOfNewLinesCleared) {
     });    
 }
 
-function displayGameEndStats(pieceCounter) {
+function displayGameEndStats(blockCounter) {
     var c = document.getElementById("playAreaCanvas");
     var ctx = c.getContext("2d");
     ctx.fillStyle = "white";
@@ -56,10 +56,10 @@ function displayGameEndStats(pieceCounter) {
     ctx.fillText("Game time: " + gameTimeInSeconds, statPositionX, statPositionY + statLineCounter * lineHeight);
     statLineCounter++;
 
-    ctx.fillText("Number of blocks: " + pieceCounter, statPositionX, statPositionY + statLineCounter * lineHeight);
+    ctx.fillText("Number of blocks: " + blockCounter, statPositionX, statPositionY + statLineCounter * lineHeight);
     statLineCounter++;
 
-    var blocksPerMinute = getBlocksPerMinute(pieceCounter, gameTimeInSeconds);
+    var blocksPerMinute = getBlocksPerMinute(blockCounter, gameTimeInSeconds);
     ctx.fillText("BPM: " + blocksPerMinute, statPositionX, statPositionY + statLineCounter * lineHeight);
     statLineCounter++;
 

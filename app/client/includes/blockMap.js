@@ -1,4 +1,4 @@
-var pieceMap = {
+var blockMap = {
     0 : [
         { 
             0 : [
@@ -149,4 +149,4 @@ var pieceMap = {
     ],
 };
 
-module.exports = pieceMap;
+module.exports = blockMap;
