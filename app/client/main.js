@@ -730,17 +730,6 @@ var logOfEvents = [];
                         var xOnGravityCalculationArea = listOfBlocksInThePlayingArea[i].blockX + x;
                         var colorOnGravityCalculationArea = listOfBlocksInThePlayingArea[i].blockIndex + 1;
                         currentGravityCalculationArea[yOnGravityCalculationArea][xOnGravityCalculationArea] = colorOnGravityCalculationArea;
-
-                        // draw the pixel
-                        // ctx.fillStyle = colorRelated.getBlockColor(colorOnGravityCalculationArea - 1);
-                        // ctx.fillRect(xOnGravityCalculationArea * pixelSize, (yOnGravityCalculationArea + 1) * pixelSize, (pixelSize-1), (pixelSize-1));
- 
-                        // draw the number
-                        // if (debugShowBlockNumbers == true) {
-                        //     ctx.fillStyle = "white";
-                        //     ctx.font = "10px Arial";
-                        //     ctx.fillText(i, xOnGravityCalculationArea * pixelSize + 5, (yOnGravityCalculationArea + 1) * pixelSize + 10);
-                        // }
                     }
                 }
             }
