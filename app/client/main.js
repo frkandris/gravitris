@@ -636,7 +636,7 @@ var logOfEvents = [];
 
                     // check if the block has another pixel on the right this one
                     try {
-                        var isRightSiblingFilled = blockMapToDraw[y][x + 1];
+                        const isRightSiblingFilled = blockMapToDraw[y][x + 1];
                         if (isRightSiblingFilled === 1) {
                             ctx.fillRect(xOnCalculationArea * pixelSize + pixelSize - 1, yOnCalculationArea * pixelSize + yModifierInPixels, 1, (pixelSize - 1));
                         }
@@ -646,7 +646,7 @@ var logOfEvents = [];
 
                     // check if the block has another pixel underneath this one
                     try {
-                        var isBottomSiblingFilled = blockMapToDraw[y + 1][x];
+                        const isBottomSiblingFilled = blockMapToDraw[y + 1][x];
                         if (isBottomSiblingFilled === 1) {
                             ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize + yModifierInPixels + pixelSize - 1, (pixelSize - 1), 1);
                         }
@@ -672,7 +672,7 @@ var logOfEvents = [];
         const ctx = c.getContext("2d");
         ctx.clearRect(0, 0, c.width, c.height);
 
-        for (var i = 0; i < nextBlocks.length; i++) {
+        for (let i = 0; i < nextBlocks.length; i++) {
             const blockToDrawIndex = nextBlocks[i];
             const blockToDrawRotation = 0;
             const xModifierInSquares = i * 5;
