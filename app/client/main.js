@@ -434,15 +434,15 @@ var logOfEvents = [];
     function drawAllBlocksToPlayArea(ctx) {
 
         // go thru the blocks one by one in listOfBlocksInThePlayingArea
-        for (var i = 0; i < listOfBlocksInThePlayingArea.length; i++) {
+        for (let i = 0; i < listOfBlocksInThePlayingArea.length; i++) {
 
             // draw the block
-            var xModifier = listOfBlocksInThePlayingArea[i].blockX;
-            var yModifier = listOfBlocksInThePlayingArea[i].blockY + 1;
-            var yModifierInPixels = 0;
-            var drawEmptyLines = true;
-            var blockMapToDraw = listOfBlocksInThePlayingArea[i].blockMap;
-            var blockToDrawColor = colorRelated.getBlockColor(listOfBlocksInThePlayingArea[i].blockIndex);
+            const xModifier = listOfBlocksInThePlayingArea[i].blockX;
+            const yModifier = listOfBlocksInThePlayingArea[i].blockY + 1;
+            const yModifierInPixels = 0;
+            const drawEmptyLines = true;
+            const blockMapToDraw = listOfBlocksInThePlayingArea[i].blockMap;
+            const blockToDrawColor = colorRelated.getBlockColor(listOfBlocksInThePlayingArea[i].blockIndex);
             drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifier, yModifier, yModifierInPixels, drawEmptyLines);
 
         }        
