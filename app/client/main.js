@@ -120,7 +120,7 @@ var logOfEvents = [];
         blockIndex = currentBlock;
         rotationIndex = 0;
         xPlayArea = (playAreaWidth / 2) - (2 * pixelSize);
-        yPlayArea = 0 * pixelSize;
+        yPlayArea = 0;
 
         var moveCanBeDone = checkIfBlockOverlapsAnythingOnACalculationArea();
         if (moveCanBeDone == false) {
