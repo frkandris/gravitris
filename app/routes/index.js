@@ -88,10 +88,10 @@ router.get('/increase-linesCleared-counter/:numberOfLinesCleared', function(req,
       function(err, counter) {
       if (err) {
         console.log('increase-linesCleared-counter | error | could not increase the counter');
-        res.send('error increasing counter', err);
+        res.status(400).send('error increasing counter', err);
       } else {
         console.log('increase-linesCleared-counter | log | counter increased by ' + numberOfLinesCleared);
-        res.send(200);
+        res.sendStatus(200);
       }
     });
   }
