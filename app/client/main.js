@@ -603,12 +603,13 @@ var logOfEvents = [];
     function drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yModifierInSquares, yModifierInPixels, drawEmptyLines) {
 
         let opacity;
-        var blockMapNumberOfRows = blockMapToDraw.length;
-        var blockMapNumberOfColumns = blockMapToDraw[0].length;
+        const blockMapNumberOfRows = blockMapToDraw.length;
+        const blockMapNumberOfColumns = blockMapToDraw[0].length;
+        let lineIsEmpty = true;
+        let isRectangleFilled;
 
-        var lineIsEmpty = true;
-        for (var y = 0; y < blockMapNumberOfRows; y++) {
-            for (var x = 0; x < blockMapNumberOfColumns; x++) {
+        for (let y = 0; y < blockMapNumberOfRows; y++) {
+            for (let x = 0; x < blockMapNumberOfColumns; x++) {
                 isRectangleFilled = blockMapToDraw[y][x];
                 if (isRectangleFilled === 1) {
 
@@ -616,20 +617,19 @@ var logOfEvents = [];
 
                     // determine position
 
-                    var xOnCalculationArea = x + xModifierInSquares;
-                    var yOnCalculationArea = y + yModifierInSquares;
+                    const xOnCalculationArea = x + xModifierInSquares;
+                    const yOnCalculationArea = y + yModifierInSquares;
 
                     // determine the color of the pixel
 
-                    var blockColor = blockToDrawColor;
                     if (playAreaMode === 'gameEndFadeOutAnimation') {
-                        opacity = gameEndFadeAnimationCounter/gameEndFadeAnimationLength;
+                        opacity = gameEndFadeAnimationCounter / gameEndFadeAnimationLength;
                     } else if (fullLines.includes(yOnCalculationArea - 1)) {
                         opacity = fullLineFadeAnimationCounter / fullLineFadeAnimationLength;
                     } else {
                         opacity = 1;
                     }
-                    ctx.fillStyle = colorRelated.convertColorHexToRGB(blockColor, opacity);
+                    ctx.fillStyle = colorRelated.convertColorHexToRGB(blockToDrawColor, opacity);
 
                     // draw the block
                     ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize + yModifierInPixels, (pixelSize - 1), (pixelSize - 1));
