@@ -1,18 +1,18 @@
-var gameWidth = 10; // how many columns do we have
+const gameWidth = 10; // how many columns do we have
 
-var pixelSize = 20;
+const pixelSize = 20;
 
-var blockMap = require('./includes/blockMap');
-var colorRelated = require('./includes/colorRelated');
+const blockMap = require('./includes/blockMap');
+const colorRelated = require('./includes/colorRelated');
 
-var calculationAreaDefinitions = require('./includes/calculationAreaDefinitions');
-var currentCalculationArea = calculationAreaDefinitions.currentCalculationArea;
-var tempCalculationArea = calculationAreaDefinitions.tempCalculationArea;
-var currentGravityCalculationArea = calculationAreaDefinitions.currentGravityCalculationArea;
+const calculationAreaDefinitions = require('./includes/calculationAreaDefinitions');
+const currentCalculationArea = calculationAreaDefinitions.currentCalculationArea;
+const tempCalculationArea = calculationAreaDefinitions.tempCalculationArea;
+const currentGravityCalculationArea = calculationAreaDefinitions.currentGravityCalculationArea;
 
-var statRelated = require('./includes/statRelated');
+const statRelated = require('./includes/statRelated');
 
-var playAreaWidth = gameWidth * pixelSize;
+const playAreaWidth = gameWidth * pixelSize;
 
 var fallingSpeed = 1;
 var selectANewBlockNextFrame = true;
@@ -22,15 +22,17 @@ var blockCounter = 0;
 var frameNumber = 0;
 var playAreaMode = '';
 var fullLines = [];
-var fullLineFadeAnimationLength = 10;
-var fullLineFadeAnimationCounter = fullLineFadeAnimationLength;
-var listOfBlocksThatCanBeMoved = [];
-var gravityAnimationFallingSpeed = 4;
-var gravityAnimationYModifier = 0;
-var gameEndFadeAnimationLength = 100;
-var gameEndFadeAnimationCounter = gameEndFadeAnimationLength;
 
-var debugShowBlockNumbers = false; 
+const fullLineFadeAnimationLength = 10;
+var fullLineFadeAnimationCounter = fullLineFadeAnimationLength;
+
+var listOfBlocksThatCanBeMoved = [];
+
+const gravityAnimationFallingSpeed = 4;
+var gravityAnimationYModifier = 0;
+
+const gameEndFadeAnimationLength = 100;
+var gameEndFadeAnimationCounter = gameEndFadeAnimationLength;
 
 var nextBlocks = [];
 
