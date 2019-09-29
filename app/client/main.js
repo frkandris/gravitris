@@ -123,7 +123,7 @@ var logOfEvents = [];
         yPlayArea = 0;
 
         var moveCanBeDone = checkIfBlockOverlapsAnythingOnACalculationArea();
-        if (moveCanBeDone == false) {
+        if (moveCanBeDone === false) {
             playAreaMode = 'gameEndFadeOutAnimation';
             statRelated.setGameEndTime();
         }
@@ -151,10 +151,10 @@ var logOfEvents = [];
         for (var y = 0; y < blockMapNumberOfRows; y++) {
             for (var x = 0; x < blockMapNumberOfColumns; x++) {
                 isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
-                if (isRectangleFilled == 1) {
+                if (isRectangleFilled === 1) {
                     var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y;
                     var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
-                    if (currentCalculationArea[yOnCalculationArea][xOnCalculationArea] != 0) {
+                    if (currentCalculationArea[yOnCalculationArea][xOnCalculationArea] !== 0) {
                         // move can not be done, as the block in the new position would overlap with something
                         moveCanBeDone = false;
                     }
@@ -174,41 +174,41 @@ var logOfEvents = [];
         var yCalculationAreaModifier = 0;
         var rotationModifier = 0;
 
-        if (direction == 'moveDown') {
+        let numberOfRotations = Object.keys(blockMap[blockIndex]).length;
+
+        if (direction === 'moveDown') {
             // calculationArea modifications
             yCalculationAreaModifier = -1;
         }
-        if (direction == 'moveLeft') {
+        if (direction === 'moveLeft') {
             // calculationArea modifications
             xCalculationAreaModifier = 1;
             // playArea modifications
             xPlayArea = xPlayArea - pixelSize;
         }
-        if (direction == 'moveRight') {
+        if (direction === 'moveRight') {
             // calculationArea modifications
             xCalculationAreaModifier = -1;
             // playArea modifications
             xPlayArea = xPlayArea + pixelSize;
         }
-        if (direction == 'rotateLeft') {
+        if (direction === 'rotateLeft') {
             // calculationArea modifications
-            var numberOfRotations = Object.keys(blockMap[blockIndex]).length;
             rotationIndex++;
-            if (rotationIndex == numberOfRotations) {
+            if (rotationIndex === numberOfRotations) {
                 rotationIndex = 0;
             }
             rotationModifier = -1;
         }
-        if (direction == 'rotateRight') {
+        if (direction === 'rotateRight') {
             // calculationArea modifications
-            var numberOfRotations = Object.keys(blockMap[blockIndex]).length;
             rotationIndex--;
             if (rotationIndex < 0) {
                 rotationIndex = numberOfRotations - 1;
             }
             rotationModifier = 1;
         }
-        if (direction == "") {
+        if (direction === "") {
             // do nothing
         }
 
@@ -220,15 +220,14 @@ var logOfEvents = [];
 
         var numberOfRows = currentCalculationArea.length;
         var numberOfColumns = currentCalculationArea[0].length;
-        for (var y = 0; y < numberOfRows; y++) {
-            for (var x = 0; x < numberOfColumns; x++) {
+        for (let y = 0; y < numberOfRows; y++) {
+            for (let x = 0; x < numberOfColumns; x++) {
                 tempCalculationArea[y][x] = currentCalculationArea[y][x];
             }
         }
 
         // 1.1. remove blockMap from tempCalculationArea
 
-        var numberOfRotations = Object.keys(blockMap[blockIndex]).length;
         rotationIndex += rotationModifier;
         if (rotationIndex < 0) {
             rotationIndex = numberOfRotations - 1;
@@ -252,7 +251,6 @@ var logOfEvents = [];
 
         // 1.2. test if we could add the block to tempCalculationArea without overlap or any other problems
 
-        var numberOfRotations = Object.keys(blockMap[blockIndex]).length;
         rotationIndex -= rotationModifier;
         if (rotationIndex < 0) {
             rotationIndex = numberOfRotations - 1;
@@ -286,7 +284,6 @@ var logOfEvents = [];
 
             // 1.3. move can be done - remove blockMap from currentCalculationArea
 
-            var numberOfRotations = Object.keys(blockMap[blockIndex]).length;
             rotationIndex += rotationModifier;
             if (rotationIndex < 0) {
                 rotationIndex = numberOfRotations - 1;
@@ -310,7 +307,6 @@ var logOfEvents = [];
 
             // 1.4. add blockMap to currentCalculationArea
 
-            var numberOfRotations = Object.keys(blockMap[blockIndex]).length;
             rotationIndex -= rotationModifier;
             if (rotationIndex < 0) {
                 rotationIndex = numberOfRotations - 1;
@@ -345,14 +341,12 @@ var logOfEvents = [];
                 xPlayArea = xPlayArea - pixelSize;
             }
             if (direction == 'rotateLeft') {
-                var numberOfRotations = Object.keys(blockMap[blockIndex]).length;
                 rotationIndex--;
                 if (rotationIndex < 0) {
                     rotationIndex = numberOfRotations - 1;
                 }
             }
             if (direction == 'rotateRight') {
-                var numberOfRotations = Object.keys(blockMap[blockIndex]).length;
                 rotationIndex++;
                 if (rotationIndex == numberOfRotations) {
                     rotationIndex = 0;
