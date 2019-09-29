@@ -362,7 +362,7 @@ var logOfEvents = [];
 
         let numberOfBlocks = Object.keys(blockMap).length;
         let blockIndex = Math.floor(Math.random() * numberOfBlocks);
-    
+
         return blockIndex;
     }
 
@@ -371,6 +371,8 @@ var logOfEvents = [];
 
     function drawPlayAreaWithFallingBlock() {
 
+        let x;
+        let y;
         var c = document.getElementById("playAreaCanvas");
         var ctx = c.getContext("2d");
         
@@ -380,8 +382,8 @@ var logOfEvents = [];
 
         var numberOfRows = currentCalculationArea.length;
         var numberOfColumns = currentCalculationArea[0].length;
-        for (var y = 0; y < numberOfRows; y++) {
-            for (var x = 0; x < numberOfColumns; x++) {
+        for (y = 0; y < numberOfRows; y++) {
+            for (x = 0; x < numberOfColumns; x++) {
                 tempCalculationArea[y][x] = currentCalculationArea[y][x];
             }
         }
@@ -390,8 +392,8 @@ var logOfEvents = [];
 
         var blockMapNumberOfRows = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex]).length;
         var blockMapNumberOfColumns = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex][0]).length;
-        for (var y = 0; y < blockMapNumberOfRows; y++) {
-            for (var x = 0; x < blockMapNumberOfColumns; x++) {
+        for (y = 0; y < blockMapNumberOfRows; y++) {
+            for (x = 0; x < blockMapNumberOfColumns; x++) {
                 isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
                 if (isRectangleFilled == 1) {
                     var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y;
