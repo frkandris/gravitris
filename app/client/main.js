@@ -709,11 +709,14 @@ var logOfEvents = [];
     
     function calculateCurrentGravityCalculationArea() {
 
+        let x;
+        let y;
+
         // clear currentGravityCalculationArea
         var numberOfRows = currentGravityCalculationArea.length;
         var numberOfColumns = currentGravityCalculationArea[0].length;
-        for (var y = 0; y < numberOfRows; y++) {
-            for (var x = 0; x < numberOfColumns; x++) {
+        for (y = 0; y < numberOfRows; y++) {
+            for (x = 0; x < numberOfColumns; x++) {
                 currentGravityCalculationArea[y][x] = 0;
             }
         }
@@ -727,14 +730,14 @@ var logOfEvents = [];
         for (var i = 0; i < listOfBlocksInThePlayingArea.length; i++) {
             var blockMapNumberOfRows = Object.keys(listOfBlocksInThePlayingArea[i].blockMap).length;
             var blockMapNumberOfColumns = Object.keys(listOfBlocksInThePlayingArea[i].blockMap[0]).length;
-            for (var y = 0; y < blockMapNumberOfRows; y++) {
-                for (var x = 0; x < blockMapNumberOfColumns; x++) {
+            for (y = 0; y < blockMapNumberOfRows; y++) {
+                for (x = 0; x < blockMapNumberOfColumns; x++) {
                     isRectangleFilled = listOfBlocksInThePlayingArea[i].blockMap[y][x];
                     if (isRectangleFilled === 1) {
                         // copy the map of the block to currentGravityCalculationArea
                         var yOnGravityCalculationArea = listOfBlocksInThePlayingArea[i].blockY + y;
                         var xOnGravityCalculationArea = listOfBlocksInThePlayingArea[i].blockX + x;
-                        var colorOnGravityCalculationArea = listOfBlocksInThePlayingArea[i].blockIndex + 1;
+                        let colorOnGravityCalculationArea = listOfBlocksInThePlayingArea[i].blockIndex + 1;
                         currentGravityCalculationArea[yOnGravityCalculationArea][xOnGravityCalculationArea] = colorOnGravityCalculationArea;
                     }
                 }
@@ -747,6 +750,10 @@ var logOfEvents = [];
 
     function modifylistOfBlocksInThePlayingAreaBecauseOfFullLine(fullLineIndex) {
 
+        let newBlockMap;
+        let x;
+        let y;
+
         // go thru the blocks one by one in listOfBlocksInThePlayingArea 
         // (we iterate backwards, so when we remove an item reindexing the array will not break the loop)
         for (var i = listOfBlocksInThePlayingArea.length - 1; i >= 0; i--) {
@@ -754,8 +761,8 @@ var logOfEvents = [];
             listOfBlocksInThePlayingArea[i].wasChecked = true;
             var blockMapNumberOfRows = Object.keys(listOfBlocksInThePlayingArea[i].blockMap).length;
             var blockMapNumberOfColumns = Object.keys(listOfBlocksInThePlayingArea[i].blockMap[0]).length;
-            for (var y = 0; y < blockMapNumberOfRows; y++) {
-                for (var x = 0; x < blockMapNumberOfColumns; x++) {
+            for (y = 0; y < blockMapNumberOfRows; y++) {
+                for (x = 0; x < blockMapNumberOfColumns; x++) {
                     isRectangleFilled = listOfBlocksInThePlayingArea[i].blockMap[y][x];
                     if (isRectangleFilled === 1) {
                         if (fullLineIndex === (listOfBlocksInThePlayingArea[i].blockY + y)) {
@@ -769,8 +776,8 @@ var logOfEvents = [];
             }
             if (blockIsAffected === true) {
                 thereWerePixelsAboveTheCut = false;
-                for (var y = 0; y < lineAffected; y++) {
-                    for (var x = 0; x < blockMapNumberOfColumns; x++) {
+                for (y = 0; y < lineAffected; y++) {
+                    for (x = 0; x < blockMapNumberOfColumns; x++) {
                         isRectangleFilled = listOfBlocksInThePlayingArea[i].blockMap[y][x];
                         if (isRectangleFilled === 1) {
                             thereWerePixelsAboveTheCut = true;
@@ -778,10 +785,10 @@ var logOfEvents = [];
                     }
                 }
                 if (thereWerePixelsAboveTheCut === true) {
-                    var newBlockMap = [];
-                    for (var y = 0; y < lineAffected; y++) {
+                    newBlockMap = [];
+                    for (y = 0; y < lineAffected; y++) {
                         newBlockMap[y] = [];
-                        for (var x = 0; x < blockMapNumberOfColumns; x++) {
+                        for (x = 0; x < blockMapNumberOfColumns; x++) {
                             newBlockMap[y][x] = 0;
                         }
                     }
@@ -792,15 +799,15 @@ var logOfEvents = [];
                         blockY: listOfBlocksInThePlayingArea[i].blockY,
                         blockCounter: listOfBlocksInThePlayingArea[i].blockCounter
                     });
-                    for (var y = 0; y < lineAffected; y++) {
-                        for (var x = 0; x < blockMapNumberOfColumns; x++) {
+                    for (y = 0; y < lineAffected; y++) {
+                        for (x = 0; x < blockMapNumberOfColumns; x++) {
                             listOfBlocksInThePlayingArea[listOfBlocksInThePlayingArea.length-1].blockMap[y][x] = listOfBlocksInThePlayingArea[i].blockMap[y][x];
                         }
                     }    
                 }
                 thereWerePixelsUnderTheCut = false;
-                for (var y = lineAffected + 1; y < blockMapNumberOfRows; y++) {
-                    for (var x = 0; x < blockMapNumberOfColumns; x++) {
+                for (y = lineAffected + 1; y < blockMapNumberOfRows; y++) {
+                    for (x = 0; x < blockMapNumberOfColumns; x++) {
                         isRectangleFilled = listOfBlocksInThePlayingArea[i].blockMap[y][x];
                         if (isRectangleFilled === 1) {
                             thereWerePixelsUnderTheCut = true;
@@ -808,10 +815,10 @@ var logOfEvents = [];
                     }
                 }
                 if (thereWerePixelsUnderTheCut === true) {
-                    var newBlockMap = [];
-                    for (var y = lineAffected + 1; y < blockMapNumberOfRows; y++) {
+                    newBlockMap = [];
+                    for (y = lineAffected + 1; y < blockMapNumberOfRows; y++) {
                         newBlockMap[y - (lineAffected + 1)] = [];
-                        for (var x = 0; x < blockMapNumberOfColumns; x++) {
+                        for (x = 0; x < blockMapNumberOfColumns; x++) {
                             newBlockMap[y - (lineAffected + 1)][x] = 0;
                         }
                     }
@@ -822,8 +829,8 @@ var logOfEvents = [];
                         blockY: listOfBlocksInThePlayingArea[i].blockY + lineAffected + 1,
                         blockCounter: listOfBlocksInThePlayingArea[i].blockCounter
                     });
-                    for (var y = lineAffected + 1; y < blockMapNumberOfRows; y++) {
-                        for (var x = 0; x < blockMapNumberOfColumns; x++) {
+                    for (y = lineAffected + 1; y < blockMapNumberOfRows; y++) {
+                        for (x = 0; x < blockMapNumberOfColumns; x++) {
                             listOfBlocksInThePlayingArea[listOfBlocksInThePlayingArea.length-1].blockMap[y - (lineAffected + 1)][x] = listOfBlocksInThePlayingArea[i].blockMap[y][x];
                         }
                     }    
