@@ -2,6 +2,9 @@
 # VSCode workspace file
 *.code-workspace
 
+# Webstorm workspace file
+.idea/*
+
 # Node.js compiled modules
 node_modules/*
 
