@@ -395,7 +395,7 @@ var logOfEvents = [];
         for (y = 0; y < blockMapNumberOfRows; y++) {
             for (x = 0; x < blockMapNumberOfColumns; x++) {
                 isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
-                if (isRectangleFilled == 1) {
+                if (isRectangleFilled === 1) {
                     var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y;
                     var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
                     tempCalculationArea[yOnCalculationArea][xOnCalculationArea] = 0;
@@ -480,13 +480,13 @@ var logOfEvents = [];
                     numberOfFilledRectanglesInRow++;
                 } 
             }
-            if (numberOfFilledRectanglesInRow == numberOfColumns) {
+            if (numberOfFilledRectanglesInRow === numberOfColumns) {
                 // we've found a full line in row i
                 fullLineFound = true;
                 fullLines.push(i);                        
             }
         }
-        if (fullLineFound == true) {
+        if (fullLineFound === true) {
             playAreaMode = 'fullLineRemoveAnimation';
             statRelated.increaseNumberOfLinesCreated(fullLines.length);
         }
