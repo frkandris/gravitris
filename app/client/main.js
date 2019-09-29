@@ -495,7 +495,7 @@ var logOfEvents = [];
 
     // this function animates the full lines, until they are nonvisible
 
-    function animateFullLines(fullLines) {
+    function animateFullLines() {
 
         fullLineFadeAnimationCounter--;
 
@@ -1018,7 +1018,7 @@ var logOfEvents = [];
 
     function fullLineRemoveRoutine() {
         drawPlayArea();
-        if (animateFullLines(fullLines) == true) {
+        if (animateFullLines() === true) {
             hideFullLines(fullLines);
 
             // check if any block can fall down
