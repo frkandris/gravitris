@@ -331,24 +331,24 @@ var logOfEvents = [];
         else {
             // move can not be done
             
-            if (direction == 'moveDown') {
+            if (direction === 'moveDown') {
                 selectANewBlockNextFrame = true;
             }
-            if (direction == 'moveLeft') {
+            if (direction === 'moveLeft') {
                 xPlayArea = xPlayArea + pixelSize;
             }
-            if (direction == 'moveRight') {
+            if (direction === 'moveRight') {
                 xPlayArea = xPlayArea - pixelSize;
             }
-            if (direction == 'rotateLeft') {
+            if (direction === 'rotateLeft') {
                 rotationIndex--;
                 if (rotationIndex < 0) {
                     rotationIndex = numberOfRotations - 1;
                 }
             }
-            if (direction == 'rotateRight') {
+            if (direction === 'rotateRight') {
                 rotationIndex++;
-                if (rotationIndex == numberOfRotations) {
+                if (rotationIndex === numberOfRotations) {
                     rotationIndex = 0;
                 }
             }            
