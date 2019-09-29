@@ -45,7 +45,7 @@ var logOfEvents = [];
 
     function checkKeyboardInput(e) {
         e = e || window.event;
-        if (e.keyCode == '38') {
+        if (e.keyCode === 38) {
             // up
             logOfEvents.push({
                 frameNumber: frameNumber,
@@ -55,7 +55,7 @@ var logOfEvents = [];
             moveBlockInCalculationArea('rotateRight');
             event.preventDefault();
         }
-        else if (e.keyCode == '40') {
+        else if (e.keyCode === 40) {
             // down
             logOfEvents.push({
                 frameNumber: frameNumber,
@@ -65,7 +65,7 @@ var logOfEvents = [];
             moveBlockInCalculationArea('rotateLeft');
             event.preventDefault();
         }
-        else if (e.keyCode == '37') {
+        else if (e.keyCode === 37) {
             // left
             logOfEvents.push({
                 frameNumber: frameNumber,
@@ -75,7 +75,7 @@ var logOfEvents = [];
             moveBlockInCalculationArea('moveLeft');
             event.preventDefault();
         }
-        else if (e.keyCode == '39') {
+        else if (e.keyCode === 39) {
             // right
             logOfEvents.push({
                 frameNumber: frameNumber,
@@ -85,7 +85,7 @@ var logOfEvents = [];
             moveBlockInCalculationArea('moveRight');
             event.preventDefault();
         }
-        else if (e.keyCode == '32 ') {
+        else if (e.keyCode === 32) {
             // space
             logOfEvents.push({
                 frameNumber: frameNumber,
@@ -93,7 +93,7 @@ var logOfEvents = [];
                 eventValue: 'instantDrop'
             });
             // instant drop
-            while (moveCanBeDone == true) {
+            while (moveCanBeDone === true) {
                 yPlayArea = yPlayArea + pixelSize;
                 moveBlockInCalculationArea('moveDown');
             }
