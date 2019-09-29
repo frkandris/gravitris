@@ -360,8 +360,8 @@ var logOfEvents = [];
 
     function selectABlockRandomly() {
 
-        var numberOfBlocks = Object.keys(blockMap).length;
-        var blockIndex = Math.floor(Math.random() * numberOfBlocks);
+        let numberOfBlocks = Object.keys(blockMap).length;
+        let blockIndex = Math.floor(Math.random() * numberOfBlocks);
     
         return blockIndex;
     }
