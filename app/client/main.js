@@ -518,16 +518,17 @@ var logOfEvents = [];
 
         for (p = 0; p < fullLines.length; p++) {
             
+            let l;
             fullLine = fullLines[p];
 
             // remove it
-            for (var l = 0; l < numberOfColumns; l++) {
+            for (l = 0; l < numberOfColumns; l++) {
                 currentCalculationArea[fullLine][l] = 0;
                 currentCalculationArea[0][l] = 0;
             }
             // move everything above the line 1 row down
             for (var k = fullLine; k > 0; k--) {
-                for (var l = 0; l < numberOfColumns; l++) {
+                for (l = 0; l < numberOfColumns; l++) {
                     currentCalculationArea[k][l] = currentCalculationArea[k-1][l];
                 }
             }
@@ -548,7 +549,7 @@ var logOfEvents = [];
         var numberOfRows = currentCalculationArea.length;
 
         // let's try to move the block downwards and look for overlap
-        var yModifier = 0;
+        let yModifier = 0;
         do {
             var shadowCanBeMoved = true;
             var blockMapNumberOfRows = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex]).length;
@@ -562,7 +563,7 @@ var logOfEvents = [];
                         if (yOnCalculationArea > (numberOfRows - 2)) {
                             shadowCanBeMoved = false;
                         }
-                        if (tempCalculationArea[yOnCalculationArea][xOnCalculationArea] != 0) {
+                        if (tempCalculationArea[yOnCalculationArea][xOnCalculationArea] !== 0) {
                             shadowCanBeMoved = false;
                         }
                     } 
@@ -577,7 +578,7 @@ var logOfEvents = [];
         var ctx = c.getContext("2d");
 
         var xModifier = Math.floor(xPlayArea / pixelSize);
-        var yModifier = Math.floor(yPlayArea / pixelSize) + yModifier - 1;
+        yModifier = Math.floor(yPlayArea / pixelSize) + yModifier - 1;
         var yModifierInPixels = 0;
         var blockToDrawIndex = blockIndex;
         var blockToDrawRotation = rotationIndex;
