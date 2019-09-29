@@ -232,7 +232,7 @@ var logOfEvents = [];
         if (rotationIndex < 0) {
             rotationIndex = numberOfRotations - 1;
         }
-        if (rotationIndex == numberOfRotations) {
+        if (rotationIndex === numberOfRotations) {
             rotationIndex = 0;
         }
 
@@ -241,7 +241,7 @@ var logOfEvents = [];
         for (var y = 0; y < blockMapNumberOfRows; y++) {
             for (var x = 0; x < blockMapNumberOfColumns; x++) {
                 isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
-                if (isRectangleFilled == 1) {
+                if (isRectangleFilled === 1) {
                     var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y + yCalculationAreaModifier;
                     var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x + xCalculationAreaModifier;
                     tempCalculationArea[yOnCalculationArea][xOnCalculationArea] = 0;
@@ -255,7 +255,7 @@ var logOfEvents = [];
         if (rotationIndex < 0) {
             rotationIndex = numberOfRotations - 1;
         }
-        if (rotationIndex == numberOfRotations) {
+        if (rotationIndex === numberOfRotations) {
             rotationIndex = 0;
         }
         var blockMapNumberOfRows = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex]).length;
@@ -264,7 +264,7 @@ var logOfEvents = [];
         for (var y = 0; y < blockMapNumberOfRows; y++) {
             for (var x = 0; x < blockMapNumberOfColumns; x++) {
                 isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
-                if (isRectangleFilled == 1) {
+                if (isRectangleFilled === 1) {
                     var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y;
                     var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
                     if (yOnCalculationArea > (numberOfRows - 2)) {
@@ -280,7 +280,7 @@ var logOfEvents = [];
             }
         }
 
-        if (moveCanBeDone == true) {
+        if (moveCanBeDone === true) {
 
             // 1.3. move can be done - remove blockMap from currentCalculationArea
 
@@ -288,7 +288,7 @@ var logOfEvents = [];
             if (rotationIndex < 0) {
                 rotationIndex = numberOfRotations - 1;
             }
-            if (rotationIndex == numberOfRotations) {
+            if (rotationIndex === numberOfRotations) {
                 rotationIndex = 0;
             }
             var blockMapNumberOfRows = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex]).length;
@@ -297,7 +297,7 @@ var logOfEvents = [];
             for (var y = 0; y < blockMapNumberOfRows; y++) {
                 for (var x = 0; x < blockMapNumberOfColumns; x++) {
                     isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
-                    if (isRectangleFilled == 1) {
+                    if (isRectangleFilled === 1) {
                         var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y + yCalculationAreaModifier;
                         var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x + xCalculationAreaModifier;
                         currentCalculationArea[yOnCalculationArea][xOnCalculationArea] = 0;
@@ -311,7 +311,7 @@ var logOfEvents = [];
             if (rotationIndex < 0) {
                 rotationIndex = numberOfRotations - 1;
             }
-            if (rotationIndex == numberOfRotations) {
+            if (rotationIndex === numberOfRotations) {
                 rotationIndex = 0;
             }
             var blockMapNumberOfRows = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex]).length;
@@ -319,14 +319,14 @@ var logOfEvents = [];
             for (var y = 0; y < blockMapNumberOfRows; y++) {
                 for (var x = 0; x < blockMapNumberOfColumns; x++) {
                     isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
-                    if (isRectangleFilled == 1) {
+                    if (isRectangleFilled === 1) {
                         var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y;
                         var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
                         currentCalculationArea[yOnCalculationArea][xOnCalculationArea] = blockIndex+1;
                     } 
                 }
             }
-        } // if (moveCanBeDone == true)
+        } // if (moveCanBeDone === true)
 
         else {
             // move can not be done
@@ -499,7 +499,7 @@ var logOfEvents = [];
 
         fullLineFadeAnimationCounter--;
 
-        if (fullLineFadeAnimationCounter == 0) {
+        if (fullLineFadeAnimationCounter === 0) {
             fullLineFadeAnimationCounter = fullLineFadeAnimationLength;
             return true;
         } else {
@@ -554,7 +554,7 @@ var logOfEvents = [];
             for (var y = 0; y < blockMapNumberOfRows; y++) {
                 for (var x = 0; x < blockMapNumberOfColumns; x++) {
                     isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
-                    if (isRectangleFilled == 1) {
+                    if (isRectangleFilled === 1) {
                         var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y + yModifier;
                         var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
                         if (yOnCalculationArea > (numberOfRows - 2)) {
@@ -568,7 +568,7 @@ var logOfEvents = [];
             }
             yModifier++;
         }
-        while (shadowCanBeMoved == true);
+        while (shadowCanBeMoved === true);
 
         // let's draw the block
         var c = document.getElementById("playAreaCanvas");
@@ -598,7 +598,7 @@ var logOfEvents = [];
         for (var y = 0; y < blockMapNumberOfRows; y++) {
             for (var x = 0; x < blockMapNumberOfColumns; x++) {
                 isRectangleFilled = blockMapToDraw[y][x];
-                if (isRectangleFilled == 1) {
+                if (isRectangleFilled === 1) {
 
                     lineIsEmpty = false;
 
@@ -610,7 +610,7 @@ var logOfEvents = [];
                     // determine the color of the pixel
 
                     var blockColor = blockToDrawColor;
-                    if (playAreaMode == 'gameEndFadeOutAnimation') {
+                    if (playAreaMode === 'gameEndFadeOutAnimation') {
                         var opacity = gameEndFadeAnimationCounter/gameEndFadeAnimationLength;                        
                     } else if (fullLines.includes(yOnCalculationArea - 1)) {
                         var opacity = fullLineFadeAnimationCounter/fullLineFadeAnimationLength;
@@ -626,7 +626,7 @@ var logOfEvents = [];
                     // check if the block has another pixel on the right this one
                     try {
                         var isRightSiblingFilled = blockMapToDraw[y][x + 1];
-                        if (isRightSiblingFilled == 1) {
+                        if (isRightSiblingFilled === 1) {
                             ctx.fillRect(xOnCalculationArea * pixelSize + pixelSize - 1, yOnCalculationArea * pixelSize + yModifierInPixels, 1, (pixelSize - 1));
                         }
                     } catch {
@@ -636,7 +636,7 @@ var logOfEvents = [];
                     // check if the block has another pixel underneath this one
                     try {
                         var isBottomSiblingFilled = blockMapToDraw[y + 1][x];
-                        if (isBottomSiblingFilled == 1) {
+                        if (isBottomSiblingFilled === 1) {
                             ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize + yModifierInPixels + pixelSize - 1, (pixelSize - 1), 1);
                         }
                     } catch {
@@ -645,7 +645,7 @@ var logOfEvents = [];
 
                 }
             }
-            if ((drawEmptyLines == false) && (lineIsEmpty == true)) {
+            if ((drawEmptyLines === false) && (lineIsEmpty === true)) {
                 yModifier--;
             }
         }
@@ -681,12 +681,12 @@ var logOfEvents = [];
 
         var blockAlreadyInserted = false;
         for (var i = 0; i < listOfBlocksInThePlayingArea.length; i++) {
-            if (listOfBlocksInThePlayingArea[i].blockCounter == blockCounter) {
+            if (listOfBlocksInThePlayingArea[i].blockCounter === blockCounter) {
                 blockAlreadyInserted = true;
             }
         }
 
-        if (blockAlreadyInserted == false) {
+        if (blockAlreadyInserted === false) {
             try {        
                 listOfBlocksInThePlayingArea.push({ 
                     blockMap: blockMap[blockIndex][rotationIndex][rotationIndex],
@@ -727,7 +727,7 @@ var logOfEvents = [];
             for (var y = 0; y < blockMapNumberOfRows; y++) {
                 for (var x = 0; x < blockMapNumberOfColumns; x++) {
                     isRectangleFilled = listOfBlocksInThePlayingArea[i].blockMap[y][x];
-                    if (isRectangleFilled == 1) {
+                    if (isRectangleFilled === 1) {
                         // copy the map of the block to currentGravityCalculationArea
                         var yOnGravityCalculationArea = listOfBlocksInThePlayingArea[i].blockY + y;
                         var xOnGravityCalculationArea = listOfBlocksInThePlayingArea[i].blockX + x;
@@ -754,27 +754,27 @@ var logOfEvents = [];
             for (var y = 0; y < blockMapNumberOfRows; y++) {
                 for (var x = 0; x < blockMapNumberOfColumns; x++) {
                     isRectangleFilled = listOfBlocksInThePlayingArea[i].blockMap[y][x];
-                    if (isRectangleFilled == 1) {
-                        if (fullLineIndex == (listOfBlocksInThePlayingArea[i].blockY + y)) {
+                    if (isRectangleFilled === 1) {
+                        if (fullLineIndex === (listOfBlocksInThePlayingArea[i].blockY + y)) {
                             // the y coordinate of the pixel matches the full line row number
                             blockIsAffected = true;
                             lineAffected = y;
                         }
                     }
                 }
-                if (blockIsAffected == true) { break; }
+                if (blockIsAffected === true) { break; }
             }
-            if (blockIsAffected == true) {
+            if (blockIsAffected === true) {
                 thereWerePixelsAboveTheCut = false;
                 for (var y = 0; y < lineAffected; y++) {
                     for (var x = 0; x < blockMapNumberOfColumns; x++) {
                         isRectangleFilled = listOfBlocksInThePlayingArea[i].blockMap[y][x];
-                        if (isRectangleFilled == 1) {
+                        if (isRectangleFilled === 1) {
                             thereWerePixelsAboveTheCut = true;
                         }
                     }
                 }
-                if (thereWerePixelsAboveTheCut == true) {
+                if (thereWerePixelsAboveTheCut === true) {
                     var newBlockMap = [];
                     for (var y = 0; y < lineAffected; y++) {
                         newBlockMap[y] = [];
@@ -799,12 +799,12 @@ var logOfEvents = [];
                 for (var y = lineAffected + 1; y < blockMapNumberOfRows; y++) {
                     for (var x = 0; x < blockMapNumberOfColumns; x++) {
                         isRectangleFilled = listOfBlocksInThePlayingArea[i].blockMap[y][x];
-                        if (isRectangleFilled == 1) {
+                        if (isRectangleFilled === 1) {
                             thereWerePixelsUnderTheCut = true;
                         }
                     }
                 }
-                if (thereWerePixelsUnderTheCut == true) {
+                if (thereWerePixelsUnderTheCut === true) {
                     var newBlockMap = [];
                     for (var y = lineAffected + 1; y < blockMapNumberOfRows; y++) {
                         newBlockMap[y - (lineAffected + 1)] = [];
@@ -862,7 +862,7 @@ var logOfEvents = [];
                         for (var y = 0; y < blockMapNumberOfRows; y++) {
                             for (var x = 0; x < blockMapNumberOfColumns; x++) {
                                 isRectangleFilled = listOfBlocksInThePlayingArea[k].blockMap[y][x];
-                                if (isRectangleFilled == 1) {
+                                if (isRectangleFilled === 1) {
                                     var yOnGravityCalculationArea = listOfBlocksInThePlayingArea[k].blockY + y;
                                     var xOnGravityCalculationArea = listOfBlocksInThePlayingArea[k].blockX + x;
                                     var colorOnGravityCalculationArea = listOfBlocksInThePlayingArea[k].blockIndex + 1;
@@ -893,7 +893,7 @@ var logOfEvents = [];
                 for (var y = 0; y < blockMapNumberOfRows; y++) {
                     for (var x = 0; x < blockMapNumberOfColumns; x++) {
                         isRectangleFilled = listOfBlocksInThePlayingArea[i].blockMap[y][x];
-                        if (isRectangleFilled == 1) {
+                        if (isRectangleFilled === 1) {
                             var yOnCalculationArea = listOfBlocksInThePlayingArea[i].blockY + y + yModifier + 1;
                             var xOnCalculationArea = listOfBlocksInThePlayingArea[i].blockX + x;
                             if (yOnCalculationArea > (numberOfRows - 2)) {
@@ -905,13 +905,13 @@ var logOfEvents = [];
                                 // block collided with another block
                                 blockCanBeMoved = false;
                             }
-                            if (blockCanBeMoved == true) {
+                            if (blockCanBeMoved === true) {
                                 // no problem
                             }
                         } 
                     }
                 }
-                if (blockCanBeMoved == true) {
+                if (blockCanBeMoved === true) {
                     listOfBlocksThatCanBeMoved.push(i);
                     thereWasMovementInThisRound = true;
                 } else {
@@ -973,7 +973,7 @@ var logOfEvents = [];
         checkFullLineInCurrentCalculationArea();
 
         // if we need to set a new block, save the old one and set a new one
-        if (selectANewBlockNextFrame == true) {
+        if (selectANewBlockNextFrame === true) {
 
             // save old one
             saveDoneBlock();
@@ -1001,7 +1001,7 @@ var logOfEvents = [];
         }
 
         // if the current block will be replaced next frame, don't draw the playArea
-        if (selectANewBlockNextFrame == false) {
+        if (selectANewBlockNextFrame === false) {
             // draw the pixel perfect playArea
             drawPlayAreaWithFallingBlock();
         }
@@ -1023,7 +1023,7 @@ var logOfEvents = [];
 
             // check if any block can fall down
             var isThereABlockThatCanBeMoved = checkIfAnyBlockCanFallDown();
-            if (isThereABlockThatCanBeMoved == true) {
+            if (isThereABlockThatCanBeMoved === true) {
                 playAreaMode = 'gravityAnimation';
             } else {
                 playAreaMode = 'blockFallingAnimation';
@@ -1049,7 +1049,7 @@ var logOfEvents = [];
             gravityAnimationYModifier = 0;
 
             var isThereABlockThatCanBeMoved = checkIfAnyBlockCanFallDown();
-            if (isThereABlockThatCanBeMoved == true) {
+            if (isThereABlockThatCanBeMoved === true) {
                 playAreaMode = 'gravityAnimation';
             } else {
                 playAreaMode = 'blockFallingAnimation';
@@ -1074,7 +1074,7 @@ var logOfEvents = [];
         gameEndFadeAnimationCounter--;
 
         // check if everything has faded out properly
-        if (gameEndFadeAnimationCounter == 0) {
+        if (gameEndFadeAnimationCounter === 0) {
 
             gameEndFadeAnimationCounter = gameEndFadeAnimationLength;
             
