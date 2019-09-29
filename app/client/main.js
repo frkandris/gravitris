@@ -364,9 +364,8 @@ var logOfEvents = [];
     function selectABlockRandomly() {
 
         let numberOfBlocks = Object.keys(blockMap).length;
-        let blockIndex = Math.floor(Math.random() * numberOfBlocks);
+        return Math.floor(Math.random() * numberOfBlocks);
 
-        return blockIndex;
     }
 
 
