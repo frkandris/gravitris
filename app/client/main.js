@@ -846,6 +846,10 @@ var logOfEvents = [];
 
     function checkIfAnyBlockCanFallDown() {
         
+        let blockMapNumberOfColumns;
+        let blockMapNumberOfRows;
+        let x;
+        let y;
         thereWasMovementInThisRound = false;
         listOfBlocksThatCanBeMoved = [];
             
@@ -853,10 +857,10 @@ var logOfEvents = [];
             for (var i = 0; i < listOfBlocksInThePlayingArea.length; i++) {
 
                 // clear currentGravityCalculationArea
-                var numberOfRows = currentGravityCalculationArea.length;
-                var numberOfColumns = currentGravityCalculationArea[0].length;
-                for (var y = 0; y < numberOfRows; y++) {
-                    for (var x = 0; x < numberOfColumns; x++) {
+                let numberOfRows = currentGravityCalculationArea.length;
+                let numberOfColumns = currentGravityCalculationArea[0].length;
+                for (y = 0; y < numberOfRows; y++) {
+                    for (x = 0; x < numberOfColumns; x++) {
                         currentGravityCalculationArea[y][x] = 0;
                     }
                 }
@@ -866,16 +870,16 @@ var logOfEvents = [];
                 // go thru the blocks one by one in listOfBlocksInThePlayingArea
                 // draw every block except the one we calculate now
                 for (var k = 0; k < listOfBlocksInThePlayingArea.length; k++) {
-                    if (k != i) {
-                        var blockMapNumberOfRows = Object.keys(listOfBlocksInThePlayingArea[k].blockMap).length;
-                        var blockMapNumberOfColumns = Object.keys(listOfBlocksInThePlayingArea[k].blockMap[0]).length;
-                        for (var y = 0; y < blockMapNumberOfRows; y++) {
-                            for (var x = 0; x < blockMapNumberOfColumns; x++) {
+                    if (k !== i) {
+                        blockMapNumberOfRows = Object.keys(listOfBlocksInThePlayingArea[k].blockMap).length;
+                        blockMapNumberOfColumns = Object.keys(listOfBlocksInThePlayingArea[k].blockMap[0]).length;
+                        for (y = 0; y < blockMapNumberOfRows; y++) {
+                            for (x = 0; x < blockMapNumberOfColumns; x++) {
                                 isRectangleFilled = listOfBlocksInThePlayingArea[k].blockMap[y][x];
                                 if (isRectangleFilled === 1) {
                                     var yOnGravityCalculationArea = listOfBlocksInThePlayingArea[k].blockY + y;
                                     var xOnGravityCalculationArea = listOfBlocksInThePlayingArea[k].blockX + x;
-                                    var colorOnGravityCalculationArea = listOfBlocksInThePlayingArea[k].blockIndex + 1;
+                                    const colorOnGravityCalculationArea = listOfBlocksInThePlayingArea[k].blockIndex + 1;
                                     currentGravityCalculationArea[yOnGravityCalculationArea][xOnGravityCalculationArea] = colorOnGravityCalculationArea;
                                 }
                             }
@@ -884,24 +888,24 @@ var logOfEvents = [];
                 }
 
                 // let's try to move the block downwards and look for overlap
-                
-                var numberOfRows = currentGravityCalculationArea.length;
-                var numberOfColumns = currentGravityCalculationArea[0].length;
-                for (var y = 0; y < numberOfRows; y++) {
+
+                numberOfRows = currentGravityCalculationArea.length;
+                numberOfColumns = currentGravityCalculationArea[0].length;
+                for (y = 0; y < numberOfRows; y++) {
                     var line = '';
-                    for (var x = 0; x < numberOfColumns; x++) {
+                    for (x = 0; x < numberOfColumns; x++) {
                         line = line + currentGravityCalculationArea[y][x];
                     }
                 }
 
                 var blockCanBeMoved = true;
                 var yModifier = 0;
-                var numberOfRows = currentGravityCalculationArea.length;
-                var blockMapNumberOfRows = Object.keys(listOfBlocksInThePlayingArea[i].blockMap).length;
-                var blockMapNumberOfColumns = Object.keys(listOfBlocksInThePlayingArea[i].blockMap[0]).length;
+                numberOfRows = currentGravityCalculationArea.length;
+                blockMapNumberOfRows = Object.keys(listOfBlocksInThePlayingArea[i].blockMap).length;
+                blockMapNumberOfColumns = Object.keys(listOfBlocksInThePlayingArea[i].blockMap[0]).length;
 
-                for (var y = 0; y < blockMapNumberOfRows; y++) {
-                    for (var x = 0; x < blockMapNumberOfColumns; x++) {
+                for (y = 0; y < blockMapNumberOfRows; y++) {
+                    for (x = 0; x < blockMapNumberOfColumns; x++) {
                         isRectangleFilled = listOfBlocksInThePlayingArea[i].blockMap[y][x];
                         if (isRectangleFilled === 1) {
                             var yOnCalculationArea = listOfBlocksInThePlayingArea[i].blockY + y + yModifier + 1;
@@ -911,7 +915,7 @@ var logOfEvents = [];
                                 blockCanBeMoved = false;
                                 break;
                             }
-                            if (currentGravityCalculationArea[yOnCalculationArea][xOnCalculationArea] != 0) {
+                            if (currentGravityCalculationArea[yOnCalculationArea][xOnCalculationArea] !== 0) {
                                 // block collided with another block
                                 blockCanBeMoved = false;
                             }
@@ -1002,7 +1006,7 @@ var logOfEvents = [];
         // y now in the calculationArea
         currentYCalculationArea = Math.floor(yPlayArea / pixelSize);
         // do we need to move down the block in the calculationArea
-        if (previousYCalculationArea != currentYCalculationArea) {
+        if (previousYCalculationArea !== currentYCalculationArea) {
             // yes, try to do the move in calculationArea
             moveBlockInCalculationArea('moveDown');
         } else {
@@ -1032,7 +1036,7 @@ var logOfEvents = [];
             hideFullLines(fullLines);
 
             // check if any block can fall down
-            var isThereABlockThatCanBeMoved = checkIfAnyBlockCanFallDown();
+            const isThereABlockThatCanBeMoved = checkIfAnyBlockCanFallDown();
             if (isThereABlockThatCanBeMoved === true) {
                 playAreaMode = 'gravityAnimation';
             } else {
@@ -1050,7 +1054,7 @@ var logOfEvents = [];
         if (gravityAnimationYModifier < pixelSize) {
             drawPlayAreaWithFallingBlocks();
         } else {
-            for (var i = 0; i < listOfBlocksThatCanBeMoved.length; i++) {
+            for (let i = 0; i < listOfBlocksThatCanBeMoved.length; i++) {
                 listOfBlocksInThePlayingArea[listOfBlocksThatCanBeMoved[i]].blockY++;
             }
             calculateCurrentGravityCalculationArea();
@@ -1058,7 +1062,7 @@ var logOfEvents = [];
 
             gravityAnimationYModifier = 0;
 
-            var isThereABlockThatCanBeMoved = checkIfAnyBlockCanFallDown();
+            const isThereABlockThatCanBeMoved = checkIfAnyBlockCanFallDown();
             if (isThereABlockThatCanBeMoved === true) {
                 playAreaMode = 'gravityAnimation';
             } else {
