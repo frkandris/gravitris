@@ -177,6 +177,7 @@ var logOfEvents = [];
         let xCalculationAreaModifier = 0;
         let yCalculationAreaModifier = 0;
         let rotationModifier = 0;
+        let isRectangleFilled;
 
         let numberOfRotations = Object.keys(blockMap[blockIndex]).length;
 
@@ -222,8 +223,8 @@ var logOfEvents = [];
 
         // 1.0. copy currentCalculationArea to tempCalculationArea
 
-        var numberOfRows = currentCalculationArea.length;
-        var numberOfColumns = currentCalculationArea[0].length;
+        const numberOfRows = currentCalculationArea.length;
+        const numberOfColumns = currentCalculationArea[0].length;
         for (let y = 0; y < numberOfRows; y++) {
             for (let x = 0; x < numberOfColumns; x++) {
                 tempCalculationArea[y][x] = currentCalculationArea[y][x];
@@ -280,7 +281,7 @@ var logOfEvents = [];
                         // move can not be done, as the block in the new position would overlap with something
                         moveCanBeDone = false;
                     }
-                } 
+                }
             }
         }
 
@@ -376,15 +377,15 @@ var logOfEvents = [];
 
         let x;
         let y;
-        var c = document.getElementById("playAreaCanvas");
-        var ctx = c.getContext("2d");
-        
+        const c = document.getElementById("playAreaCanvas");
+        const ctx = c.getContext("2d");
+
         ctx.clearRect(0, 0, c.width, c.height);
 
         // copy currentCalculationArea to tempCalculationArea
 
-        var numberOfRows = currentCalculationArea.length;
-        var numberOfColumns = currentCalculationArea[0].length;
+        const numberOfRows = currentCalculationArea.length;
+        const numberOfColumns = currentCalculationArea[0].length;
         for (y = 0; y < numberOfRows; y++) {
             for (x = 0; x < numberOfColumns; x++) {
                 tempCalculationArea[y][x] = currentCalculationArea[y][x];
@@ -393,16 +394,17 @@ var logOfEvents = [];
 
         // remove current falling block from tempCalculationArea
 
-        var blockMapNumberOfRows = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex]).length;
-        var blockMapNumberOfColumns = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex][0]).length;
+        const blockMapNumberOfRows = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex]).length;
+        const blockMapNumberOfColumns = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex][0]).length;
+        let isRectangleFilled;
         for (y = 0; y < blockMapNumberOfRows; y++) {
             for (x = 0; x < blockMapNumberOfColumns; x++) {
                 isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
                 if (isRectangleFilled === 1) {
-                    var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y;
-                    var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
+                    const yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y;
+                    const xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
                     tempCalculationArea[yOnCalculationArea][xOnCalculationArea] = 0;
-                }  
+                }
             }
         }
 
@@ -414,14 +416,14 @@ var logOfEvents = [];
 
         // draw pixelperfect moving block
 
-        var xModifier = xPlayArea / pixelSize;
-        var yModifier = yPlayArea / pixelSize;
-        var yModifierInPixels = 0;
-        var blockToDrawIndex = blockIndex;
-        var blockToDrawRotation = rotationIndex;
-        var drawEmptyLines = true;
-        var blockMapToDraw = blockMap[blockToDrawIndex][blockToDrawRotation][blockToDrawRotation];
-        var blockToDrawColor = colorRelated.getBlockColor(blockToDrawIndex);
+        const xModifier = xPlayArea / pixelSize;
+        const yModifier = yPlayArea / pixelSize;
+        const yModifierInPixels = 0;
+        const blockToDrawIndex = blockIndex;
+        const blockToDrawRotation = rotationIndex;
+        const drawEmptyLines = true;
+        const blockMapToDraw = blockMap[blockToDrawIndex][blockToDrawRotation][blockToDrawRotation];
+        const blockToDrawColor = colorRelated.getBlockColor(blockToDrawIndex);
         drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifier, yModifier, yModifierInPixels, drawEmptyLines);
 
     }
