@@ -594,6 +594,7 @@ var logOfEvents = [];
 
     function drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifier, yModifier, yModifierInPixels, drawEmptyLines) {
 
+        let opacity;
         var blockMapNumberOfRows = blockMapToDraw.length;
         var blockMapNumberOfColumns = blockMapToDraw[0].length;
 
@@ -614,16 +615,15 @@ var logOfEvents = [];
 
                     var blockColor = blockToDrawColor;
                     if (playAreaMode === 'gameEndFadeOutAnimation') {
-                        var opacity = gameEndFadeAnimationCounter/gameEndFadeAnimationLength;                        
+                        opacity = gameEndFadeAnimationCounter/gameEndFadeAnimationLength;
                     } else if (fullLines.includes(yOnCalculationArea - 1)) {
-                        var opacity = fullLineFadeAnimationCounter/fullLineFadeAnimationLength;
+                        opacity = fullLineFadeAnimationCounter / fullLineFadeAnimationLength;
                     } else {
                         opacity = 1;
                     }
-                    var fillStyle = colorRelated.convertColorHexToRGB(blockColor, opacity);
+                    ctx.fillStyle = colorRelated.convertColorHexToRGB(blockColor, opacity);
 
                     // draw the block
-                    ctx.fillStyle = fillStyle;
                     ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize + yModifierInPixels, (pixelSize - 1), (pixelSize - 1));
 
                     // check if the block has another pixel on the right this one
