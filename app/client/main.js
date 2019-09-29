@@ -108,12 +108,12 @@ var logOfEvents = [];
     function selectANewBlock(){
 
         // get a random new block
-        var newBlock = selectABlockRandomly();
+        const newBlock = selectABlockRandomly();
 
         // add new item to the beginning of the array
-        nextBlocks.unshift(newBlock); 
+        nextBlocks.unshift(newBlock);
 
-        currentBlock = nextBlocks.slice(-1).pop(); // get the last item
+        let currentBlock = nextBlocks.slice(-1).pop(); // get the last item
         nextBlocks.splice(-1,1); // remove the last item
 
         // set the current block
@@ -122,7 +122,7 @@ var logOfEvents = [];
         xPlayArea = (playAreaWidth / 2) - (2 * pixelSize);
         yPlayArea = 0;
 
-        var moveCanBeDone = checkIfBlockOverlapsAnythingOnACalculationArea();
+        const moveCanBeDone = checkIfBlockOverlapsAnythingOnACalculationArea();
         if (moveCanBeDone === false) {
             playAreaMode = 'gameEndFadeOutAnimation';
             statRelated.setGameEndTime();
@@ -143,22 +143,23 @@ var logOfEvents = [];
 
     function checkIfBlockOverlapsAnythingOnACalculationArea() {
 
-        var moveCanBeDone = true;
+        let moveCanBeDone = true;
 
-        var blockMapNumberOfRows = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex]).length;
-        var blockMapNumberOfColumns = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex][0]).length;
+        const blockMapNumberOfRows = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex]).length;
+        const blockMapNumberOfColumns = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex][0]).length;
 
-        for (var y = 0; y < blockMapNumberOfRows; y++) {
-            for (var x = 0; x < blockMapNumberOfColumns; x++) {
+        let isRectangleFilled;
+        for (let y = 0; y < blockMapNumberOfRows; y++) {
+            for (let x = 0; x < blockMapNumberOfColumns; x++) {
                 isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
                 if (isRectangleFilled === 1) {
-                    var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y;
-                    var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
+                    const yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y;
+                    const xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
                     if (currentCalculationArea[yOnCalculationArea][xOnCalculationArea] !== 0) {
                         // move can not be done, as the block in the new position would overlap with something
                         moveCanBeDone = false;
                     }
-                } 
+                }
             }
         }
 
@@ -173,9 +174,9 @@ var logOfEvents = [];
         let yOnCalculationArea;
         let x;
         let y;
-        var xCalculationAreaModifier = 0;
-        var yCalculationAreaModifier = 0;
-        var rotationModifier = 0;
+        let xCalculationAreaModifier = 0;
+        let yCalculationAreaModifier = 0;
+        let rotationModifier = 0;
 
         let numberOfRotations = Object.keys(blockMap[blockIndex]).length;
 
