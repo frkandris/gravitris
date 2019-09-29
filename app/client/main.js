@@ -416,15 +416,15 @@ var logOfEvents = [];
 
         // draw pixelperfect moving block
 
-        const xModifier = xPlayArea / pixelSize;
-        const yModifier = yPlayArea / pixelSize;
+        const xModifierInSquares = xPlayArea / pixelSize;
+        const yModifierInSquares = yPlayArea / pixelSize;
         const yModifierInPixels = 0;
         const blockToDrawIndex = blockIndex;
         const blockToDrawRotation = rotationIndex;
         const drawEmptyLines = true;
         const blockMapToDraw = blockMap[blockToDrawIndex][blockToDrawRotation][blockToDrawRotation];
         const blockToDrawColor = colorRelated.getBlockColor(blockToDrawIndex);
-        drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifier, yModifier, yModifierInPixels, drawEmptyLines);
+        drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yModifierInSquares, yModifierInPixels, drawEmptyLines);
 
     }
 
@@ -437,13 +437,13 @@ var logOfEvents = [];
         for (let i = 0; i < listOfBlocksInThePlayingArea.length; i++) {
 
             // draw the block
-            const xModifier = listOfBlocksInThePlayingArea[i].blockX;
-            const yModifier = listOfBlocksInThePlayingArea[i].blockY + 1;
+            const xModifierInSquares = listOfBlocksInThePlayingArea[i].blockX;
+            const yModifierInSquares = listOfBlocksInThePlayingArea[i].blockY + 1;
             const yModifierInPixels = 0;
             const drawEmptyLines = true;
             const blockMapToDraw = listOfBlocksInThePlayingArea[i].blockMap;
             const blockToDrawColor = colorRelated.getBlockColor(listOfBlocksInThePlayingArea[i].blockIndex);
-            drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifier, yModifier, yModifierInPixels, drawEmptyLines);
+            drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yModifierInSquares, yModifierInPixels, drawEmptyLines);
 
         }        
     }
@@ -454,8 +454,8 @@ var logOfEvents = [];
     function drawPlayArea() {
 
         // get the canvas
-        var c = document.getElementById("playAreaCanvas");
-        var ctx = c.getContext("2d");
+        const c = document.getElementById("playAreaCanvas");
+        const ctx = c.getContext("2d");
 
         // clear the canvas
         ctx.clearRect(0, 0, c.width, c.height);
@@ -471,24 +471,26 @@ var logOfEvents = [];
     function checkFullLineInCurrentCalculationArea(){
 
         fullLines = [];
-        fullLineFound = false;
+        let fullLineFound = false;
 
-        var numberOfRows = currentCalculationArea.length;
-        var numberOfColumns = currentCalculationArea[0].length;
+        const numberOfRows = currentCalculationArea.length;
+        const numberOfColumns = currentCalculationArea[0].length;
 
         // let's check all rows for full lines
-        for (var i = 0; i < numberOfRows; i++) {
+        let numberOfFilledRectanglesInRow;
+        let isRectangleFilled;
+        for (let i = 0; i < numberOfRows; i++) {
             numberOfFilledRectanglesInRow = 0;
-            for (var j = 0; j < numberOfColumns; j++) {
+            for (let j = 0; j < numberOfColumns; j++) {
                 isRectangleFilled = currentCalculationArea[i][j];
                 if (isRectangleFilled > 0) {
                     numberOfFilledRectanglesInRow++;
-                } 
+                }
             }
             if (numberOfFilledRectanglesInRow === numberOfColumns) {
                 // we've found a full line in row i
                 fullLineFound = true;
-                fullLines.push(i);                        
+                fullLines.push(i);
             }
         }
         if (fullLineFound === true) {
@@ -517,10 +519,11 @@ var logOfEvents = [];
 
     function hideFullLines(fullLines) {
 
-        var numberOfColumns = currentCalculationArea[0].length;
+        const numberOfColumns = currentCalculationArea[0].length;
 
-        for (p = 0; p < fullLines.length; p++) {
-            
+        let fullLine;
+        for (let p = 0; p < fullLines.length; p++) {
+
             let l;
             fullLine = fullLines[p];
 
@@ -530,9 +533,9 @@ var logOfEvents = [];
                 currentCalculationArea[0][l] = 0;
             }
             // move everything above the line 1 row down
-            for (var k = fullLine; k > 0; k--) {
+            for (let k = fullLine; k > 0; k--) {
                 for (l = 0; l < numberOfColumns; l++) {
-                    currentCalculationArea[k][l] = currentCalculationArea[k-1][l];
+                    currentCalculationArea[k][l] = currentCalculationArea[k - 1][l];
                 }
             }
 
@@ -549,27 +552,29 @@ var logOfEvents = [];
 
     function drawShadow() {
 
-        var numberOfRows = currentCalculationArea.length;
-
         // let's try to move the block downwards and look for overlap
+
+        const numberOfRows = currentCalculationArea.length;
+        let shadowCanBeMoved;
         let yModifier = 0;
+        let isRectangleFilled;
         do {
-            var shadowCanBeMoved = true;
-            var blockMapNumberOfRows = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex]).length;
-            var blockMapNumberOfColumns = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex][0]).length;
-            for (var y = 0; y < blockMapNumberOfRows; y++) {
-                for (var x = 0; x < blockMapNumberOfColumns; x++) {
+            shadowCanBeMoved = true;
+            const blockMapNumberOfRows = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex]).length;
+            const blockMapNumberOfColumns = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex][0]).length;
+            for (let y = 0; y < blockMapNumberOfRows; y++) {
+                for (let x = 0; x < blockMapNumberOfColumns; x++) {
                     isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
                     if (isRectangleFilled === 1) {
-                        var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y + yModifier;
-                        var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
+                        const yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y + yModifier;
+                        const xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
                         if (yOnCalculationArea > (numberOfRows - 2)) {
                             shadowCanBeMoved = false;
                         }
                         if (tempCalculationArea[yOnCalculationArea][xOnCalculationArea] !== 0) {
                             shadowCanBeMoved = false;
                         }
-                    } 
+                    }
                 }
             }
             yModifier++;
@@ -577,25 +582,25 @@ var logOfEvents = [];
         while (shadowCanBeMoved === true);
 
         // let's draw the block
-        var c = document.getElementById("playAreaCanvas");
-        var ctx = c.getContext("2d");
+        const c = document.getElementById("playAreaCanvas");
+        const ctx = c.getContext("2d");
 
-        var xModifier = Math.floor(xPlayArea / pixelSize);
-        yModifier = Math.floor(yPlayArea / pixelSize) + yModifier - 1;
-        var yModifierInPixels = 0;
-        var blockToDrawIndex = blockIndex;
-        var blockToDrawRotation = rotationIndex;
-        var drawEmptyLines = true;
-        var blockMapToDraw = blockMap[blockToDrawIndex][blockToDrawRotation][blockToDrawRotation];
-        var blockToDrawColor = colorRelated.getBlockColor('shadow');
-        drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifier, yModifier, yModifierInPixels, drawEmptyLines);
+        const xModifierInSquares = Math.floor(xPlayArea / pixelSize);
+        const yModifierInSquares = Math.floor(yPlayArea / pixelSize) + yModifier - 1;
+        const yModifierInPixels = 0;
+        const blockToDrawIndex = blockIndex;
+        const blockToDrawRotation = rotationIndex;
+        const drawEmptyLines = true;
+        const blockMapToDraw = blockMap[blockToDrawIndex][blockToDrawRotation][blockToDrawRotation];
+        const blockToDrawColor = colorRelated.getBlockColor('shadow');
+        drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yModifierInSquares, yModifierInPixels, drawEmptyLines);
 
     }
 
 
     // this function draws a block to a canvas
 
-    function drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifier, yModifier, yModifierInPixels, drawEmptyLines) {
+    function drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yModifierInSquares, yModifierInPixels, drawEmptyLines) {
 
         let opacity;
         var blockMapNumberOfRows = blockMapToDraw.length;
@@ -611,8 +616,8 @@ var logOfEvents = [];
 
                     // determine position
 
-                    var xOnCalculationArea = x + xModifier;
-                    var yOnCalculationArea = y + yModifier;
+                    var xOnCalculationArea = x + xModifierInSquares;
+                    var yOnCalculationArea = y + yModifierInSquares;
 
                     // determine the color of the pixel
 
@@ -652,7 +657,7 @@ var logOfEvents = [];
                 }
             }
             if ((drawEmptyLines === false) && (lineIsEmpty === true)) {
-                yModifier--;
+                yModifierInSquares--;
             }
         }
     }
@@ -670,13 +675,13 @@ var logOfEvents = [];
         for (var i = 0; i < nextBlocks.length; i++) {
             var blockToDrawIndex = nextBlocks[i];
             var blockToDrawRotation = 0;
-            var xModifier = i * 5;
-            var yModifier = 0;
+            var xModifierInSquares = i * 5;
+            var yModifierInSquares = 0;
             var yModifierInPixels = 0;
             var drawEmptyLines = false;
             var blockMapToDraw = blockMap[blockToDrawIndex][blockToDrawRotation][blockToDrawRotation];
             var blockToDrawColor = colorRelated.getBlockColor(blockToDrawIndex);
-            drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifier, yModifier, yModifierInPixels, drawEmptyLines);
+            drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yModifierInSquares, yModifierInPixels, drawEmptyLines);
         }
     }
 
@@ -965,10 +970,11 @@ var logOfEvents = [];
         ctx.clearRect(0, 0, c.width, c.height);
         
         // go thru the blocks one by one in listOfBlocksInThePlayingArea
+        let yModifierInPixels;
         for (var i = 0; i < listOfBlocksInThePlayingArea.length; i++) {
 
-            var xModifier = listOfBlocksInThePlayingArea[i].blockX;
-            var yModifier = listOfBlocksInThePlayingArea[i].blockY + 1;
+            var xModifierInSquares = listOfBlocksInThePlayingArea[i].blockX;
+            var yModifierInSquares = listOfBlocksInThePlayingArea[i].blockY + 1;
             var drawEmptyLines = true;
             var blockMapToDraw = listOfBlocksInThePlayingArea[i].blockMap;
             var blockToDrawColor = colorRelated.getBlockColor(listOfBlocksInThePlayingArea[i].blockIndex);
@@ -977,7 +983,7 @@ var logOfEvents = [];
             } else {
                 yModifierInPixels = 0;
             }
-            drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifier, yModifier, yModifierInPixels, drawEmptyLines);
+            drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yModifierInSquares, yModifierInPixels, drawEmptyLines);
         }
     }
 
