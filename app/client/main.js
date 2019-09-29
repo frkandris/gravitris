@@ -169,7 +169,10 @@ var logOfEvents = [];
     // this function calculates what happens, when the block moves & rotates in currentCalculationArea
 
     function moveBlockInCalculationArea(direction){
-
+        let xOnCalculationArea;
+        let yOnCalculationArea;
+        let x;
+        let y;
         var xCalculationAreaModifier = 0;
         var yCalculationAreaModifier = 0;
         var rotationModifier = 0;
@@ -236,14 +239,14 @@ var logOfEvents = [];
             rotationIndex = 0;
         }
 
-        var blockMapNumberOfRows = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex]).length;
-        var blockMapNumberOfColumns = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex][0]).length;
-        for (var y = 0; y < blockMapNumberOfRows; y++) {
-            for (var x = 0; x < blockMapNumberOfColumns; x++) {
+        let blockMapNumberOfRows = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex]).length;
+        let blockMapNumberOfColumns = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex][0]).length;
+        for (y = 0; y < blockMapNumberOfRows; y++) {
+            for (x = 0; x < blockMapNumberOfColumns; x++) {
                 isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
                 if (isRectangleFilled === 1) {
-                    var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y + yCalculationAreaModifier;
-                    var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x + xCalculationAreaModifier;
+                    yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y + yCalculationAreaModifier;
+                    xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x + xCalculationAreaModifier;
                     tempCalculationArea[yOnCalculationArea][xOnCalculationArea] = 0;
                 } 
             }
@@ -258,21 +261,21 @@ var logOfEvents = [];
         if (rotationIndex === numberOfRotations) {
             rotationIndex = 0;
         }
-        var blockMapNumberOfRows = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex]).length;
-        var blockMapNumberOfColumns = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex][0]).length;
+        blockMapNumberOfRows = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex]).length;
+        blockMapNumberOfColumns = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex][0]).length;
 
-        for (var y = 0; y < blockMapNumberOfRows; y++) {
-            for (var x = 0; x < blockMapNumberOfColumns; x++) {
+        for (y = 0; y < blockMapNumberOfRows; y++) {
+            for (x = 0; x < blockMapNumberOfColumns; x++) {
                 isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
                 if (isRectangleFilled === 1) {
-                    var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y;
-                    var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
+                    yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y;
+                    xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
                     if (yOnCalculationArea > (numberOfRows - 2)) {
                         // block reached the bottom
                         selectANewBlockNextFrame = true;
                         moveCanBeDone = false;
                     }
-                    if (tempCalculationArea[yOnCalculationArea][xOnCalculationArea] != 0) {
+                    if (tempCalculationArea[yOnCalculationArea][xOnCalculationArea] !== 0) {
                         // move can not be done, as the block in the new position would overlap with something
                         moveCanBeDone = false;
                     }
@@ -291,15 +294,15 @@ var logOfEvents = [];
             if (rotationIndex === numberOfRotations) {
                 rotationIndex = 0;
             }
-            var blockMapNumberOfRows = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex]).length;
-            var blockMapNumberOfColumns = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex][0]).length;
+            blockMapNumberOfRows = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex]).length;
+            blockMapNumberOfColumns = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex][0]).length;
 
-            for (var y = 0; y < blockMapNumberOfRows; y++) {
-                for (var x = 0; x < blockMapNumberOfColumns; x++) {
+            for (y = 0; y < blockMapNumberOfRows; y++) {
+                for (x = 0; x < blockMapNumberOfColumns; x++) {
                     isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
                     if (isRectangleFilled === 1) {
-                        var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y + yCalculationAreaModifier;
-                        var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x + xCalculationAreaModifier;
+                        yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y + yCalculationAreaModifier;
+                        xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x + xCalculationAreaModifier;
                         currentCalculationArea[yOnCalculationArea][xOnCalculationArea] = 0;
                     } 
                 }
@@ -314,14 +317,14 @@ var logOfEvents = [];
             if (rotationIndex === numberOfRotations) {
                 rotationIndex = 0;
             }
-            var blockMapNumberOfRows = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex]).length;
-            var blockMapNumberOfColumns = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex][0]).length;
-            for (var y = 0; y < blockMapNumberOfRows; y++) {
-                for (var x = 0; x < blockMapNumberOfColumns; x++) {
+            blockMapNumberOfRows = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex]).length;
+            blockMapNumberOfColumns = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex][0]).length;
+            for (y = 0; y < blockMapNumberOfRows; y++) {
+                for (x = 0; x < blockMapNumberOfColumns; x++) {
                     isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
                     if (isRectangleFilled === 1) {
-                        var yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y;
-                        var xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
+                        yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y;
+                        xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
                         currentCalculationArea[yOnCalculationArea][xOnCalculationArea] = blockIndex+1;
                     } 
                 }
