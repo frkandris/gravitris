@@ -37,9 +37,13 @@ function drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yM
                 // draw the block
                 ctx.fillRect(xOnCalculationArea * gameLevelEnvironment.pixelSize, yOnCalculationArea * gameLevelEnvironment.pixelSize + yModifierInPixels, (gameLevelEnvironment.pixelSize - 1), (gameLevelEnvironment.pixelSize - 1));
 
+                let isBottomSiblingFilled;
+                let isRightSiblingFilled;
+                let isBottomRightSiblingFilled;
+
                 // check if the block has another pixel on the right this one
                 try {
-                    const isRightSiblingFilled = blockMapToDraw[y][x + 1];
+                    isRightSiblingFilled = blockMapToDraw[y][x + 1];
                     if (isRightSiblingFilled === 1) {
                         ctx.fillRect(xOnCalculationArea * gameLevelEnvironment.pixelSize + gameLevelEnvironment.pixelSize - 1, yOnCalculationArea * gameLevelEnvironment.pixelSize + yModifierInPixels, 1, (gameLevelEnvironment.pixelSize - 1));
                     }
@@ -49,9 +53,19 @@ function drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yM
 
                 // check if the block has another pixel underneath this one
                 try {
-                    const isBottomSiblingFilled = blockMapToDraw[y + 1][x];
+                    isBottomSiblingFilled = blockMapToDraw[y + 1][x];
                     if (isBottomSiblingFilled === 1) {
                         ctx.fillRect(xOnCalculationArea * gameLevelEnvironment.pixelSize, yOnCalculationArea * gameLevelEnvironment.pixelSize + yModifierInPixels + gameLevelEnvironment.pixelSize - 1, (gameLevelEnvironment.pixelSize - 1), 1);
+                    }
+                } catch {
+                    //
+                }
+
+                // check if the block has another pixel underneath and right from this one
+                try {
+                    isBottomRightSiblingFilled = blockMapToDraw[y + 1][x + 1];
+                    if ((isBottomRightSiblingFilled === 1) && (isBottomSiblingFilled === 1) && (isRightSiblingFilled === 1)) {
+                        ctx.fillRect(xOnCalculationArea * gameLevelEnvironment.pixelSize + gameLevelEnvironment.pixelSize - 1, yOnCalculationArea * gameLevelEnvironment.pixelSize + yModifierInPixels + gameLevelEnvironment.pixelSize - 1, 1, 1);
                     }
                 } catch {
                     //
