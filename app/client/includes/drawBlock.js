@@ -1,6 +1,5 @@
 const colorRelated = require('./colorRelated');
-
-const pixelSize = 20;
+const gameLevelEnvironment = require('./gameLevelEnvironment');
 
 // this function draws a block to a canvas
 
@@ -36,13 +35,13 @@ function drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yM
                 ctx.fillStyle = colorRelated.convertColorHexToRGB(blockToDrawColor, opacity);
 
                 // draw the block
-                ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize + yModifierInPixels, (pixelSize - 1), (pixelSize - 1));
+                ctx.fillRect(xOnCalculationArea * gameLevelEnvironment.pixelSize, yOnCalculationArea * gameLevelEnvironment.pixelSize + yModifierInPixels, (gameLevelEnvironment.pixelSize - 1), (gameLevelEnvironment.pixelSize - 1));
 
                 // check if the block has another pixel on the right this one
                 try {
                     const isRightSiblingFilled = blockMapToDraw[y][x + 1];
                     if (isRightSiblingFilled === 1) {
-                        ctx.fillRect(xOnCalculationArea * pixelSize + pixelSize - 1, yOnCalculationArea * pixelSize + yModifierInPixels, 1, (pixelSize - 1));
+                        ctx.fillRect(xOnCalculationArea * gameLevelEnvironment.pixelSize + gameLevelEnvironment.pixelSize - 1, yOnCalculationArea * gameLevelEnvironment.pixelSize + yModifierInPixels, 1, (gameLevelEnvironment.pixelSize - 1));
                     }
                 } catch {
                     //
@@ -52,7 +51,7 @@ function drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yM
                 try {
                     const isBottomSiblingFilled = blockMapToDraw[y + 1][x];
                     if (isBottomSiblingFilled === 1) {
-                        ctx.fillRect(xOnCalculationArea * pixelSize, yOnCalculationArea * pixelSize + yModifierInPixels + pixelSize - 1, (pixelSize - 1), 1);
+                        ctx.fillRect(xOnCalculationArea * gameLevelEnvironment.pixelSize, yOnCalculationArea * gameLevelEnvironment.pixelSize + yModifierInPixels + gameLevelEnvironment.pixelSize - 1, (gameLevelEnvironment.pixelSize - 1), 1);
                     }
                 } catch {
                     //

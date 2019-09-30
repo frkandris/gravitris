@@ -1,6 +1,5 @@
-const gameWidth = 10; // how many columns do we have
-
-const pixelSize = 20;
+const gameLevelEnvironment = require('./includes/gameLevelEnvironment');
+const playerLevelEnvironment = require('./includes/playerLevelEnvironment');
 
 const blockMap = require('./includes/blockMap');
 const colorRelated = require('./includes/colorRelated');
@@ -14,32 +13,17 @@ const statRelated = require('./includes/statRelated');
 
 const drawBlock = require('./includes/drawBlock');
 
-const playAreaWidth = gameWidth * pixelSize;
-
-var fallingSpeed = 1;
-var selectANewBlockNextFrame = true;
 var moveCanBeDone = true;
+
 var stopTheGameLoop = false;
 var blockCounter = 0;
 var frameNumber = 0;
 var playAreaMode = '';
 var fullLines = [];
-
-const fullLineFadeAnimationLength = 10;
-var fullLineFadeAnimationCounter = fullLineFadeAnimationLength;
-
 var listOfBlocksThatCanBeMoved = [];
-
-const gravityAnimationFallingSpeed = 4;
 var gravityAnimationYModifier = 0;
-
-const gameEndFadeAnimationLength = 100;
-var gameEndFadeAnimationCounter = gameEndFadeAnimationLength;
-
 var nextBlocks = [];
-
 var listOfBlocksInThePlayingArea = [];
-
 var logOfEvents = [];
 
 
@@ -96,7 +80,7 @@ var logOfEvents = [];
             });
             // instant drop
             while (moveCanBeDone === true) {
-                yPlayArea = yPlayArea + pixelSize;
+                yPlayArea = yPlayArea + gameLevelEnvironment.pixelSize;
                 moveBlockInCalculationArea('moveDown');
             }
             event.preventDefault();
@@ -121,7 +105,7 @@ var logOfEvents = [];
         // set the current block
         blockIndex = currentBlock;
         rotationIndex = 0;
-        xPlayArea = (playAreaWidth / 2) - (2 * pixelSize);
+        xPlayArea = (gameLevelEnvironment.playAreaWidth / 2) - (2 * gameLevelEnvironment.pixelSize);
         yPlayArea = 0;
 
         const moveCanBeDone = checkIfBlockOverlapsAnythingOnACalculationArea();
@@ -155,8 +139,8 @@ var logOfEvents = [];
             for (let x = 0; x < blockMapNumberOfColumns; x++) {
                 isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
                 if (isRectangleFilled === 1) {
-                    const yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y;
-                    const xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
+                    const yOnCalculationArea = Math.floor(yPlayArea / gameLevelEnvironment.pixelSize) + y;
+                    const xOnCalculationArea = Math.floor(xPlayArea / gameLevelEnvironment.pixelSize) + x;
                     if (currentCalculationArea[yOnCalculationArea][xOnCalculationArea] !== 0) {
                         // move can not be done, as the block in the new position would overlap with something
                         moveCanBeDone = false;
@@ -191,13 +175,13 @@ var logOfEvents = [];
             // calculationArea modifications
             xCalculationAreaModifier = 1;
             // playArea modifications
-            xPlayArea = xPlayArea - pixelSize;
+            xPlayArea = xPlayArea - gameLevelEnvironment.pixelSize;
         }
         if (direction === 'moveRight') {
             // calculationArea modifications
             xCalculationAreaModifier = -1;
             // playArea modifications
-            xPlayArea = xPlayArea + pixelSize;
+            xPlayArea = xPlayArea + gameLevelEnvironment.pixelSize;
         }
         if (direction === 'rotateLeft') {
             // calculationArea modifications
@@ -249,8 +233,8 @@ var logOfEvents = [];
             for (x = 0; x < blockMapNumberOfColumns; x++) {
                 isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
                 if (isRectangleFilled === 1) {
-                    yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y + yCalculationAreaModifier;
-                    xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x + xCalculationAreaModifier;
+                    yOnCalculationArea = Math.floor(yPlayArea / gameLevelEnvironment.pixelSize) + y + yCalculationAreaModifier;
+                    xOnCalculationArea = Math.floor(xPlayArea / gameLevelEnvironment.pixelSize) + x + xCalculationAreaModifier;
                     tempCalculationArea[yOnCalculationArea][xOnCalculationArea] = 0;
                 } 
             }
@@ -272,11 +256,11 @@ var logOfEvents = [];
             for (x = 0; x < blockMapNumberOfColumns; x++) {
                 isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
                 if (isRectangleFilled === 1) {
-                    yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y;
-                    xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
+                    yOnCalculationArea = Math.floor(yPlayArea / gameLevelEnvironment.pixelSize) + y;
+                    xOnCalculationArea = Math.floor(xPlayArea / gameLevelEnvironment.pixelSize) + x;
                     if (yOnCalculationArea > (numberOfRows - 2)) {
                         // block reached the bottom
-                        selectANewBlockNextFrame = true;
+                        playerLevelEnvironment.selectANewBlockNextFrame = true;
                         moveCanBeDone = false;
                     }
                     if (tempCalculationArea[yOnCalculationArea][xOnCalculationArea] !== 0) {
@@ -305,8 +289,8 @@ var logOfEvents = [];
                 for (x = 0; x < blockMapNumberOfColumns; x++) {
                     isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
                     if (isRectangleFilled === 1) {
-                        yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y + yCalculationAreaModifier;
-                        xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x + xCalculationAreaModifier;
+                        yOnCalculationArea = Math.floor(yPlayArea / gameLevelEnvironment.pixelSize) + y + yCalculationAreaModifier;
+                        xOnCalculationArea = Math.floor(xPlayArea / gameLevelEnvironment.pixelSize) + x + xCalculationAreaModifier;
                         currentCalculationArea[yOnCalculationArea][xOnCalculationArea] = 0;
                     } 
                 }
@@ -327,8 +311,8 @@ var logOfEvents = [];
                 for (x = 0; x < blockMapNumberOfColumns; x++) {
                     isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
                     if (isRectangleFilled === 1) {
-                        yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y;
-                        xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
+                        yOnCalculationArea = Math.floor(yPlayArea / gameLevelEnvironment.pixelSize) + y;
+                        xOnCalculationArea = Math.floor(xPlayArea / gameLevelEnvironment.pixelSize) + x;
                         currentCalculationArea[yOnCalculationArea][xOnCalculationArea] = blockIndex+1;
                     } 
                 }
@@ -339,13 +323,13 @@ var logOfEvents = [];
             // move can not be done
             
             if (direction === 'moveDown') {
-                selectANewBlockNextFrame = true;
+                playerLevelEnvironment.selectANewBlockNextFrame = true;
             }
             if (direction === 'moveLeft') {
-                xPlayArea = xPlayArea + pixelSize;
+                xPlayArea = xPlayArea + gameLevelEnvironment.pixelSize;
             }
             if (direction === 'moveRight') {
-                xPlayArea = xPlayArea - pixelSize;
+                xPlayArea = xPlayArea - gameLevelEnvironment.pixelSize;
             }
             if (direction === 'rotateLeft') {
                 rotationIndex--;
@@ -403,8 +387,8 @@ var logOfEvents = [];
             for (x = 0; x < blockMapNumberOfColumns; x++) {
                 isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
                 if (isRectangleFilled === 1) {
-                    const yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y;
-                    const xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
+                    const yOnCalculationArea = Math.floor(yPlayArea / gameLevelEnvironment.pixelSize) + y;
+                    const xOnCalculationArea = Math.floor(xPlayArea / gameLevelEnvironment.pixelSize) + x;
                     tempCalculationArea[yOnCalculationArea][xOnCalculationArea] = 0;
                 }
             }
@@ -418,15 +402,15 @@ var logOfEvents = [];
 
         // draw pixelperfect moving block
 
-        const xModifierInSquares = xPlayArea / pixelSize;
-        const yModifierInSquares = yPlayArea / pixelSize;
+        const xModifierInSquares = xPlayArea / gameLevelEnvironment.pixelSize;
+        const yModifierInSquares = yPlayArea / gameLevelEnvironment.pixelSize;
         const yModifierInPixels = 0;
         const blockToDrawIndex = blockIndex;
         const blockToDrawRotation = rotationIndex;
         const drawEmptyLines = true;
         const blockMapToDraw = blockMap[blockToDrawIndex][blockToDrawRotation][blockToDrawRotation];
         const blockToDrawColor = colorRelated.getBlockColor(blockToDrawIndex);
-        drawBlock.drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yModifierInSquares, yModifierInPixels, drawEmptyLines, playAreaMode, fullLines, gameEndFadeAnimationCounter, gameEndFadeAnimationLength, fullLineFadeAnimationCounter, fullLineFadeAnimationLength);
+        drawBlock.drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yModifierInSquares, yModifierInPixels, drawEmptyLines, playAreaMode, fullLines, playerLevelEnvironment.gameEndFadeAnimationCounter, gameLevelEnvironment.gameEndFadeAnimationLength, playerLevelEnvironment.fullLineFadeAnimationCounter, gameLevelEnvironment.fullLineFadeAnimationLength);
 
     }
 
@@ -445,7 +429,7 @@ var logOfEvents = [];
             const drawEmptyLines = true;
             const blockMapToDraw = listOfBlocksInThePlayingArea[i].blockMap;
             const blockToDrawColor = colorRelated.getBlockColor(listOfBlocksInThePlayingArea[i].blockIndex);
-            drawBlock.drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yModifierInSquares, yModifierInPixels, drawEmptyLines, playAreaMode, fullLines, gameEndFadeAnimationCounter, gameEndFadeAnimationLength, fullLineFadeAnimationCounter, fullLineFadeAnimationLength);
+            drawBlock.drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yModifierInSquares, yModifierInPixels, drawEmptyLines, playAreaMode, fullLines, playerLevelEnvironment.gameEndFadeAnimationCounter, gameLevelEnvironment.gameEndFadeAnimationLength, playerLevelEnvironment.fullLineFadeAnimationCounter, gameLevelEnvironment.fullLineFadeAnimationLength);
 
         }        
     }
@@ -506,10 +490,10 @@ var logOfEvents = [];
 
     function animateFullLines() {
 
-        fullLineFadeAnimationCounter--;
+        playerLevelEnvironment.fullLineFadeAnimationCounter--;
 
-        if (fullLineFadeAnimationCounter === 0) {
-            fullLineFadeAnimationCounter = fullLineFadeAnimationLength;
+        if (playerLevelEnvironment.fullLineFadeAnimationCounter === 0) {
+            playerLevelEnvironment.fullLineFadeAnimationCounter = gameLevelEnvironment.fullLineFadeAnimationLength;
             return true;
         } else {
             return false;
@@ -568,8 +552,8 @@ var logOfEvents = [];
                 for (let x = 0; x < blockMapNumberOfColumns; x++) {
                     isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
                     if (isRectangleFilled === 1) {
-                        const yOnCalculationArea = Math.floor(yPlayArea / pixelSize) + y + yModifier;
-                        const xOnCalculationArea = Math.floor(xPlayArea / pixelSize) + x;
+                        const yOnCalculationArea = Math.floor(yPlayArea / gameLevelEnvironment.pixelSize) + y + yModifier;
+                        const xOnCalculationArea = Math.floor(xPlayArea / gameLevelEnvironment.pixelSize) + x;
                         if (yOnCalculationArea > (numberOfRows - 2)) {
                             shadowCanBeMoved = false;
                         }
@@ -587,15 +571,15 @@ var logOfEvents = [];
         const c = document.getElementById("playAreaCanvas");
         const ctx = c.getContext("2d");
 
-        const xModifierInSquares = Math.floor(xPlayArea / pixelSize);
-        const yModifierInSquares = Math.floor(yPlayArea / pixelSize) + yModifier - 1;
+        const xModifierInSquares = Math.floor(xPlayArea / gameLevelEnvironment.pixelSize);
+        const yModifierInSquares = Math.floor(yPlayArea / gameLevelEnvironment.pixelSize) + yModifier - 1;
         const yModifierInPixels = 0;
         const blockToDrawIndex = blockIndex;
         const blockToDrawRotation = rotationIndex;
         const drawEmptyLines = true;
         const blockMapToDraw = blockMap[blockToDrawIndex][blockToDrawRotation][blockToDrawRotation];
         const blockToDrawColor = colorRelated.getBlockColor('shadow');
-        drawBlock.drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yModifierInSquares, yModifierInPixels, drawEmptyLines, playAreaMode, fullLines, gameEndFadeAnimationCounter, gameEndFadeAnimationLength, fullLineFadeAnimationCounter, fullLineFadeAnimationLength);
+        drawBlock.drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yModifierInSquares, yModifierInPixels, drawEmptyLines, playAreaMode, fullLines, playerLevelEnvironment.gameEndFadeAnimationCounter, gameLevelEnvironment.gameEndFadeAnimationLength, playerLevelEnvironment.fullLineFadeAnimationCounter, gameLevelEnvironment.fullLineFadeAnimationLength);
 
     }
 
@@ -618,7 +602,7 @@ var logOfEvents = [];
             const drawEmptyLines = false;
             const blockMapToDraw = blockMap[blockToDrawIndex][blockToDrawRotation][blockToDrawRotation];
             const blockToDrawColor = colorRelated.getBlockColor(blockToDrawIndex);
-            drawBlock.drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yModifierInSquares, yModifierInPixels, drawEmptyLines, playAreaMode, fullLines, gameEndFadeAnimationCounter, gameEndFadeAnimationLength, fullLineFadeAnimationCounter, fullLineFadeAnimationLength);
+            drawBlock.drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yModifierInSquares, yModifierInPixels, drawEmptyLines, playAreaMode, fullLines, playerLevelEnvironment.gameEndFadeAnimationCounter, gameLevelEnvironment.gameEndFadeAnimationLength, playerLevelEnvironment.fullLineFadeAnimationCounter, gameLevelEnvironment.fullLineFadeAnimationLength);
         }
     }
 
@@ -639,8 +623,8 @@ var logOfEvents = [];
                 listOfBlocksInThePlayingArea.push({ 
                     blockMap: blockMap[blockIndex][rotationIndex][rotationIndex],
                     blockIndex: blockIndex,
-                    blockX: Math.floor(xPlayArea / pixelSize),
-                    blockY: Math.floor(yPlayArea / pixelSize) - 1,
+                    blockX: Math.floor(xPlayArea / gameLevelEnvironment.pixelSize),
+                    blockY: Math.floor(yPlayArea / gameLevelEnvironment.pixelSize) - 1,
                     blockCounter: blockCounter,
                     wasChecked: false
                 });
@@ -929,7 +913,7 @@ var logOfEvents = [];
             } else {
                 yModifierInPixels = 0;
             }
-            drawBlock.drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yModifierInSquares, yModifierInPixels, drawEmptyLines, playAreaMode, fullLines, gameEndFadeAnimationCounter, gameEndFadeAnimationLength, fullLineFadeAnimationCounter, fullLineFadeAnimationLength);
+            drawBlock.drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yModifierInSquares, yModifierInPixels, drawEmptyLines, playAreaMode, fullLines, playerLevelEnvironment.gameEndFadeAnimationCounter, gameLevelEnvironment.gameEndFadeAnimationLength, playerLevelEnvironment.fullLineFadeAnimationCounter, gameLevelEnvironment.fullLineFadeAnimationLength);
         }
     }
 
@@ -942,24 +926,24 @@ var logOfEvents = [];
         checkFullLineInCurrentCalculationArea();
 
         // if we need to set a new block, save the old one and set a new one
-        if (selectANewBlockNextFrame === true) {
+        if (playerLevelEnvironment.selectANewBlockNextFrame === true) {
 
             // save old one
             saveDoneBlock();
 
             // select a new one
             selectANewBlock();
-            selectANewBlockNextFrame = false;
+            playerLevelEnvironment.selectANewBlockNextFrame = false;
         }
         
         // let's move the current block down
 
         // y previously in the calculationArea
-        let previousYCalculationArea = Math.floor(yPlayArea / pixelSize);
+        let previousYCalculationArea = Math.floor(yPlayArea / gameLevelEnvironment.pixelSize);
         // y in the playArea
-        yPlayArea = yPlayArea + fallingSpeed;
+        yPlayArea = yPlayArea + playerLevelEnvironment.fallingSpeed;
         // y now in the calculationArea
-        let currentYCalculationArea = Math.floor(yPlayArea / pixelSize);
+        let currentYCalculationArea = Math.floor(yPlayArea / gameLevelEnvironment.pixelSize);
         // do we need to move down the block in the calculationArea
         if (previousYCalculationArea !== currentYCalculationArea) {
             // yes, try to do the move in calculationArea
@@ -970,7 +954,7 @@ var logOfEvents = [];
         }
 
         // if the current block will be replaced next frame, don't draw the playArea
-        if (selectANewBlockNextFrame === false) {
+        if (playerLevelEnvironment.selectANewBlockNextFrame === false) {
             // draw the pixel perfect playArea
             drawPlayAreaWithFallingBlock();
         }
@@ -1005,8 +989,8 @@ var logOfEvents = [];
 
     function gravityAnimationRoutine() {
 
-        gravityAnimationYModifier = gravityAnimationYModifier + gravityAnimationFallingSpeed;
-        if (gravityAnimationYModifier < pixelSize) {
+        gravityAnimationYModifier = gravityAnimationYModifier + gameLevelEnvironment.gravityAnimationFallingSpeed;
+        if (gravityAnimationYModifier < gameLevelEnvironment.pixelSize) {
             drawPlayAreaWithFallingBlocks();
         } else {
             for (let i = 0; i < listOfBlocksThatCanBeMoved.length; i++) {
@@ -1040,12 +1024,12 @@ var logOfEvents = [];
         drawPlayArea();
 
         // increase opacity
-        gameEndFadeAnimationCounter--;
+        playerLevelEnvironment.gameEndFadeAnimationCounter--;
 
         // check if everything has faded out properly
-        if (gameEndFadeAnimationCounter === 0) {
+        if (playerLevelEnvironment.gameEndFadeAnimationCounter === 0) {
 
-            gameEndFadeAnimationCounter = gameEndFadeAnimationLength;
+            playerLevelEnvironment.gameEndFadeAnimationCounter = gameLevelEnvironment.gameEndFadeAnimationLength;
             
             statRelated.displayGameEndStats(blockCounter);
 
