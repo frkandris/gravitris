@@ -14,8 +14,6 @@ const statRelated = require('./includes/statRelated');
 const drawBlock = require('./includes/drawBlock');
 
 
-let gravityAnimationYModifier = 0;
-let nextBlocks = [];
 let listOfBlocksInThePlayingArea = [];
 let logOfEvents = [];
 
@@ -81,7 +79,7 @@ let logOfEvents = [];
 
 
     // this function sets the next new block
-    // (gets the new one from the nextBlocks, adds a new random block to nextBlocks, sets coordinates of the new block)
+    // (gets the new one from the playerLevelEnvironment.nextBlocks, adds a new random block to playerLevelEnvironment.nextBlocks, sets coordinates of the new block)
 
     function selectANewBlock(){
 
@@ -89,10 +87,10 @@ let logOfEvents = [];
         const newBlock = selectABlockRandomly();
 
         // add new item to the beginning of the array
-        nextBlocks.unshift(newBlock);
+        playerLevelEnvironment.nextBlocks.unshift(newBlock);
 
-        let currentBlock = nextBlocks.slice(-1).pop(); // get the last item
-        nextBlocks.splice(-1,1); // remove the last item
+        let currentBlock = playerLevelEnvironment.nextBlocks.slice(-1).pop(); // get the last item
+        playerLevelEnvironment.nextBlocks.splice(-1,1); // remove the last item
 
         // set the current block
         blockIndex = currentBlock;
@@ -585,8 +583,8 @@ let logOfEvents = [];
         const ctx = c.getContext("2d");
         ctx.clearRect(0, 0, c.width, c.height);
 
-        for (let i = 0; i < nextBlocks.length; i++) {
-            const blockToDrawIndex = nextBlocks[i];
+        for (let i = 0; i < playerLevelEnvironment.nextBlocks.length; i++) {
+            const blockToDrawIndex = playerLevelEnvironment.nextBlocks[i];
             const blockToDrawRotation = 0;
             const xModifierInSquares = i * 5;
             const yModifierInSquares = 0;
@@ -901,7 +899,7 @@ let logOfEvents = [];
             const blockMapToDraw = listOfBlocksInThePlayingArea[i].blockMap;
             const blockToDrawColor = colorRelated.getBlockColor(listOfBlocksInThePlayingArea[i].blockIndex);
             if (playerLevelEnvironment.listOfBlocksThatCanBeMoved.includes(i)) {
-                yModifierInPixels = gravityAnimationYModifier;
+                yModifierInPixels = playerLevelEnvironment.gravityAnimationYModifier;
             } else {
                 yModifierInPixels = 0;
             }
@@ -981,8 +979,8 @@ let logOfEvents = [];
 
     function gravityAnimationRoutine() {
 
-        gravityAnimationYModifier = gravityAnimationYModifier + gameLevelEnvironment.gravityAnimationFallingSpeed;
-        if (gravityAnimationYModifier < gameLevelEnvironment.pixelSize) {
+        playerLevelEnvironment.gravityAnimationYModifier = playerLevelEnvironment.gravityAnimationYModifier + gameLevelEnvironment.gravityAnimationFallingSpeed;
+        if (playerLevelEnvironment.gravityAnimationYModifier < gameLevelEnvironment.pixelSize) {
             drawPlayAreaWithFallingBlocks();
         } else {
             for (let i = 0; i < playerLevelEnvironment.listOfBlocksThatCanBeMoved.length; i++) {
@@ -991,7 +989,7 @@ let logOfEvents = [];
             calculateCurrentGravityCalculationArea();
             copyCurrentGravityCalculationAreaToCurrentCalculationArea();
 
-            gravityAnimationYModifier = 0;
+            playerLevelEnvironment.gravityAnimationYModifier = 0;
 
             const isThereABlockThatCanBeMoved = checkIfAnyBlockCanFallDown();
             if (isThereABlockThatCanBeMoved === true) {
@@ -1074,11 +1072,11 @@ document.onkeydown = checkKeyboardInput;
 
 // let's generate the first 3 blocks
 blockIndex = selectABlockRandomly();
-nextBlocks.unshift(blockIndex);
+playerLevelEnvironment.nextBlocks.unshift(blockIndex);
 blockIndex = selectABlockRandomly();
-nextBlocks.unshift(blockIndex);
+playerLevelEnvironment.nextBlocks.unshift(blockIndex);
 blockIndex = selectABlockRandomly();
-nextBlocks.unshift(blockIndex);
+playerLevelEnvironment.nextBlocks.unshift(blockIndex);
 
 // set playerLevelEnvironment.playAreaMode
 playerLevelEnvironment.playAreaMode = 'blockFallingAnimation';
