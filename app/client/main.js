@@ -18,9 +18,8 @@ const drawBlock = require('./includes/drawBlock');
 
     function checkKeyboardInput(event) {
 
-        switch (event.which) {
-            case 38:
-                // up
+        switch (event.key) {
+            case "ArrowUp":
                 playerLevelEnvironment.logOfEvents.push({
                     frameNumber: playerLevelEnvironment.frameNumber,
                     event: 'keyPressed',
@@ -28,8 +27,7 @@ const drawBlock = require('./includes/drawBlock');
                 });
                 moveBlockInCalculationArea('rotateRight');
                 break;
-            case 40:
-                // down
+            case "ArrowDown":
                 playerLevelEnvironment.logOfEvents.push({
                     frameNumber: playerLevelEnvironment.frameNumber,
                     event: 'keyPressed',
@@ -37,8 +35,7 @@ const drawBlock = require('./includes/drawBlock');
                 });
                 moveBlockInCalculationArea('rotateLeft');
                 break;
-            case 37:
-                // left
+            case "ArrowLeft":
                 playerLevelEnvironment.logOfEvents.push({
                     frameNumber: playerLevelEnvironment.frameNumber,
                     event: 'keyPressed',
@@ -46,8 +43,7 @@ const drawBlock = require('./includes/drawBlock');
                 });
                 moveBlockInCalculationArea('moveLeft');
                 break;
-            case 39:
-                // right
+            case "ArrowRight":
                 playerLevelEnvironment.logOfEvents.push({
                     frameNumber: playerLevelEnvironment.frameNumber,
                     event: 'keyPressed',
@@ -55,8 +51,7 @@ const drawBlock = require('./includes/drawBlock');
                 });
                 moveBlockInCalculationArea('moveRight');
                 break;
-            case 32:
-                // space
+            case "Space":
                 playerLevelEnvironment.logOfEvents.push({
                     frameNumber: playerLevelEnvironment.frameNumber,
                     event: 'keyPressed',
@@ -344,7 +339,7 @@ const drawBlock = require('./includes/drawBlock');
     }
 
 
-    // this function draws the playArea, the shadow and the pixelperfect falling block
+    // this function draws the playArea, the shadow and the pixel perfect falling block
 
     function drawPlayAreaWithFallingBlock() {
 
@@ -387,7 +382,7 @@ const drawBlock = require('./includes/drawBlock');
 
         drawShadow();
 
-        // draw pixelperfect moving block
+        // draw pixel perfect moving block
 
         const xModifierInSquares = playerLevelEnvironment.xPlayArea / gameLevelEnvironment.pixelSize;
         const yModifierInSquares = playerLevelEnvironment.yPlayArea / gameLevelEnvironment.pixelSize;
@@ -473,7 +468,7 @@ const drawBlock = require('./includes/drawBlock');
     }
 
 
-    // this function animates the full lines, until they are nonvisible
+    // this function animates the full lines, until they are non-visible
 
     function animateFullLines() {
 
@@ -1020,7 +1015,7 @@ const drawBlock = require('./includes/drawBlock');
 
             statRelated.displayGameEndStats(playerLevelEnvironment.blockCounter);
 
-            $('#gamestartbutton').css('visibility','visible');
+            $('#game-start-button').css('visibility','visible');
 
             // stop the game loop
             gameLevelEnvironment.stopTheGameLoop = true;
@@ -1081,5 +1076,5 @@ playerLevelEnvironment.playAreaMode = 'blockFallingAnimation';
 // record game start time
 statRelated.setGameStartTime();
 
-// start the gameloop
+// start the game loop
 requestAnimationFrame(gameLoop);
