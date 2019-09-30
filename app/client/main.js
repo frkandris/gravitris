@@ -13,64 +13,65 @@ const statRelated = require('./includes/statRelated');
 
 const drawBlock = require('./includes/drawBlock');
 
+
     // this function handles the keyboard events
 
-    function checkKeyboardInput(e) {
-        e = e || window.event;
-        if (e.keyCode === 38) {
-            // up
-            playerLevelEnvironment.logOfEvents.push({
-                frameNumber: playerLevelEnvironment.frameNumber,
-                event: 'keyPressed',
-                eventValue: 'rotateRight'
-            });
-            moveBlockInCalculationArea('rotateRight');
-            event.preventDefault();
+    function checkKeyboardInput(event) {
+
+        switch (event.which) {
+            case 38:
+                // up
+                playerLevelEnvironment.logOfEvents.push({
+                    frameNumber: playerLevelEnvironment.frameNumber,
+                    event: 'keyPressed',
+                    eventValue: 'rotateRight'
+                });
+                moveBlockInCalculationArea('rotateRight');
+                break;
+            case 40:
+                // down
+                playerLevelEnvironment.logOfEvents.push({
+                    frameNumber: playerLevelEnvironment.frameNumber,
+                    event: 'keyPressed',
+                    eventValue: 'rotateLeft'
+                });
+                moveBlockInCalculationArea('rotateLeft');
+                break;
+            case 37:
+                // left
+                playerLevelEnvironment.logOfEvents.push({
+                    frameNumber: playerLevelEnvironment.frameNumber,
+                    event: 'keyPressed',
+                    eventValue: 'moveLeft'
+                });
+                moveBlockInCalculationArea('moveLeft');
+                break;
+            case 39:
+                // right
+                playerLevelEnvironment.logOfEvents.push({
+                    frameNumber: playerLevelEnvironment.frameNumber,
+                    event: 'keyPressed',
+                    eventValue: 'moveRight'
+                });
+                moveBlockInCalculationArea('moveRight');
+                break;
+            case 32:
+                // space
+                playerLevelEnvironment.logOfEvents.push({
+                    frameNumber: playerLevelEnvironment.frameNumber,
+                    event: 'keyPressed',
+                    eventValue: 'instantDrop'
+                });
+                // instant drop
+                while (playerLevelEnvironment.moveCanBeDone === true) {
+                    playerLevelEnvironment.yPlayArea = playerLevelEnvironment.yPlayArea + gameLevelEnvironment.pixelSize;
+                    moveBlockInCalculationArea('moveDown');
+                }
+                break;
+            default:
+                return;
         }
-        else if (e.keyCode === 40) {
-            // down
-            playerLevelEnvironment.logOfEvents.push({
-                frameNumber: playerLevelEnvironment.frameNumber,
-                event: 'keyPressed',
-                eventValue: 'rotateLeft'
-            });
-            moveBlockInCalculationArea('rotateLeft');
-            event.preventDefault();
-        }
-        else if (e.keyCode === 37) {
-            // left
-            playerLevelEnvironment.logOfEvents.push({
-                frameNumber: playerLevelEnvironment.frameNumber,
-                event: 'keyPressed',
-                eventValue: 'moveLeft'
-            });
-            moveBlockInCalculationArea('moveLeft');
-            event.preventDefault();
-        }
-        else if (e.keyCode === 39) {
-            // right
-            playerLevelEnvironment.logOfEvents.push({
-                frameNumber: playerLevelEnvironment.frameNumber,
-                event: 'keyPressed',
-                eventValue: 'moveRight'
-            });
-            moveBlockInCalculationArea('moveRight');
-            event.preventDefault();
-        }
-        else if (e.keyCode === 32) {
-            // space
-            playerLevelEnvironment.logOfEvents.push({
-                frameNumber: playerLevelEnvironment.frameNumber,
-                event: 'keyPressed',
-                eventValue: 'instantDrop'
-            });
-            // instant drop
-            while (playerLevelEnvironment.moveCanBeDone === true) {
-                playerLevelEnvironment.yPlayArea = playerLevelEnvironment.yPlayArea + gameLevelEnvironment.pixelSize;
-                moveBlockInCalculationArea('moveDown');
-            }
-            event.preventDefault();
-        }
+        event.preventDefault();
     }
 
 
