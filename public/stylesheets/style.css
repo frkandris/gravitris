@@ -2,7 +2,7 @@ body {
   background-color:#000000;
 }
 
-#gamecontainer {
+#game-container {
   margin:auto;
   text-align:center;
   padding: 40px;
@@ -15,7 +15,6 @@ canvas {
 #game-start-button {
   visibility: hidden;
   position: absolute;
-  margin: 0 auto;
   z-index: 2;
   width: 180px;
   height: 40px;
