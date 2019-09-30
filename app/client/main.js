@@ -1002,8 +1002,11 @@ const drawBlock = require('./includes/drawBlock');
         // no more moves
         document.onkeydown = null;
 
-        // draw the play area
+        // draw the fading play area
         drawPlayArea();
+
+        // draw next blocks, so they fade too
+        drawNextBlocksArea();
 
         // increase opacity
         playerLevelEnvironment.gameEndFadeAnimationCounter--;
