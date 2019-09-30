@@ -51,7 +51,7 @@ const drawBlock = require('./includes/drawBlock');
                 });
                 moveBlockInCalculationArea('moveRight');
                 break;
-            case "Space":
+            case " ":
                 playerLevelEnvironment.logOfEvents.push({
                     frameNumber: playerLevelEnvironment.frameNumber,
                     event: 'keyPressed',
