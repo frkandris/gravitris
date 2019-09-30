@@ -13,16 +13,13 @@ const statRelated = require('./includes/statRelated');
 
 const drawBlock = require('./includes/drawBlock');
 
-
-let logOfEvents = [];
-
     // this function handles the keyboard events
 
     function checkKeyboardInput(e) {
         e = e || window.event;
         if (e.keyCode === 38) {
             // up
-            logOfEvents.push({
+            playerLevelEnvironment.logOfEvents.push({
                 frameNumber: playerLevelEnvironment.frameNumber,
                 event: 'keyPressed',
                 eventValue: 'rotateRight'
@@ -32,7 +29,7 @@ let logOfEvents = [];
         }
         else if (e.keyCode === 40) {
             // down
-            logOfEvents.push({
+            playerLevelEnvironment.logOfEvents.push({
                 frameNumber: playerLevelEnvironment.frameNumber,
                 event: 'keyPressed',
                 eventValue: 'rotateLeft'
@@ -42,7 +39,7 @@ let logOfEvents = [];
         }
         else if (e.keyCode === 37) {
             // left
-            logOfEvents.push({
+            playerLevelEnvironment.logOfEvents.push({
                 frameNumber: playerLevelEnvironment.frameNumber,
                 event: 'keyPressed',
                 eventValue: 'moveLeft'
@@ -52,7 +49,7 @@ let logOfEvents = [];
         }
         else if (e.keyCode === 39) {
             // right
-            logOfEvents.push({
+            playerLevelEnvironment.logOfEvents.push({
                 frameNumber: playerLevelEnvironment.frameNumber,
                 event: 'keyPressed',
                 eventValue: 'moveRight'
@@ -62,7 +59,7 @@ let logOfEvents = [];
         }
         else if (e.keyCode === 32) {
             // space
-            logOfEvents.push({
+            playerLevelEnvironment.logOfEvents.push({
                 frameNumber: playerLevelEnvironment.frameNumber,
                 event: 'keyPressed',
                 eventValue: 'instantDrop'
@@ -105,7 +102,7 @@ let logOfEvents = [];
 
         playerLevelEnvironment.blockCounter++;
 
-        logOfEvents.push({
+        playerLevelEnvironment.logOfEvents.push({
             frameNumber: playerLevelEnvironment.frameNumber,
             event: 'newBlock',
             eventValue: blockIndex
