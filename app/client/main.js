@@ -14,7 +14,6 @@ const statRelated = require('./includes/statRelated');
 const drawBlock = require('./includes/drawBlock');
 
 
-let listOfBlocksThatCanBeMoved = [];
 let gravityAnimationYModifier = 0;
 let nextBlocks = [];
 let listOfBlocksInThePlayingArea = [];
@@ -781,7 +780,7 @@ let logOfEvents = [];
         let x;
         let y;
         let thereWasMovementInThisRound = false;
-        listOfBlocksThatCanBeMoved = [];
+        playerLevelEnvironment.listOfBlocksThatCanBeMoved = [];
 
         // let's iterate thru all the blocks we have in listOfBlocksInThePlayingArea
         let isRectangleFilled;
@@ -857,7 +856,7 @@ let logOfEvents = [];
                 }
             }
             if (blockCanBeMoved === true) {
-                listOfBlocksThatCanBeMoved.push(i);
+                playerLevelEnvironment.listOfBlocksThatCanBeMoved.push(i);
                 thereWasMovementInThisRound = true;
             } else {
                 // block could not be moved
@@ -901,7 +900,7 @@ let logOfEvents = [];
             const drawEmptyLines = true;
             const blockMapToDraw = listOfBlocksInThePlayingArea[i].blockMap;
             const blockToDrawColor = colorRelated.getBlockColor(listOfBlocksInThePlayingArea[i].blockIndex);
-            if (listOfBlocksThatCanBeMoved.includes(i)) {
+            if (playerLevelEnvironment.listOfBlocksThatCanBeMoved.includes(i)) {
                 yModifierInPixels = gravityAnimationYModifier;
             } else {
                 yModifierInPixels = 0;
@@ -986,8 +985,8 @@ let logOfEvents = [];
         if (gravityAnimationYModifier < gameLevelEnvironment.pixelSize) {
             drawPlayAreaWithFallingBlocks();
         } else {
-            for (let i = 0; i < listOfBlocksThatCanBeMoved.length; i++) {
-                listOfBlocksInThePlayingArea[listOfBlocksThatCanBeMoved[i]].blockY++;
+            for (let i = 0; i < playerLevelEnvironment.listOfBlocksThatCanBeMoved.length; i++) {
+                listOfBlocksInThePlayingArea[playerLevelEnvironment.listOfBlocksThatCanBeMoved[i]].blockY++;
             }
             calculateCurrentGravityCalculationArea();
             copyCurrentGravityCalculationAreaToCurrentCalculationArea();
