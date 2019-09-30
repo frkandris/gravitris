@@ -14,7 +14,6 @@ const statRelated = require('./includes/statRelated');
 const drawBlock = require('./includes/drawBlock');
 
 
-let listOfBlocksInThePlayingArea = [];
 let logOfEvents = [];
 
     // this function handles the keyboard events
@@ -409,16 +408,16 @@ let logOfEvents = [];
 
     function drawAllBlocksToPlayArea(ctx) {
 
-        // go thru the blocks one by one in listOfBlocksInThePlayingArea
-        for (let i = 0; i < listOfBlocksInThePlayingArea.length; i++) {
+        // go thru the blocks one by one in playerLevelEnvironment.listOfBlocksInThePlayingArea
+        for (let i = 0; i < playerLevelEnvironment.listOfBlocksInThePlayingArea.length; i++) {
 
             // draw the block
-            const xModifierInSquares = listOfBlocksInThePlayingArea[i].blockX;
-            const yModifierInSquares = listOfBlocksInThePlayingArea[i].blockY + 1;
+            const xModifierInSquares = playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockX;
+            const yModifierInSquares = playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockY + 1;
             const yModifierInPixels = 0;
             const drawEmptyLines = true;
-            const blockMapToDraw = listOfBlocksInThePlayingArea[i].blockMap;
-            const blockToDrawColor = colorRelated.getBlockColor(listOfBlocksInThePlayingArea[i].blockIndex);
+            const blockMapToDraw = playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockMap;
+            const blockToDrawColor = colorRelated.getBlockColor(playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockIndex);
             drawBlock.drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yModifierInSquares, yModifierInPixels, drawEmptyLines, playerLevelEnvironment.playAreaMode, playerLevelEnvironment.fullLines, playerLevelEnvironment.gameEndFadeAnimationCounter, gameLevelEnvironment.gameEndFadeAnimationLength, playerLevelEnvironment.fullLineFadeAnimationCounter, gameLevelEnvironment.fullLineFadeAnimationLength);
 
         }
@@ -515,8 +514,8 @@ let logOfEvents = [];
                 }
             }
 
-            // modify listOfBlocksInThePlayingArea because of full line
-            modifylistOfBlocksInThePlayingAreaBecauseOfFullLine(fullLine);
+            // modify playerLevelEnvironment.listOfBlocksInThePlayingArea because of full line
+            modifyListOfBlocksInThePlayingAreaBecauseOfFullLine(fullLine);
         }
 
         playerLevelEnvironment.playAreaMode = 'gravityAnimation';
@@ -597,20 +596,20 @@ let logOfEvents = [];
     }
 
 
-    // this function saves the block that has completed its journey to listOfBlocksInThePlayingArea
+    // this function saves the block that has completed its journey to playerLevelEnvironment.listOfBlocksInThePlayingArea
 
     function saveDoneBlock() {
 
         let blockAlreadyInserted = false;
-        for (let i = 0; i < listOfBlocksInThePlayingArea.length; i++) {
-            if (listOfBlocksInThePlayingArea[i].blockCounter === playerLevelEnvironment.blockCounter) {
+        for (let i = 0; i < playerLevelEnvironment.listOfBlocksInThePlayingArea.length; i++) {
+            if (playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockCounter === playerLevelEnvironment.blockCounter) {
                 blockAlreadyInserted = true;
             }
         }
 
         if (blockAlreadyInserted === false) {
             try {
-                listOfBlocksInThePlayingArea.push({
+                playerLevelEnvironment.listOfBlocksInThePlayingArea.push({
                     blockMap: blockMap[blockIndex][rotationIndex][rotationIndex],
                     blockIndex: blockIndex,
                     blockX: Math.floor(xPlayArea / gameLevelEnvironment.pixelSize),
@@ -645,19 +644,19 @@ let logOfEvents = [];
         const ctx = c.getContext("2d");
         ctx.clearRect(0, 0, c.width, c.height);
 
-        // go thru the blocks one by one in listOfBlocksInThePlayingArea
+        // go thru the blocks one by one in playerLevelEnvironment.listOfBlocksInThePlayingArea
         let isRectangleFilled;
-        for (let i = 0; i < listOfBlocksInThePlayingArea.length; i++) {
-            const blockMapNumberOfRows = Object.keys(listOfBlocksInThePlayingArea[i].blockMap).length;
-            const blockMapNumberOfColumns = Object.keys(listOfBlocksInThePlayingArea[i].blockMap[0]).length;
+        for (let i = 0; i < playerLevelEnvironment.listOfBlocksInThePlayingArea.length; i++) {
+            const blockMapNumberOfRows = Object.keys(playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockMap).length;
+            const blockMapNumberOfColumns = Object.keys(playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockMap[0]).length;
             for (y = 0; y < blockMapNumberOfRows; y++) {
                 for (x = 0; x < blockMapNumberOfColumns; x++) {
-                    isRectangleFilled = listOfBlocksInThePlayingArea[i].blockMap[y][x];
+                    isRectangleFilled = playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockMap[y][x];
                     if (isRectangleFilled === 1) {
                         // copy the map of the block to currentGravityCalculationArea
-                        const yOnGravityCalculationArea = listOfBlocksInThePlayingArea[i].blockY + y;
-                        const xOnGravityCalculationArea = listOfBlocksInThePlayingArea[i].blockX + x;
-                        let colorOnGravityCalculationArea = listOfBlocksInThePlayingArea[i].blockIndex + 1;
+                        const yOnGravityCalculationArea = playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockY + y;
+                        const xOnGravityCalculationArea = playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockX + x;
+                        let colorOnGravityCalculationArea = playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockIndex + 1;
                         currentGravityCalculationArea[yOnGravityCalculationArea][xOnGravityCalculationArea] = colorOnGravityCalculationArea;
                     }
                 }
@@ -666,31 +665,31 @@ let logOfEvents = [];
     }
 
 
-    // this function modifies blocks in the listOfBlocksInThePlayingArea in case there was a full line
+    // this function modifies blocks in the playerLevelEnvironment.listOfBlocksInThePlayingArea in case there was a full line
 
-    function modifylistOfBlocksInThePlayingAreaBecauseOfFullLine(fullLineIndex) {
+    function modifyListOfBlocksInThePlayingAreaBecauseOfFullLine(fullLineIndex) {
 
         let newBlockMap;
         let x;
         let y;
 
-        // go thru the blocks one by one in listOfBlocksInThePlayingArea
+        // go thru the blocks one by one in playerLevelEnvironment.listOfBlocksInThePlayingArea
         // (we iterate backwards, so when we remove an item reindexing the array will not break the loop)
         let blockIsAffected;
         let isRectangleFilled;
         let lineAffected;
         let thereWerePixelsAboveTheCut;
         let thereWerePixelsUnderTheCut;
-        for (let i = listOfBlocksInThePlayingArea.length - 1; i >= 0; i--) {
+        for (let i = playerLevelEnvironment.listOfBlocksInThePlayingArea.length - 1; i >= 0; i--) {
             blockIsAffected = false;
-            listOfBlocksInThePlayingArea[i].wasChecked = true;
-            const blockMapNumberOfRows = Object.keys(listOfBlocksInThePlayingArea[i].blockMap).length;
-            const blockMapNumberOfColumns = Object.keys(listOfBlocksInThePlayingArea[i].blockMap[0]).length;
+            playerLevelEnvironment.listOfBlocksInThePlayingArea[i].wasChecked = true;
+            const blockMapNumberOfRows = Object.keys(playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockMap).length;
+            const blockMapNumberOfColumns = Object.keys(playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockMap[0]).length;
             for (y = 0; y < blockMapNumberOfRows; y++) {
                 for (x = 0; x < blockMapNumberOfColumns; x++) {
-                    isRectangleFilled = listOfBlocksInThePlayingArea[i].blockMap[y][x];
+                    isRectangleFilled = playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockMap[y][x];
                     if (isRectangleFilled === 1) {
-                        if (fullLineIndex === (listOfBlocksInThePlayingArea[i].blockY + y)) {
+                        if (fullLineIndex === (playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockY + y)) {
                             // the y coordinate of the pixel matches the full line row number
                             blockIsAffected = true;
                             lineAffected = y;
@@ -705,7 +704,7 @@ let logOfEvents = [];
                 thereWerePixelsAboveTheCut = false;
                 for (y = 0; y < lineAffected; y++) {
                     for (x = 0; x < blockMapNumberOfColumns; x++) {
-                        isRectangleFilled = listOfBlocksInThePlayingArea[i].blockMap[y][x];
+                        isRectangleFilled = playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockMap[y][x];
                         if (isRectangleFilled === 1) {
                             thereWerePixelsAboveTheCut = true;
                         }
@@ -719,23 +718,23 @@ let logOfEvents = [];
                             newBlockMap[y][x] = 0;
                         }
                     }
-                    listOfBlocksInThePlayingArea.push({
+                    playerLevelEnvironment.listOfBlocksInThePlayingArea.push({
                         blockMap: newBlockMap,
-                        blockIndex: listOfBlocksInThePlayingArea[i].blockIndex,
-                        blockX: listOfBlocksInThePlayingArea[i].blockX,
-                        blockY: listOfBlocksInThePlayingArea[i].blockY,
-                        blockCounter: listOfBlocksInThePlayingArea[i].blockCounter
+                        blockIndex: playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockIndex,
+                        blockX: playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockX,
+                        blockY: playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockY,
+                        blockCounter: playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockCounter
                     });
                     for (y = 0; y < lineAffected; y++) {
                         for (x = 0; x < blockMapNumberOfColumns; x++) {
-                            listOfBlocksInThePlayingArea[listOfBlocksInThePlayingArea.length - 1].blockMap[y][x] = listOfBlocksInThePlayingArea[i].blockMap[y][x];
+                            playerLevelEnvironment.listOfBlocksInThePlayingArea[playerLevelEnvironment.listOfBlocksInThePlayingArea.length - 1].blockMap[y][x] = playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockMap[y][x];
                         }
                     }
                 }
                 thereWerePixelsUnderTheCut = false;
                 for (y = lineAffected + 1; y < blockMapNumberOfRows; y++) {
                     for (x = 0; x < blockMapNumberOfColumns; x++) {
-                        isRectangleFilled = listOfBlocksInThePlayingArea[i].blockMap[y][x];
+                        isRectangleFilled = playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockMap[y][x];
                         if (isRectangleFilled === 1) {
                             thereWerePixelsUnderTheCut = true;
                         }
@@ -749,21 +748,21 @@ let logOfEvents = [];
                             newBlockMap[y - (lineAffected + 1)][x] = 0;
                         }
                     }
-                    listOfBlocksInThePlayingArea.push({
+                    playerLevelEnvironment.listOfBlocksInThePlayingArea.push({
                         blockMap: newBlockMap,
-                        blockIndex: listOfBlocksInThePlayingArea[i].blockIndex,
-                        blockX: listOfBlocksInThePlayingArea[i].blockX,
-                        blockY: listOfBlocksInThePlayingArea[i].blockY + lineAffected + 1,
-                        blockCounter: listOfBlocksInThePlayingArea[i].blockCounter
+                        blockIndex: playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockIndex,
+                        blockX: playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockX,
+                        blockY: playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockY + lineAffected + 1,
+                        blockCounter: playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockCounter
                     });
                     for (y = lineAffected + 1; y < blockMapNumberOfRows; y++) {
                         for (x = 0; x < blockMapNumberOfColumns; x++) {
-                            listOfBlocksInThePlayingArea[listOfBlocksInThePlayingArea.length - 1].blockMap[y - (lineAffected + 1)][x] = listOfBlocksInThePlayingArea[i].blockMap[y][x];
+                            playerLevelEnvironment.listOfBlocksInThePlayingArea[playerLevelEnvironment.listOfBlocksInThePlayingArea.length - 1].blockMap[y - (lineAffected + 1)][x] = playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockMap[y][x];
                         }
                     }
                 }
                 // remove the old item from the list
-                listOfBlocksInThePlayingArea.splice(i, 1);
+                playerLevelEnvironment.listOfBlocksInThePlayingArea.splice(i, 1);
             }
         }
     }
@@ -780,9 +779,9 @@ let logOfEvents = [];
         let thereWasMovementInThisRound = false;
         playerLevelEnvironment.listOfBlocksThatCanBeMoved = [];
 
-        // let's iterate thru all the blocks we have in listOfBlocksInThePlayingArea
+        // let's iterate thru all the blocks we have in playerLevelEnvironment.listOfBlocksInThePlayingArea
         let isRectangleFilled;
-        for (let i = 0; i < listOfBlocksInThePlayingArea.length; i++) {
+        for (let i = 0; i < playerLevelEnvironment.listOfBlocksInThePlayingArea.length; i++) {
 
             // clear currentGravityCalculationArea
             let numberOfRows = currentGravityCalculationArea.length;
@@ -795,19 +794,19 @@ let logOfEvents = [];
 
             // calculate currentGravityCalculationArea, without the current block
 
-            // go thru the blocks one by one in listOfBlocksInThePlayingArea
+            // go thru the blocks one by one in playerLevelEnvironment.listOfBlocksInThePlayingArea
             // draw every block except the one we calculate now
-            for (let k = 0; k < listOfBlocksInThePlayingArea.length; k++) {
+            for (let k = 0; k < playerLevelEnvironment.listOfBlocksInThePlayingArea.length; k++) {
                 if (k !== i) {
-                    blockMapNumberOfRows = Object.keys(listOfBlocksInThePlayingArea[k].blockMap).length;
-                    blockMapNumberOfColumns = Object.keys(listOfBlocksInThePlayingArea[k].blockMap[0]).length;
+                    blockMapNumberOfRows = Object.keys(playerLevelEnvironment.listOfBlocksInThePlayingArea[k].blockMap).length;
+                    blockMapNumberOfColumns = Object.keys(playerLevelEnvironment.listOfBlocksInThePlayingArea[k].blockMap[0]).length;
                     for (y = 0; y < blockMapNumberOfRows; y++) {
                         for (x = 0; x < blockMapNumberOfColumns; x++) {
-                            isRectangleFilled = listOfBlocksInThePlayingArea[k].blockMap[y][x];
+                            isRectangleFilled = playerLevelEnvironment.listOfBlocksInThePlayingArea[k].blockMap[y][x];
                             if (isRectangleFilled === 1) {
-                                const yOnGravityCalculationArea = listOfBlocksInThePlayingArea[k].blockY + y;
-                                const xOnGravityCalculationArea = listOfBlocksInThePlayingArea[k].blockX + x;
-                                const colorOnGravityCalculationArea = listOfBlocksInThePlayingArea[k].blockIndex + 1;
+                                const yOnGravityCalculationArea = playerLevelEnvironment.listOfBlocksInThePlayingArea[k].blockY + y;
+                                const xOnGravityCalculationArea = playerLevelEnvironment.listOfBlocksInThePlayingArea[k].blockX + x;
+                                const colorOnGravityCalculationArea = playerLevelEnvironment.listOfBlocksInThePlayingArea[k].blockIndex + 1;
                                 currentGravityCalculationArea[yOnGravityCalculationArea][xOnGravityCalculationArea] = colorOnGravityCalculationArea;
                             }
                         }
@@ -829,15 +828,15 @@ let logOfEvents = [];
             let blockCanBeMoved = true;
             const yModifier = 0;
             numberOfRows = currentGravityCalculationArea.length;
-            blockMapNumberOfRows = Object.keys(listOfBlocksInThePlayingArea[i].blockMap).length;
-            blockMapNumberOfColumns = Object.keys(listOfBlocksInThePlayingArea[i].blockMap[0]).length;
+            blockMapNumberOfRows = Object.keys(playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockMap).length;
+            blockMapNumberOfColumns = Object.keys(playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockMap[0]).length;
 
             for (y = 0; y < blockMapNumberOfRows; y++) {
                 for (x = 0; x < blockMapNumberOfColumns; x++) {
-                    isRectangleFilled = listOfBlocksInThePlayingArea[i].blockMap[y][x];
+                    isRectangleFilled = playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockMap[y][x];
                     if (isRectangleFilled === 1) {
-                        const yOnCalculationArea = listOfBlocksInThePlayingArea[i].blockY + y + yModifier + 1;
-                        const xOnCalculationArea = listOfBlocksInThePlayingArea[i].blockX + x;
+                        const yOnCalculationArea = playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockY + y + yModifier + 1;
+                        const xOnCalculationArea = playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockX + x;
                         if (yOnCalculationArea > (numberOfRows - 2)) {
                             // block reached the bottom
                             blockCanBeMoved = false;
@@ -889,15 +888,15 @@ let logOfEvents = [];
         const ctx = c.getContext("2d");
         ctx.clearRect(0, 0, c.width, c.height);
 
-        // go thru the blocks one by one in listOfBlocksInThePlayingArea
+        // go thru the blocks one by one in playerLevelEnvironment.listOfBlocksInThePlayingArea
         let yModifierInPixels;
-        for (let i = 0; i < listOfBlocksInThePlayingArea.length; i++) {
+        for (let i = 0; i < playerLevelEnvironment.listOfBlocksInThePlayingArea.length; i++) {
 
-            const xModifierInSquares = listOfBlocksInThePlayingArea[i].blockX;
-            const yModifierInSquares = listOfBlocksInThePlayingArea[i].blockY + 1;
+            const xModifierInSquares = playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockX;
+            const yModifierInSquares = playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockY + 1;
             const drawEmptyLines = true;
-            const blockMapToDraw = listOfBlocksInThePlayingArea[i].blockMap;
-            const blockToDrawColor = colorRelated.getBlockColor(listOfBlocksInThePlayingArea[i].blockIndex);
+            const blockMapToDraw = playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockMap;
+            const blockToDrawColor = colorRelated.getBlockColor(playerLevelEnvironment.listOfBlocksInThePlayingArea[i].blockIndex);
             if (playerLevelEnvironment.listOfBlocksThatCanBeMoved.includes(i)) {
                 yModifierInPixels = playerLevelEnvironment.gravityAnimationYModifier;
             } else {
@@ -984,7 +983,7 @@ let logOfEvents = [];
             drawPlayAreaWithFallingBlocks();
         } else {
             for (let i = 0; i < playerLevelEnvironment.listOfBlocksThatCanBeMoved.length; i++) {
-                listOfBlocksInThePlayingArea[playerLevelEnvironment.listOfBlocksThatCanBeMoved[i]].blockY++;
+                playerLevelEnvironment.listOfBlocksInThePlayingArea[playerLevelEnvironment.listOfBlocksThatCanBeMoved[i]].blockY++;
             }
             calculateCurrentGravityCalculationArea();
             copyCurrentGravityCalculationAreaToCurrentCalculationArea();

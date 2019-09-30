@@ -21,6 +21,8 @@ let gravityAnimationYModifier = 0;
 
 let nextBlocks = [];
 
+let listOfBlocksInThePlayingArea = [];
+
 module.exports = {
     fallingSpeed,
     selectANewBlockNextFrame,
@@ -33,7 +35,7 @@ module.exports = {
     fullLines,
     listOfBlocksThatCanBeMoved,
     gravityAnimationYModifier,
-    nextBlocks
-    // listOfBlocksInThePlayingArea,
+    nextBlocks,
+    listOfBlocksInThePlayingArea
     // logOfEvents
 };
