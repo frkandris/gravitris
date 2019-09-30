@@ -66,7 +66,7 @@ const drawBlock = require('./includes/drawBlock');
             });
             // instant drop
             while (playerLevelEnvironment.moveCanBeDone === true) {
-                yPlayArea = yPlayArea + gameLevelEnvironment.pixelSize;
+                playerLevelEnvironment.yPlayArea = playerLevelEnvironment.yPlayArea + gameLevelEnvironment.pixelSize;
                 moveBlockInCalculationArea('moveDown');
             }
             event.preventDefault();
@@ -89,10 +89,10 @@ const drawBlock = require('./includes/drawBlock');
         playerLevelEnvironment.nextBlocks.splice(-1,1); // remove the last item
 
         // set the current block
-        blockIndex = currentBlock;
-        rotationIndex = 0;
-        xPlayArea = (gameLevelEnvironment.playAreaWidth / 2) - (2 * gameLevelEnvironment.pixelSize);
-        yPlayArea = 0;
+        playerLevelEnvironment.blockIndex = currentBlock;
+        playerLevelEnvironment.rotationIndex = 0;
+        playerLevelEnvironment.xPlayArea = (gameLevelEnvironment.playAreaWidth / 2) - (2 * gameLevelEnvironment.pixelSize);
+        playerLevelEnvironment.yPlayArea = 0;
 
         playerLevelEnvironment.moveCanBeDone = checkIfBlockOverlapsAnythingOnACalculationArea();
         if (playerLevelEnvironment.moveCanBeDone === false) {
@@ -105,7 +105,7 @@ const drawBlock = require('./includes/drawBlock');
         playerLevelEnvironment.logOfEvents.push({
             frameNumber: playerLevelEnvironment.frameNumber,
             event: 'newBlock',
-            eventValue: blockIndex
+            eventValue: playerLevelEnvironment.blockIndex
         });
 
     }
@@ -117,16 +117,16 @@ const drawBlock = require('./includes/drawBlock');
 
         let moveCanBeDone = true;
 
-        const blockMapNumberOfRows = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex]).length;
-        const blockMapNumberOfColumns = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex][0]).length;
+        const blockMapNumberOfRows = Object.keys(blockMap[playerLevelEnvironment.blockIndex][playerLevelEnvironment.rotationIndex][playerLevelEnvironment.rotationIndex]).length;
+        const blockMapNumberOfColumns = Object.keys(blockMap[playerLevelEnvironment.blockIndex][playerLevelEnvironment.rotationIndex][playerLevelEnvironment.rotationIndex][0]).length;
 
         let isRectangleFilled;
         for (let y = 0; y < blockMapNumberOfRows; y++) {
             for (let x = 0; x < blockMapNumberOfColumns; x++) {
-                isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
+                isRectangleFilled = blockMap[playerLevelEnvironment.blockIndex][playerLevelEnvironment.rotationIndex][playerLevelEnvironment.rotationIndex][y][x];
                 if (isRectangleFilled === 1) {
-                    const yOnCalculationArea = Math.floor(yPlayArea / gameLevelEnvironment.pixelSize) + y;
-                    const xOnCalculationArea = Math.floor(xPlayArea / gameLevelEnvironment.pixelSize) + x;
+                    const yOnCalculationArea = Math.floor(playerLevelEnvironment.yPlayArea / gameLevelEnvironment.pixelSize) + y;
+                    const xOnCalculationArea = Math.floor(playerLevelEnvironment.xPlayArea / gameLevelEnvironment.pixelSize) + x;
                     if (currentCalculationArea[yOnCalculationArea][xOnCalculationArea] !== 0) {
                         // move can not be done, as the block in the new position would overlap with something
                         moveCanBeDone = false;
@@ -151,7 +151,7 @@ const drawBlock = require('./includes/drawBlock');
         let rotationModifier = 0;
         let isRectangleFilled;
 
-        let numberOfRotations = Object.keys(blockMap[blockIndex]).length;
+        let numberOfRotations = Object.keys(blockMap[playerLevelEnvironment.blockIndex]).length;
 
         if (direction === 'moveDown') {
             // calculationArea modifications
@@ -161,27 +161,27 @@ const drawBlock = require('./includes/drawBlock');
             // calculationArea modifications
             xCalculationAreaModifier = 1;
             // playArea modifications
-            xPlayArea = xPlayArea - gameLevelEnvironment.pixelSize;
+            playerLevelEnvironment.xPlayArea = playerLevelEnvironment.xPlayArea - gameLevelEnvironment.pixelSize;
         }
         if (direction === 'moveRight') {
             // calculationArea modifications
             xCalculationAreaModifier = -1;
             // playArea modifications
-            xPlayArea = xPlayArea + gameLevelEnvironment.pixelSize;
+            playerLevelEnvironment.xPlayArea = playerLevelEnvironment.xPlayArea + gameLevelEnvironment.pixelSize;
         }
         if (direction === 'rotateLeft') {
             // calculationArea modifications
-            rotationIndex++;
-            if (rotationIndex === numberOfRotations) {
-                rotationIndex = 0;
+            playerLevelEnvironment.rotationIndex++;
+            if (playerLevelEnvironment.rotationIndex === numberOfRotations) {
+                playerLevelEnvironment.rotationIndex = 0;
             }
             rotationModifier = -1;
         }
         if (direction === 'rotateRight') {
             // calculationArea modifications
-            rotationIndex--;
-            if (rotationIndex < 0) {
-                rotationIndex = numberOfRotations - 1;
+            playerLevelEnvironment.rotationIndex--;
+            if (playerLevelEnvironment.rotationIndex < 0) {
+                playerLevelEnvironment.rotationIndex = numberOfRotations - 1;
             }
             rotationModifier = 1;
         }
@@ -205,22 +205,22 @@ const drawBlock = require('./includes/drawBlock');
 
         // 1.1. remove blockMap from tempCalculationArea
 
-        rotationIndex += rotationModifier;
-        if (rotationIndex < 0) {
-            rotationIndex = numberOfRotations - 1;
+        playerLevelEnvironment.rotationIndex += rotationModifier;
+        if (playerLevelEnvironment.rotationIndex < 0) {
+            playerLevelEnvironment.rotationIndex = numberOfRotations - 1;
         }
-        if (rotationIndex === numberOfRotations) {
-            rotationIndex = 0;
+        if (playerLevelEnvironment.rotationIndex === numberOfRotations) {
+            playerLevelEnvironment.rotationIndex = 0;
         }
 
-        let blockMapNumberOfRows = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex]).length;
-        let blockMapNumberOfColumns = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex][0]).length;
+        let blockMapNumberOfRows = Object.keys(blockMap[playerLevelEnvironment.blockIndex][playerLevelEnvironment.rotationIndex][playerLevelEnvironment.rotationIndex]).length;
+        let blockMapNumberOfColumns = Object.keys(blockMap[playerLevelEnvironment.blockIndex][playerLevelEnvironment.rotationIndex][playerLevelEnvironment.rotationIndex][0]).length;
         for (y = 0; y < blockMapNumberOfRows; y++) {
             for (x = 0; x < blockMapNumberOfColumns; x++) {
-                isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
+                isRectangleFilled = blockMap[playerLevelEnvironment.blockIndex][playerLevelEnvironment.rotationIndex][playerLevelEnvironment.rotationIndex][y][x];
                 if (isRectangleFilled === 1) {
-                    yOnCalculationArea = Math.floor(yPlayArea / gameLevelEnvironment.pixelSize) + y + yCalculationAreaModifier;
-                    xOnCalculationArea = Math.floor(xPlayArea / gameLevelEnvironment.pixelSize) + x + xCalculationAreaModifier;
+                    yOnCalculationArea = Math.floor(playerLevelEnvironment.yPlayArea / gameLevelEnvironment.pixelSize) + y + yCalculationAreaModifier;
+                    xOnCalculationArea = Math.floor(playerLevelEnvironment.xPlayArea / gameLevelEnvironment.pixelSize) + x + xCalculationAreaModifier;
                     tempCalculationArea[yOnCalculationArea][xOnCalculationArea] = 0;
                 }
             }
@@ -228,22 +228,22 @@ const drawBlock = require('./includes/drawBlock');
 
         // 1.2. test if we could add the block to tempCalculationArea without overlap or any other problems
 
-        rotationIndex -= rotationModifier;
-        if (rotationIndex < 0) {
-            rotationIndex = numberOfRotations - 1;
+        playerLevelEnvironment.rotationIndex -= rotationModifier;
+        if (playerLevelEnvironment.rotationIndex < 0) {
+            playerLevelEnvironment.rotationIndex = numberOfRotations - 1;
         }
-        if (rotationIndex === numberOfRotations) {
-            rotationIndex = 0;
+        if (playerLevelEnvironment.rotationIndex === numberOfRotations) {
+            playerLevelEnvironment.rotationIndex = 0;
         }
-        blockMapNumberOfRows = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex]).length;
-        blockMapNumberOfColumns = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex][0]).length;
+        blockMapNumberOfRows = Object.keys(blockMap[playerLevelEnvironment.blockIndex][playerLevelEnvironment.rotationIndex][playerLevelEnvironment.rotationIndex]).length;
+        blockMapNumberOfColumns = Object.keys(blockMap[playerLevelEnvironment.blockIndex][playerLevelEnvironment.rotationIndex][playerLevelEnvironment.rotationIndex][0]).length;
 
         for (y = 0; y < blockMapNumberOfRows; y++) {
             for (x = 0; x < blockMapNumberOfColumns; x++) {
-                isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
+                isRectangleFilled = blockMap[playerLevelEnvironment.blockIndex][playerLevelEnvironment.rotationIndex][playerLevelEnvironment.rotationIndex][y][x];
                 if (isRectangleFilled === 1) {
-                    yOnCalculationArea = Math.floor(yPlayArea / gameLevelEnvironment.pixelSize) + y;
-                    xOnCalculationArea = Math.floor(xPlayArea / gameLevelEnvironment.pixelSize) + x;
+                    yOnCalculationArea = Math.floor(playerLevelEnvironment.yPlayArea / gameLevelEnvironment.pixelSize) + y;
+                    xOnCalculationArea = Math.floor(playerLevelEnvironment.xPlayArea / gameLevelEnvironment.pixelSize) + x;
                     if (yOnCalculationArea > (numberOfRows - 2)) {
                         // block reached the bottom
                         playerLevelEnvironment.selectANewBlockNextFrame = true;
@@ -261,22 +261,22 @@ const drawBlock = require('./includes/drawBlock');
 
             // 1.3. move can be done - remove blockMap from currentCalculationArea
 
-            rotationIndex += rotationModifier;
-            if (rotationIndex < 0) {
-                rotationIndex = numberOfRotations - 1;
+            playerLevelEnvironment.rotationIndex += rotationModifier;
+            if (playerLevelEnvironment.rotationIndex < 0) {
+                playerLevelEnvironment.rotationIndex = numberOfRotations - 1;
             }
-            if (rotationIndex === numberOfRotations) {
-                rotationIndex = 0;
+            if (playerLevelEnvironment.rotationIndex === numberOfRotations) {
+                playerLevelEnvironment.rotationIndex = 0;
             }
-            blockMapNumberOfRows = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex]).length;
-            blockMapNumberOfColumns = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex][0]).length;
+            blockMapNumberOfRows = Object.keys(blockMap[playerLevelEnvironment.blockIndex][playerLevelEnvironment.rotationIndex][playerLevelEnvironment.rotationIndex]).length;
+            blockMapNumberOfColumns = Object.keys(blockMap[playerLevelEnvironment.blockIndex][playerLevelEnvironment.rotationIndex][playerLevelEnvironment.rotationIndex][0]).length;
 
             for (y = 0; y < blockMapNumberOfRows; y++) {
                 for (x = 0; x < blockMapNumberOfColumns; x++) {
-                    isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
+                    isRectangleFilled = blockMap[playerLevelEnvironment.blockIndex][playerLevelEnvironment.rotationIndex][playerLevelEnvironment.rotationIndex][y][x];
                     if (isRectangleFilled === 1) {
-                        yOnCalculationArea = Math.floor(yPlayArea / gameLevelEnvironment.pixelSize) + y + yCalculationAreaModifier;
-                        xOnCalculationArea = Math.floor(xPlayArea / gameLevelEnvironment.pixelSize) + x + xCalculationAreaModifier;
+                        yOnCalculationArea = Math.floor(playerLevelEnvironment.yPlayArea / gameLevelEnvironment.pixelSize) + y + yCalculationAreaModifier;
+                        xOnCalculationArea = Math.floor(playerLevelEnvironment.xPlayArea / gameLevelEnvironment.pixelSize) + x + xCalculationAreaModifier;
                         currentCalculationArea[yOnCalculationArea][xOnCalculationArea] = 0;
                     }
                 }
@@ -284,22 +284,22 @@ const drawBlock = require('./includes/drawBlock');
 
             // 1.4. add blockMap to currentCalculationArea
 
-            rotationIndex -= rotationModifier;
-            if (rotationIndex < 0) {
-                rotationIndex = numberOfRotations - 1;
+            playerLevelEnvironment.rotationIndex -= rotationModifier;
+            if (playerLevelEnvironment.rotationIndex < 0) {
+                playerLevelEnvironment.rotationIndex = numberOfRotations - 1;
             }
-            if (rotationIndex === numberOfRotations) {
-                rotationIndex = 0;
+            if (playerLevelEnvironment.rotationIndex === numberOfRotations) {
+                playerLevelEnvironment.rotationIndex = 0;
             }
-            blockMapNumberOfRows = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex]).length;
-            blockMapNumberOfColumns = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex][0]).length;
+            blockMapNumberOfRows = Object.keys(blockMap[playerLevelEnvironment.blockIndex][playerLevelEnvironment.rotationIndex][playerLevelEnvironment.rotationIndex]).length;
+            blockMapNumberOfColumns = Object.keys(blockMap[playerLevelEnvironment.blockIndex][playerLevelEnvironment.rotationIndex][playerLevelEnvironment.rotationIndex][0]).length;
             for (y = 0; y < blockMapNumberOfRows; y++) {
                 for (x = 0; x < blockMapNumberOfColumns; x++) {
-                    isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
+                    isRectangleFilled = blockMap[playerLevelEnvironment.blockIndex][playerLevelEnvironment.rotationIndex][playerLevelEnvironment.rotationIndex][y][x];
                     if (isRectangleFilled === 1) {
-                        yOnCalculationArea = Math.floor(yPlayArea / gameLevelEnvironment.pixelSize) + y;
-                        xOnCalculationArea = Math.floor(xPlayArea / gameLevelEnvironment.pixelSize) + x;
-                        currentCalculationArea[yOnCalculationArea][xOnCalculationArea] = blockIndex+1;
+                        yOnCalculationArea = Math.floor(playerLevelEnvironment.yPlayArea / gameLevelEnvironment.pixelSize) + y;
+                        xOnCalculationArea = Math.floor(playerLevelEnvironment.xPlayArea / gameLevelEnvironment.pixelSize) + x;
+                        currentCalculationArea[yOnCalculationArea][xOnCalculationArea] = playerLevelEnvironment.blockIndex+1;
                     }
                 }
             }
@@ -312,21 +312,21 @@ const drawBlock = require('./includes/drawBlock');
                 playerLevelEnvironment.selectANewBlockNextFrame = true;
             }
             if (direction === 'moveLeft') {
-                xPlayArea = xPlayArea + gameLevelEnvironment.pixelSize;
+                playerLevelEnvironment.xPlayArea = playerLevelEnvironment.xPlayArea + gameLevelEnvironment.pixelSize;
             }
             if (direction === 'moveRight') {
-                xPlayArea = xPlayArea - gameLevelEnvironment.pixelSize;
+                playerLevelEnvironment.xPlayArea = playerLevelEnvironment.xPlayArea - gameLevelEnvironment.pixelSize;
             }
             if (direction === 'rotateLeft') {
-                rotationIndex--;
-                if (rotationIndex < 0) {
-                    rotationIndex = numberOfRotations - 1;
+                playerLevelEnvironment.rotationIndex--;
+                if (playerLevelEnvironment.rotationIndex < 0) {
+                    playerLevelEnvironment.rotationIndex = numberOfRotations - 1;
                 }
             }
             if (direction === 'rotateRight') {
-                rotationIndex++;
-                if (rotationIndex === numberOfRotations) {
-                    rotationIndex = 0;
+                playerLevelEnvironment.rotationIndex++;
+                if (playerLevelEnvironment.rotationIndex === numberOfRotations) {
+                    playerLevelEnvironment.rotationIndex = 0;
                 }
             }
         }
@@ -366,15 +366,15 @@ const drawBlock = require('./includes/drawBlock');
 
         // remove current falling block from tempCalculationArea
 
-        const blockMapNumberOfRows = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex]).length;
-        const blockMapNumberOfColumns = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex][0]).length;
+        const blockMapNumberOfRows = Object.keys(blockMap[playerLevelEnvironment.blockIndex][playerLevelEnvironment.rotationIndex][playerLevelEnvironment.rotationIndex]).length;
+        const blockMapNumberOfColumns = Object.keys(blockMap[playerLevelEnvironment.blockIndex][playerLevelEnvironment.rotationIndex][playerLevelEnvironment.rotationIndex][0]).length;
         let isRectangleFilled;
         for (y = 0; y < blockMapNumberOfRows; y++) {
             for (x = 0; x < blockMapNumberOfColumns; x++) {
-                isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
+                isRectangleFilled = blockMap[playerLevelEnvironment.blockIndex][playerLevelEnvironment.rotationIndex][playerLevelEnvironment.rotationIndex][y][x];
                 if (isRectangleFilled === 1) {
-                    const yOnCalculationArea = Math.floor(yPlayArea / gameLevelEnvironment.pixelSize) + y;
-                    const xOnCalculationArea = Math.floor(xPlayArea / gameLevelEnvironment.pixelSize) + x;
+                    const yOnCalculationArea = Math.floor(playerLevelEnvironment.yPlayArea / gameLevelEnvironment.pixelSize) + y;
+                    const xOnCalculationArea = Math.floor(playerLevelEnvironment.xPlayArea / gameLevelEnvironment.pixelSize) + x;
                     tempCalculationArea[yOnCalculationArea][xOnCalculationArea] = 0;
                 }
             }
@@ -388,11 +388,11 @@ const drawBlock = require('./includes/drawBlock');
 
         // draw pixelperfect moving block
 
-        const xModifierInSquares = xPlayArea / gameLevelEnvironment.pixelSize;
-        const yModifierInSquares = yPlayArea / gameLevelEnvironment.pixelSize;
+        const xModifierInSquares = playerLevelEnvironment.xPlayArea / gameLevelEnvironment.pixelSize;
+        const yModifierInSquares = playerLevelEnvironment.yPlayArea / gameLevelEnvironment.pixelSize;
         const yModifierInPixels = 0;
-        const blockToDrawIndex = blockIndex;
-        const blockToDrawRotation = rotationIndex;
+        const blockToDrawIndex = playerLevelEnvironment.blockIndex;
+        const blockToDrawRotation = playerLevelEnvironment.rotationIndex;
         const drawEmptyLines = true;
         const blockMapToDraw = blockMap[blockToDrawIndex][blockToDrawRotation][blockToDrawRotation];
         const blockToDrawColor = colorRelated.getBlockColor(blockToDrawIndex);
@@ -532,14 +532,14 @@ const drawBlock = require('./includes/drawBlock');
         let isRectangleFilled;
         do {
             shadowCanBeMoved = true;
-            const blockMapNumberOfRows = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex]).length;
-            const blockMapNumberOfColumns = Object.keys(blockMap[blockIndex][rotationIndex][rotationIndex][0]).length;
+            const blockMapNumberOfRows = Object.keys(blockMap[playerLevelEnvironment.blockIndex][playerLevelEnvironment.rotationIndex][playerLevelEnvironment.rotationIndex]).length;
+            const blockMapNumberOfColumns = Object.keys(blockMap[playerLevelEnvironment.blockIndex][playerLevelEnvironment.rotationIndex][playerLevelEnvironment.rotationIndex][0]).length;
             for (let y = 0; y < blockMapNumberOfRows; y++) {
                 for (let x = 0; x < blockMapNumberOfColumns; x++) {
-                    isRectangleFilled = blockMap[blockIndex][rotationIndex][rotationIndex][y][x];
+                    isRectangleFilled = blockMap[playerLevelEnvironment.blockIndex][playerLevelEnvironment.rotationIndex][playerLevelEnvironment.rotationIndex][y][x];
                     if (isRectangleFilled === 1) {
-                        const yOnCalculationArea = Math.floor(yPlayArea / gameLevelEnvironment.pixelSize) + y + yModifier;
-                        const xOnCalculationArea = Math.floor(xPlayArea / gameLevelEnvironment.pixelSize) + x;
+                        const yOnCalculationArea = Math.floor(playerLevelEnvironment.yPlayArea / gameLevelEnvironment.pixelSize) + y + yModifier;
+                        const xOnCalculationArea = Math.floor(playerLevelEnvironment.xPlayArea / gameLevelEnvironment.pixelSize) + x;
                         if (yOnCalculationArea > (numberOfRows - 2)) {
                             shadowCanBeMoved = false;
                         }
@@ -557,11 +557,11 @@ const drawBlock = require('./includes/drawBlock');
         const c = document.getElementById("playAreaCanvas");
         const ctx = c.getContext("2d");
 
-        const xModifierInSquares = Math.floor(xPlayArea / gameLevelEnvironment.pixelSize);
-        const yModifierInSquares = Math.floor(yPlayArea / gameLevelEnvironment.pixelSize) + yModifier - 1;
+        const xModifierInSquares = Math.floor(playerLevelEnvironment.xPlayArea / gameLevelEnvironment.pixelSize);
+        const yModifierInSquares = Math.floor(playerLevelEnvironment.yPlayArea / gameLevelEnvironment.pixelSize) + yModifier - 1;
         const yModifierInPixels = 0;
-        const blockToDrawIndex = blockIndex;
-        const blockToDrawRotation = rotationIndex;
+        const blockToDrawIndex = playerLevelEnvironment.blockIndex;
+        const blockToDrawRotation = playerLevelEnvironment.rotationIndex;
         const drawEmptyLines = true;
         const blockMapToDraw = blockMap[blockToDrawIndex][blockToDrawRotation][blockToDrawRotation];
         const blockToDrawColor = colorRelated.getBlockColor('shadow');
@@ -607,10 +607,10 @@ const drawBlock = require('./includes/drawBlock');
         if (blockAlreadyInserted === false) {
             try {
                 playerLevelEnvironment.listOfBlocksInThePlayingArea.push({
-                    blockMap: blockMap[blockIndex][rotationIndex][rotationIndex],
-                    blockIndex: blockIndex,
-                    blockX: Math.floor(xPlayArea / gameLevelEnvironment.pixelSize),
-                    blockY: Math.floor(yPlayArea / gameLevelEnvironment.pixelSize) - 1,
+                    blockMap: blockMap[playerLevelEnvironment.blockIndex][playerLevelEnvironment.rotationIndex][playerLevelEnvironment.rotationIndex],
+                    blockIndex: playerLevelEnvironment.blockIndex,
+                    blockX: Math.floor(playerLevelEnvironment.xPlayArea / gameLevelEnvironment.pixelSize),
+                    blockY: Math.floor(playerLevelEnvironment.yPlayArea / gameLevelEnvironment.pixelSize) - 1,
                     blockCounter: playerLevelEnvironment.blockCounter,
                     wasChecked: false
                 });
@@ -925,11 +925,11 @@ const drawBlock = require('./includes/drawBlock');
         // let's move the current block down
 
         // y previously in the calculationArea
-        let previousYCalculationArea = Math.floor(yPlayArea / gameLevelEnvironment.pixelSize);
+        let previousYCalculationArea = Math.floor(playerLevelEnvironment.yPlayArea / gameLevelEnvironment.pixelSize);
         // y in the playArea
-        yPlayArea = yPlayArea + playerLevelEnvironment.fallingSpeed;
+        playerLevelEnvironment.yPlayArea = playerLevelEnvironment.yPlayArea + playerLevelEnvironment.fallingSpeed;
         // y now in the calculationArea
-        let currentYCalculationArea = Math.floor(yPlayArea / gameLevelEnvironment.pixelSize);
+        let currentYCalculationArea = Math.floor(playerLevelEnvironment.yPlayArea / gameLevelEnvironment.pixelSize);
         // do we need to move down the block in the calculationArea
         if (previousYCalculationArea !== currentYCalculationArea) {
             // yes, try to do the move in calculationArea
@@ -1067,12 +1067,12 @@ const drawBlock = require('./includes/drawBlock');
 document.onkeydown = checkKeyboardInput;
 
 // let's generate the first 3 blocks
-blockIndex = selectABlockRandomly();
-playerLevelEnvironment.nextBlocks.unshift(blockIndex);
-blockIndex = selectABlockRandomly();
-playerLevelEnvironment.nextBlocks.unshift(blockIndex);
-blockIndex = selectABlockRandomly();
-playerLevelEnvironment.nextBlocks.unshift(blockIndex);
+playerLevelEnvironment.blockIndex = selectABlockRandomly();
+playerLevelEnvironment.nextBlocks.unshift(playerLevelEnvironment.blockIndex);
+playerLevelEnvironment.blockIndex = selectABlockRandomly();
+playerLevelEnvironment.nextBlocks.unshift(playerLevelEnvironment.blockIndex);
+playerLevelEnvironment.blockIndex = selectABlockRandomly();
+playerLevelEnvironment.nextBlocks.unshift(playerLevelEnvironment.blockIndex);
 
 // set playerLevelEnvironment.playAreaMode
 playerLevelEnvironment.playAreaMode = 'blockFallingAnimation';
