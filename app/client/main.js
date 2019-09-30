@@ -13,19 +13,16 @@ const statRelated = require('./includes/statRelated');
 
 const drawBlock = require('./includes/drawBlock');
 
-var moveCanBeDone = true;
-
-var stopTheGameLoop = false;
-var blockCounter = 0;
-var frameNumber = 0;
-var playAreaMode = '';
-var fullLines = [];
-var listOfBlocksThatCanBeMoved = [];
-var gravityAnimationYModifier = 0;
-var nextBlocks = [];
-var listOfBlocksInThePlayingArea = [];
-var logOfEvents = [];
-
+let stopTheGameLoop = false;
+let blockCounter = 0;
+let frameNumber = 0;
+let playAreaMode = '';
+let fullLines = [];
+let listOfBlocksThatCanBeMoved = [];
+let gravityAnimationYModifier = 0;
+let nextBlocks = [];
+let listOfBlocksInThePlayingArea = [];
+let logOfEvents = [];
 
     // this function handles the keyboard events
 
@@ -79,7 +76,7 @@ var logOfEvents = [];
                 eventValue: 'instantDrop'
             });
             // instant drop
-            while (moveCanBeDone === true) {
+            while (playerLevelEnvironment.moveCanBeDone === true) {
                 yPlayArea = yPlayArea + gameLevelEnvironment.pixelSize;
                 moveBlockInCalculationArea('moveDown');
             }
@@ -108,8 +105,8 @@ var logOfEvents = [];
         xPlayArea = (gameLevelEnvironment.playAreaWidth / 2) - (2 * gameLevelEnvironment.pixelSize);
         yPlayArea = 0;
 
-        const moveCanBeDone = checkIfBlockOverlapsAnythingOnACalculationArea();
-        if (moveCanBeDone === false) {
+        playerLevelEnvironment.moveCanBeDone = checkIfBlockOverlapsAnythingOnACalculationArea();
+        if (playerLevelEnvironment.moveCanBeDone === false) {
             playAreaMode = 'gameEndFadeOutAnimation';
             statRelated.setGameEndTime();
         }
@@ -205,7 +202,7 @@ var logOfEvents = [];
 
         // test if we can make the move
 
-        moveCanBeDone = true;
+        playerLevelEnvironment.moveCanBeDone = true;
 
         // 1.0. copy currentCalculationArea to tempCalculationArea
 
@@ -261,17 +258,17 @@ var logOfEvents = [];
                     if (yOnCalculationArea > (numberOfRows - 2)) {
                         // block reached the bottom
                         playerLevelEnvironment.selectANewBlockNextFrame = true;
-                        moveCanBeDone = false;
+                        playerLevelEnvironment.moveCanBeDone = false;
                     }
                     if (tempCalculationArea[yOnCalculationArea][xOnCalculationArea] !== 0) {
                         // move can not be done, as the block in the new position would overlap with something
-                        moveCanBeDone = false;
+                        playerLevelEnvironment.moveCanBeDone = false;
                     }
                 }
             }
         }
 
-        if (moveCanBeDone === true) {
+        if (playerLevelEnvironment.moveCanBeDone === true) {
 
             // 1.3. move can be done - remove blockMap from currentCalculationArea
 
@@ -317,7 +314,7 @@ var logOfEvents = [];
                     } 
                 }
             }
-        } // if (moveCanBeDone === true)
+        } // if (playerLevelEnvironment.moveCanBeDone === true)
 
         else {
             // move can not be done
