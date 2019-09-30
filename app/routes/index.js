@@ -28,7 +28,8 @@ router.get('/', function(req, res, next) {
     res.render('index', { 
       title: 'Gravitris',
       numberOfLinesCleared: numberOfLinesCleared,
-      numberOfGamesPlayed: numberOfGamesPlayed
+      numberOfGamesPlayed: numberOfGamesPlayed,
+      app_version: process.env.npm_package_version
     });
   });
 
