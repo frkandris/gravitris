@@ -13,7 +13,6 @@ const statRelated = require('./includes/statRelated');
 
 const drawBlock = require('./includes/drawBlock');
 
-let stopTheGameLoop = false;
 let blockCounter = 0;
 let frameNumber = 0;
 let playAreaMode = '';
@@ -1033,7 +1032,7 @@ let logOfEvents = [];
             $('#gamestartbutton').css('visibility','visible');
             
             // stop the game loop
-            stopTheGameLoop = true;
+            gameLevelEnvironment.stopTheGameLoop = true;
 
             
         } else {
@@ -1065,7 +1064,7 @@ let logOfEvents = [];
         frameNumber++;
 
         // let's restart the game loop in the next frame
-        if (!stopTheGameLoop) {
+        if (!gameLevelEnvironment.stopTheGameLoop) {
             requestAnimationFrame(gameLoop);
         }
         
