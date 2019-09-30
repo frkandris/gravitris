@@ -8,17 +8,23 @@ let gameEndFadeAnimationCounter = gameLevelEnvironment.gameEndFadeAnimationLengt
 
 let moveCanBeDone = true;
 
+let blockCounter = 0;
+let frameNumber = 0;
+
+let playAreaMode = '';
+
+let fullLines = [];
+
 module.exports = {
     fallingSpeed,
     selectANewBlockNextFrame,
     fullLineFadeAnimationCounter,
     gameEndFadeAnimationCounter,
-    moveCanBeDone
-    // stopTheGameLoop,
-    // blockCounter,
-    // frameNumber,
-    // playAreaMode,
-    // fullLines,
+    moveCanBeDone,
+    blockCounter,
+    frameNumber,
+    playAreaMode,
+    fullLines
     // listOfBlocksThatCanBeMoved,
     // gravityAnimationYModifier,
     // nextBlocks,

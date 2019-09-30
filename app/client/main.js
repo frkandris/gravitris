@@ -13,10 +13,7 @@ const statRelated = require('./includes/statRelated');
 
 const drawBlock = require('./includes/drawBlock');
 
-let blockCounter = 0;
-let frameNumber = 0;
-let playAreaMode = '';
-let fullLines = [];
+
 let listOfBlocksThatCanBeMoved = [];
 let gravityAnimationYModifier = 0;
 let nextBlocks = [];
@@ -30,7 +27,7 @@ let logOfEvents = [];
         if (e.keyCode === 38) {
             // up
             logOfEvents.push({
-                frameNumber: frameNumber,
+                frameNumber: playerLevelEnvironment.frameNumber,
                 event: 'keyPressed',
                 eventValue: 'rotateRight'
             });
@@ -40,7 +37,7 @@ let logOfEvents = [];
         else if (e.keyCode === 40) {
             // down
             logOfEvents.push({
-                frameNumber: frameNumber,
+                frameNumber: playerLevelEnvironment.frameNumber,
                 event: 'keyPressed',
                 eventValue: 'rotateLeft'
             });
@@ -50,7 +47,7 @@ let logOfEvents = [];
         else if (e.keyCode === 37) {
             // left
             logOfEvents.push({
-                frameNumber: frameNumber,
+                frameNumber: playerLevelEnvironment.frameNumber,
                 event: 'keyPressed',
                 eventValue: 'moveLeft'
             });
@@ -60,7 +57,7 @@ let logOfEvents = [];
         else if (e.keyCode === 39) {
             // right
             logOfEvents.push({
-                frameNumber: frameNumber,
+                frameNumber: playerLevelEnvironment.frameNumber,
                 event: 'keyPressed',
                 eventValue: 'moveRight'
             });
@@ -70,7 +67,7 @@ let logOfEvents = [];
         else if (e.keyCode === 32) {
             // space
             logOfEvents.push({
-                frameNumber: frameNumber,
+                frameNumber: playerLevelEnvironment.frameNumber,
                 event: 'keyPressed',
                 eventValue: 'instantDrop'
             });
@@ -84,7 +81,7 @@ let logOfEvents = [];
     }
 
 
-    // this function sets the next new block 
+    // this function sets the next new block
     // (gets the new one from the nextBlocks, adds a new random block to nextBlocks, sets coordinates of the new block)
 
     function selectANewBlock(){
@@ -106,14 +103,14 @@ let logOfEvents = [];
 
         playerLevelEnvironment.moveCanBeDone = checkIfBlockOverlapsAnythingOnACalculationArea();
         if (playerLevelEnvironment.moveCanBeDone === false) {
-            playAreaMode = 'gameEndFadeOutAnimation';
+            playerLevelEnvironment.playAreaMode = 'gameEndFadeOutAnimation';
             statRelated.setGameEndTime();
         }
 
-        blockCounter++;
+        playerLevelEnvironment.blockCounter++;
 
         logOfEvents.push({
-            frameNumber: frameNumber,
+            frameNumber: playerLevelEnvironment.frameNumber,
             event: 'newBlock',
             eventValue: blockIndex
         });
@@ -232,7 +229,7 @@ let logOfEvents = [];
                     yOnCalculationArea = Math.floor(yPlayArea / gameLevelEnvironment.pixelSize) + y + yCalculationAreaModifier;
                     xOnCalculationArea = Math.floor(xPlayArea / gameLevelEnvironment.pixelSize) + x + xCalculationAreaModifier;
                     tempCalculationArea[yOnCalculationArea][xOnCalculationArea] = 0;
-                } 
+                }
             }
         }
 
@@ -288,7 +285,7 @@ let logOfEvents = [];
                         yOnCalculationArea = Math.floor(yPlayArea / gameLevelEnvironment.pixelSize) + y + yCalculationAreaModifier;
                         xOnCalculationArea = Math.floor(xPlayArea / gameLevelEnvironment.pixelSize) + x + xCalculationAreaModifier;
                         currentCalculationArea[yOnCalculationArea][xOnCalculationArea] = 0;
-                    } 
+                    }
                 }
             }
 
@@ -310,14 +307,14 @@ let logOfEvents = [];
                         yOnCalculationArea = Math.floor(yPlayArea / gameLevelEnvironment.pixelSize) + y;
                         xOnCalculationArea = Math.floor(xPlayArea / gameLevelEnvironment.pixelSize) + x;
                         currentCalculationArea[yOnCalculationArea][xOnCalculationArea] = blockIndex+1;
-                    } 
+                    }
                 }
             }
         } // if (playerLevelEnvironment.moveCanBeDone === true)
 
         else {
             // move can not be done
-            
+
             if (direction === 'moveDown') {
                 playerLevelEnvironment.selectANewBlockNextFrame = true;
             }
@@ -338,7 +335,7 @@ let logOfEvents = [];
                 if (rotationIndex === numberOfRotations) {
                     rotationIndex = 0;
                 }
-            }            
+            }
         }
     }
 
@@ -406,7 +403,7 @@ let logOfEvents = [];
         const drawEmptyLines = true;
         const blockMapToDraw = blockMap[blockToDrawIndex][blockToDrawRotation][blockToDrawRotation];
         const blockToDrawColor = colorRelated.getBlockColor(blockToDrawIndex);
-        drawBlock.drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yModifierInSquares, yModifierInPixels, drawEmptyLines, playAreaMode, fullLines, playerLevelEnvironment.gameEndFadeAnimationCounter, gameLevelEnvironment.gameEndFadeAnimationLength, playerLevelEnvironment.fullLineFadeAnimationCounter, gameLevelEnvironment.fullLineFadeAnimationLength);
+        drawBlock.drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yModifierInSquares, yModifierInPixels, drawEmptyLines, playerLevelEnvironment.playAreaMode, playerLevelEnvironment.fullLines, playerLevelEnvironment.gameEndFadeAnimationCounter, gameLevelEnvironment.gameEndFadeAnimationLength, playerLevelEnvironment.fullLineFadeAnimationCounter, gameLevelEnvironment.fullLineFadeAnimationLength);
 
     }
 
@@ -425,9 +422,9 @@ let logOfEvents = [];
             const drawEmptyLines = true;
             const blockMapToDraw = listOfBlocksInThePlayingArea[i].blockMap;
             const blockToDrawColor = colorRelated.getBlockColor(listOfBlocksInThePlayingArea[i].blockIndex);
-            drawBlock.drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yModifierInSquares, yModifierInPixels, drawEmptyLines, playAreaMode, fullLines, playerLevelEnvironment.gameEndFadeAnimationCounter, gameLevelEnvironment.gameEndFadeAnimationLength, playerLevelEnvironment.fullLineFadeAnimationCounter, gameLevelEnvironment.fullLineFadeAnimationLength);
+            drawBlock.drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yModifierInSquares, yModifierInPixels, drawEmptyLines, playerLevelEnvironment.playAreaMode, playerLevelEnvironment.fullLines, playerLevelEnvironment.gameEndFadeAnimationCounter, gameLevelEnvironment.gameEndFadeAnimationLength, playerLevelEnvironment.fullLineFadeAnimationCounter, gameLevelEnvironment.fullLineFadeAnimationLength);
 
-        }        
+        }
     }
 
 
@@ -452,7 +449,7 @@ let logOfEvents = [];
 
     function checkFullLineInCurrentCalculationArea(){
 
-        fullLines = [];
+        playerLevelEnvironment.fullLines = [];
         let fullLineFound = false;
 
         const numberOfRows = currentCalculationArea.length;
@@ -472,12 +469,12 @@ let logOfEvents = [];
             if (numberOfFilledRectanglesInRow === numberOfColumns) {
                 // we've found a full line in row i
                 fullLineFound = true;
-                fullLines.push(i);
+                playerLevelEnvironment.fullLines.push(i);
             }
         }
         if (fullLineFound === true) {
-            playAreaMode = 'fullLineRemoveAnimation';
-            statRelated.increaseNumberOfLinesCreated(fullLines.length);
+            playerLevelEnvironment.playAreaMode = 'fullLineRemoveAnimation';
+            statRelated.increaseNumberOfLinesCreated(playerLevelEnvironment.fullLines.length);
         }
     }
 
@@ -525,7 +522,7 @@ let logOfEvents = [];
             modifylistOfBlocksInThePlayingAreaBecauseOfFullLine(fullLine);
         }
 
-        playAreaMode = 'gravityAnimation';
+        playerLevelEnvironment.playAreaMode = 'gravityAnimation';
 
     }
 
@@ -575,7 +572,7 @@ let logOfEvents = [];
         const drawEmptyLines = true;
         const blockMapToDraw = blockMap[blockToDrawIndex][blockToDrawRotation][blockToDrawRotation];
         const blockToDrawColor = colorRelated.getBlockColor('shadow');
-        drawBlock.drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yModifierInSquares, yModifierInPixels, drawEmptyLines, playAreaMode, fullLines, playerLevelEnvironment.gameEndFadeAnimationCounter, gameLevelEnvironment.gameEndFadeAnimationLength, playerLevelEnvironment.fullLineFadeAnimationCounter, gameLevelEnvironment.fullLineFadeAnimationLength);
+        drawBlock.drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yModifierInSquares, yModifierInPixels, drawEmptyLines, playerLevelEnvironment.playAreaMode, playerLevelEnvironment.fullLines, playerLevelEnvironment.gameEndFadeAnimationCounter, gameLevelEnvironment.gameEndFadeAnimationLength, playerLevelEnvironment.fullLineFadeAnimationCounter, gameLevelEnvironment.fullLineFadeAnimationLength);
 
     }
 
@@ -598,7 +595,7 @@ let logOfEvents = [];
             const drawEmptyLines = false;
             const blockMapToDraw = blockMap[blockToDrawIndex][blockToDrawRotation][blockToDrawRotation];
             const blockToDrawColor = colorRelated.getBlockColor(blockToDrawIndex);
-            drawBlock.drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yModifierInSquares, yModifierInPixels, drawEmptyLines, playAreaMode, fullLines, playerLevelEnvironment.gameEndFadeAnimationCounter, gameLevelEnvironment.gameEndFadeAnimationLength, playerLevelEnvironment.fullLineFadeAnimationCounter, gameLevelEnvironment.fullLineFadeAnimationLength);
+            drawBlock.drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yModifierInSquares, yModifierInPixels, drawEmptyLines, playerLevelEnvironment.playAreaMode, playerLevelEnvironment.fullLines, playerLevelEnvironment.gameEndFadeAnimationCounter, gameLevelEnvironment.gameEndFadeAnimationLength, playerLevelEnvironment.fullLineFadeAnimationCounter, gameLevelEnvironment.fullLineFadeAnimationLength);
         }
     }
 
@@ -609,29 +606,29 @@ let logOfEvents = [];
 
         let blockAlreadyInserted = false;
         for (let i = 0; i < listOfBlocksInThePlayingArea.length; i++) {
-            if (listOfBlocksInThePlayingArea[i].blockCounter === blockCounter) {
+            if (listOfBlocksInThePlayingArea[i].blockCounter === playerLevelEnvironment.blockCounter) {
                 blockAlreadyInserted = true;
             }
         }
 
         if (blockAlreadyInserted === false) {
-            try {        
-                listOfBlocksInThePlayingArea.push({ 
+            try {
+                listOfBlocksInThePlayingArea.push({
                     blockMap: blockMap[blockIndex][rotationIndex][rotationIndex],
                     blockIndex: blockIndex,
                     blockX: Math.floor(xPlayArea / gameLevelEnvironment.pixelSize),
                     blockY: Math.floor(yPlayArea / gameLevelEnvironment.pixelSize) - 1,
-                    blockCounter: blockCounter,
+                    blockCounter: playerLevelEnvironment.blockCounter,
                     wasChecked: false
                 });
-            } catch(error) { 
+            } catch(error) {
             }
         }
     }
 
 
     // this function calculates the currentGravityCalculationArea
-    
+
     function calculateCurrentGravityCalculationArea() {
 
         let x;
@@ -650,7 +647,7 @@ let logOfEvents = [];
         const c = document.getElementById("currentGravityCalculationAreaCanvas");
         const ctx = c.getContext("2d");
         ctx.clearRect(0, 0, c.width, c.height);
-        
+
         // go thru the blocks one by one in listOfBlocksInThePlayingArea
         let isRectangleFilled;
         for (let i = 0; i < listOfBlocksInThePlayingArea.length; i++) {
@@ -680,7 +677,7 @@ let logOfEvents = [];
         let x;
         let y;
 
-        // go thru the blocks one by one in listOfBlocksInThePlayingArea 
+        // go thru the blocks one by one in listOfBlocksInThePlayingArea
         // (we iterate backwards, so when we remove an item reindexing the array will not break the loop)
         let blockIsAffected;
         let isRectangleFilled;
@@ -778,14 +775,14 @@ let logOfEvents = [];
     // this function checks if any of the blocks can fall down
 
     function checkIfAnyBlockCanFallDown() {
-        
+
         let blockMapNumberOfColumns;
         let blockMapNumberOfRows;
         let x;
         let y;
         let thereWasMovementInThisRound = false;
         listOfBlocksThatCanBeMoved = [];
-            
+
         // let's iterate thru all the blocks we have in listOfBlocksInThePlayingArea
         let isRectangleFilled;
         for (let i = 0; i < listOfBlocksInThePlayingArea.length; i++) {
@@ -874,7 +871,7 @@ let logOfEvents = [];
 
 
     // this function copies the currentGravityCalculationArea to currentCalculationArea
-    
+
     function copyCurrentGravityCalculationAreaToCurrentCalculationArea() {
         const numberOfRows = currentGravityCalculationArea.length;
         const numberOfColumns = currentGravityCalculationArea[0].length;
@@ -894,7 +891,7 @@ let logOfEvents = [];
         const c = document.getElementById("playAreaCanvas");
         const ctx = c.getContext("2d");
         ctx.clearRect(0, 0, c.width, c.height);
-        
+
         // go thru the blocks one by one in listOfBlocksInThePlayingArea
         let yModifierInPixels;
         for (let i = 0; i < listOfBlocksInThePlayingArea.length; i++) {
@@ -909,7 +906,7 @@ let logOfEvents = [];
             } else {
                 yModifierInPixels = 0;
             }
-            drawBlock.drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yModifierInSquares, yModifierInPixels, drawEmptyLines, playAreaMode, fullLines, playerLevelEnvironment.gameEndFadeAnimationCounter, gameLevelEnvironment.gameEndFadeAnimationLength, playerLevelEnvironment.fullLineFadeAnimationCounter, gameLevelEnvironment.fullLineFadeAnimationLength);
+            drawBlock.drawBlock(ctx, blockMapToDraw, blockToDrawColor, xModifierInSquares, yModifierInSquares, yModifierInPixels, drawEmptyLines, playerLevelEnvironment.playAreaMode, playerLevelEnvironment.fullLines, playerLevelEnvironment.gameEndFadeAnimationCounter, gameLevelEnvironment.gameEndFadeAnimationLength, playerLevelEnvironment.fullLineFadeAnimationCounter, gameLevelEnvironment.fullLineFadeAnimationLength);
         }
     }
 
@@ -931,7 +928,7 @@ let logOfEvents = [];
             selectANewBlock();
             playerLevelEnvironment.selectANewBlockNextFrame = false;
         }
-        
+
         // let's move the current block down
 
         // y previously in the calculationArea
@@ -957,7 +954,7 @@ let logOfEvents = [];
 
         // draw next blocks
         drawNextBlocksArea();
-    
+
         // draw currentGravityCalculationArea
         calculateCurrentGravityCalculationArea();
     }
@@ -968,14 +965,14 @@ let logOfEvents = [];
     function fullLineRemoveRoutine() {
         drawPlayArea();
         if (animateFullLines() === true) {
-            hideFullLines(fullLines);
+            hideFullLines(playerLevelEnvironment.fullLines);
 
             // check if any block can fall down
             const isThereABlockThatCanBeMoved = checkIfAnyBlockCanFallDown();
             if (isThereABlockThatCanBeMoved === true) {
-                playAreaMode = 'gravityAnimation';
+                playerLevelEnvironment.playAreaMode = 'gravityAnimation';
             } else {
-                playAreaMode = 'blockFallingAnimation';
+                playerLevelEnvironment.playAreaMode = 'blockFallingAnimation';
             }
         }
     }
@@ -999,9 +996,9 @@ let logOfEvents = [];
 
             const isThereABlockThatCanBeMoved = checkIfAnyBlockCanFallDown();
             if (isThereABlockThatCanBeMoved === true) {
-                playAreaMode = 'gravityAnimation';
+                playerLevelEnvironment.playAreaMode = 'gravityAnimation';
             } else {
-                playAreaMode = 'blockFallingAnimation';
+                playerLevelEnvironment.playAreaMode = 'blockFallingAnimation';
             }
 
         }
@@ -1026,17 +1023,17 @@ let logOfEvents = [];
         if (playerLevelEnvironment.gameEndFadeAnimationCounter === 0) {
 
             playerLevelEnvironment.gameEndFadeAnimationCounter = gameLevelEnvironment.gameEndFadeAnimationLength;
-            
-            statRelated.displayGameEndStats(blockCounter);
+
+            statRelated.displayGameEndStats(playerLevelEnvironment.blockCounter);
 
             $('#gamestartbutton').css('visibility','visible');
-            
+
             // stop the game loop
             gameLevelEnvironment.stopTheGameLoop = true;
 
-            
+
         } else {
-            // 
+            //
         }
 
     }
@@ -1046,8 +1043,8 @@ let logOfEvents = [];
 
     function gameLoop() {
 
-        switch (playAreaMode) {
-            case 'blockFallingAnimation': 
+        switch (playerLevelEnvironment.playAreaMode) {
+            case 'blockFallingAnimation':
                 blockFallingRoutine();
                 break;
             case 'fullLineRemoveAnimation':
@@ -1060,14 +1057,14 @@ let logOfEvents = [];
                 gameEndAnimationRoutine();
         }
 
-        // increase frameNumber
-        frameNumber++;
+        // increase playerLevelEnvironment.frameNumber
+        playerLevelEnvironment.frameNumber++;
 
         // let's restart the game loop in the next frame
         if (!gameLevelEnvironment.stopTheGameLoop) {
             requestAnimationFrame(gameLoop);
         }
-        
+
     }
 
 
@@ -1084,8 +1081,8 @@ nextBlocks.unshift(blockIndex);
 blockIndex = selectABlockRandomly();
 nextBlocks.unshift(blockIndex);
 
-// set playAreaMode
-playAreaMode = 'blockFallingAnimation';
+// set playerLevelEnvironment.playAreaMode
+playerLevelEnvironment.playAreaMode = 'blockFallingAnimation';
 
 // record game start time
 statRelated.setGameStartTime();
