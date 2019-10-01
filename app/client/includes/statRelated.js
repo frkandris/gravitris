@@ -26,7 +26,7 @@ function getBlocksPerMinute(numberOfBlocks, gameTimeInSeconds) {
     return Math.round(numberOfBlocks / (gameTimeInSeconds / 60));
 }
 
-function increaseNumberOfLinesCreated(numberOfNewLinesCleared) {
+function increaseNumberOfLinesCleared(numberOfNewLinesCleared) {
     numberOfLinesCleared += numberOfNewLinesCleared;
 
     // ajax load URL and increase global linesCleared counter
@@ -68,6 +68,6 @@ function displayGameEndStats(blockCounter) {
 module.exports = {
     setGameStartTime,
     setGameEndTime,
-    increaseNumberOfLinesCreated,
+    increaseNumberOfLinesCleared,
     displayGameEndStats
 }

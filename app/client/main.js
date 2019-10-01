@@ -463,7 +463,7 @@ const drawBlock = require('./includes/drawBlock');
         }
         if (fullLineFound === true) {
             playerLevelEnvironment.playAreaMode = 'fullLineRemoveAnimation';
-            statRelated.increaseNumberOfLinesCreated(playerLevelEnvironment.fullLines.length);
+            statRelated.increaseNumberOfLinesCleared(playerLevelEnvironment.fullLines.length);
         }
     }
 
