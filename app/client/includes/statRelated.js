@@ -1,14 +1,14 @@
-var axios = require('axios');
+const axios = require('axios');
 
-var gameEndTime;
-var gameStartTime;
+let gameEndTime;
+let gameStartTime;
 
-var numberOfLinesCleared = 0;
+let numberOfLinesCleared = 0;
 
-var statLineCounter = 0;
-var statPositionX = 5;
-var statPositionY = 150;
-var lineHeight = 20;
+let statLineCounter = 0;
+const statPositionX = 5;
+const statPositionY = 150;
+const lineHeight = 20;
 
 function setGameStartTime() {
     gameStartTime = new Date().getTime();
@@ -44,22 +44,22 @@ function increaseNumberOfLinesCleared(numberOfNewLinesCleared) {
 }
 
 function displayGameEndStats(blockCounter) {
-    var c = document.getElementById("playAreaCanvas");
-    var ctx = c.getContext("2d");
+    const c = document.getElementById("playAreaCanvas");
+    const ctx = c.getContext("2d");
     ctx.fillStyle = "white";
     ctx.font = "14px Consolas";
 
     ctx.fillText("Lines cleared: " + numberOfLinesCleared, statPositionX, statPositionY + statLineCounter * lineHeight);
     statLineCounter++;
 
-    var gameTimeInSeconds = getGameTimeInSeconds(gameStartTime, gameEndTime);
+    const gameTimeInSeconds = getGameTimeInSeconds(gameStartTime, gameEndTime);
     ctx.fillText("Game time: " + gameTimeInSeconds, statPositionX, statPositionY + statLineCounter * lineHeight);
     statLineCounter++;
 
     ctx.fillText("Number of blocks: " + blockCounter, statPositionX, statPositionY + statLineCounter * lineHeight);
     statLineCounter++;
 
-    var blocksPerMinute = getBlocksPerMinute(blockCounter, gameTimeInSeconds);
+    const blocksPerMinute = getBlocksPerMinute(blockCounter, gameTimeInSeconds);
     ctx.fillText("BPM: " + blocksPerMinute, statPositionX, statPositionY + statLineCounter * lineHeight);
     statLineCounter++;
 
@@ -70,4 +70,4 @@ module.exports = {
     setGameEndTime,
     increaseNumberOfLinesCleared,
     displayGameEndStats
-}
+};
