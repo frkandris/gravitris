@@ -463,7 +463,15 @@ const drawBlock = require('./includes/drawBlock');
         }
         if (fullLineFound === true) {
             playerLevelEnvironment.playAreaMode = 'fullLineRemoveAnimation';
-            statRelated.increaseNumberOfLinesCleared(playerLevelEnvironment.fullLines.length);
+            let numberOfNewLinesCleared = playerLevelEnvironment.fullLines.length
+            let numberOfLinesCleared = statRelated.increaseNumberOfLinesCleared(numberOfNewLinesCleared);
+            if (
+                Math.round(numberOfLinesCleared / gameLevelEnvironment.numberOfLinesNeedsToBeClearedToIncreaseGameSpeed) !==
+                Math.round((numberOfLinesCleared-numberOfNewLinesCleared) / gameLevelEnvironment.numberOfLinesNeedsToBeClearedToIncreaseGameSpeed)
+            ) {
+                playerLevelEnvironment.fallingSpeed = playerLevelEnvironment.fallingSpeed + 0.5;
+                console.log("playerLevelEnvironment.fallingSpeed", playerLevelEnvironment.fallingSpeed);
+            };
         }
     }
 

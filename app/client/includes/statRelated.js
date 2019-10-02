@@ -40,7 +40,9 @@ function increaseNumberOfLinesCleared(numberOfNewLinesCleared) {
     })
     .finally(function () {
       // always executed
-    });    
+    });
+
+    return numberOfLinesCleared;
 }
 
 function displayGameEndStats(blockCounter) {

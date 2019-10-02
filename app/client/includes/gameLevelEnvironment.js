@@ -7,6 +7,8 @@ const fullLineFadeAnimationLength = 10;
 const gravityAnimationFallingSpeed = 4;
 const gameEndFadeAnimationLength = 100;
 
+const numberOfLinesNeedsToBeClearedToIncreaseGameSpeed = 10;
+
 let stopTheGameLoop = false;
 
 module.exports = {
@@ -15,5 +17,6 @@ module.exports = {
     fullLineFadeAnimationLength,
     gravityAnimationFallingSpeed,
     gameEndFadeAnimationLength,
+    numberOfLinesNeedsToBeClearedToIncreaseGameSpeed,
     stopTheGameLoop
 };
