@@ -1,7 +1,8 @@
-function sayHello() {
-    console.log("hello");
+function saySomething(something) {
+    const theDiv = document.getElementById("chat-area");
+    theDiv.innerHTML += something + "<br/>";
 }
 
 module.exports = {
-    sayHello
-}
+    saySomething
+};

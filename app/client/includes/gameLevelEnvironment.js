@@ -7,7 +7,7 @@ const fullLineFadeAnimationLength = 10;
 const gravityAnimationFallingSpeed = 4;
 const gameEndFadeAnimationLength = 100;
 
-const numberOfLinesNeedsToBeClearedToIncreaseGameSpeed = 10;
+const numberOfLinesNeedsToBeClearedToIncreaseGameSpeed = 2;
 
 let stopTheGameLoop = false;
 

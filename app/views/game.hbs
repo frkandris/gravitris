@@ -1,19 +1,27 @@
-  <div id="game-container">
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <div id="game-container">
 
-      <div>
-        <canvas id="nextBlocksAreaCanvas" width="280" height="40"></canvas>
-      </div>
-      <div>
-        <canvas id="playAreaCanvas" width="200" height="600" style="border:1px solid #cccccc;"></canvas>
-        <button id="game-start-button" type="button" class="btn btn-primary" onClick="window.location.reload();">Start a new game</button>
-      </div>
-      <div>
-          <textarea id="chat-area"></textarea>
-      </div>
+                <div>
+                    <canvas id="nextBlocksAreaCanvas" width="280" height="40"></canvas>
+                </div>
+                <div>
+                    <canvas id="playAreaCanvas" width="200" height="600" style="border:1px solid #cccccc;"></canvas>
+                    <button id="game-start-button" type="button" class="btn btn-primary" onClick="window.location.reload();">Start a new game</button>
+                </div>
 
-      <span style="display:none"><canvas id="currentGravityCalculationAreaCanvas" width="320" height="600" style="border:1px solid #cccccc;"></canvas></span>
-  
+                <span style="display:none"><canvas id="currentGravityCalculationAreaCanvas" width="320" height="600" style="border:1px solid #cccccc;"></canvas></span>
 
-  </div>
+            </div>
+        </div>
+        <div class="col-sm">
+            <div style="height:100%;border:1px solid #fff;">
+                <p id="chat-area" style="position: absolute;bottom: 0px;">
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
 
-  <script src='/javascripts/bundle.js'></script>
+<script src='/javascripts/bundle.js'></script>

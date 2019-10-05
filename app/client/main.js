@@ -472,6 +472,7 @@ const chat = require('./includes/chat');
             ) {
                 playerLevelEnvironment.fallingSpeed = playerLevelEnvironment.fallingSpeed + 0.5;
                 console.log("playerLevelEnvironment.fallingSpeed", playerLevelEnvironment.fallingSpeed);
+                chat.saySomething(numberOfLinesCleared + " lines cleared, game speed increased!");
             };
         }
     }
@@ -1031,6 +1032,7 @@ const chat = require('./includes/chat');
 
             // stop the game loop
             gameLevelEnvironment.stopTheGameLoop = true;
+            chat.saySomething("Game over!");
 
 
         } else {
@@ -1088,7 +1090,7 @@ playerLevelEnvironment.playAreaMode = 'blockFallingAnimation';
 // record game start time
 statRelated.setGameStartTime();
 
-chat.sayHello();
+chat.saySomething("The game has started!");
 
 // start the game loop
 requestAnimationFrame(gameLoop);
