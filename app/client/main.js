@@ -13,6 +13,7 @@ const statRelated = require('./includes/statRelated');
 
 const drawBlock = require('./includes/drawBlock');
 
+const chat = require('./includes/chat');
 
     // this function handles the keyboard events
 
@@ -1086,6 +1087,8 @@ playerLevelEnvironment.playAreaMode = 'blockFallingAnimation';
 
 // record game start time
 statRelated.setGameStartTime();
+
+chat.sayHello();
 
 // start the game loop
 requestAnimationFrame(gameLoop);
