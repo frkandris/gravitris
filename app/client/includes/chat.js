@@ -52,15 +52,15 @@ function sayPointsReceived(pointsReceived, numberOfNewLinesCleared) {
 function sayGameEndStats(numberOfLinesCleared, gameTimeInSeconds, numberOfBlocks, blocksPerMinute) {
     saySomething("<br/><span class=text-light>Game end stats:</span>");
     if (numberOfLinesCleared === 1) {
-        saySomething("- 1 line cleared.");
+        saySomething("- <span class=text-light>1 line</span> cleared.");
     } else {
         saySomething("- <span class=text-light>" + numberOfLinesCleared + " lines</span> cleared.");
     }
     saySomething("- <span class=text-light>" + Math.round(gameTimeInSeconds) + " seconds</span> game time.");
     saySomething("- <span class=text-light>" + numberOfBlocks + " blocks</span> served.");
     saySomething("- <span class=text-light>" + blocksPerMinute + " blocks/minute</span> player speed.");
-    saySomething("- <span class=text-light>" + numberWithCommas(playerLevelEnvironment.points) + " points</span>.");
-    saySomething("- <span class=text-light>Level#" + playerLevelEnvironment.gameLevel + "</span>.")
+    saySomething("- <span class=text-light>" + numberWithCommas(playerLevelEnvironment.points) + " points</span> reached.");
+    saySomething("- <span class=text-light>Level#" + playerLevelEnvironment.gameLevel + "</span> reached.")
 }
 
 
