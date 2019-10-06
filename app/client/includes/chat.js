@@ -23,7 +23,7 @@ function sayGameOver() {
     saySomething("<br/><span class=text-light>Game over!</span>");
 
     const restartButton = '<br/><button type="button" class="btn btn-primary" onClick="window.location.reload();">Start a new game</button>';
-    const separator = "&nbsp;"
+    const separator = "&nbsp;";
     const returnToMainScreenButton = '<a href="/"><button type="button" class="btn btn-primary">Return to main menu</button></a>';
     saySomething(restartButton + separator + returnToMainScreenButton);
 }
@@ -39,7 +39,7 @@ function sayLevelIncreased(gameLevel) {
 // this function announces that there were points received
 
 function sayPointsReceived(pointsReceived, numberOfNewLinesCleared) {
-    if (numberOfNewLinesCleared == 1) {
+    if (numberOfNewLinesCleared === 1) {
         saySomething("<span class=text-light>+" + numberWithCommas(pointsReceived) + " points</span> (1 line cleared on level#" + playerLevelEnvironment.gameLevel+ ", " + numberWithCommas(playerLevelEnvironment.points) + " points overall)");
     } else {
         saySomething("<span class=text-light>+" + numberWithCommas(pointsReceived) + " points</span> (" + numberOfNewLinesCleared + " lines cleared on level#" + playerLevelEnvironment.gameLevel+ ", " + numberWithCommas(playerLevelEnvironment.points) + " points overall)");
@@ -51,7 +51,7 @@ function sayPointsReceived(pointsReceived, numberOfNewLinesCleared) {
 
 function sayGameEndStats(numberOfLinesCleared, gameTimeInSeconds, numberOfBlocks, blocksPerMinute) {
     saySomething("<br/><span class=text-light>Game end stats:</span>");
-    if (numberOfLinesCleared == 1) {
+    if (numberOfLinesCleared === 1) {
         saySomething("- 1 line cleared.");
     } else {
         saySomething("- <span class=text-light>" + numberOfLinesCleared + " lines</span> cleared.");
