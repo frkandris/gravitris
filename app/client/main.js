@@ -15,49 +15,31 @@ const drawBlock = require('./includes/drawBlock');
 
 const chat = require('./includes/chat');
 
+const recordGame = require('./includes/recordGame');
+
     // this function handles the keyboard events
 
     function checkKeyboardInput(event) {
 
         switch (event.key) {
             case "ArrowUp":
-                playerLevelEnvironment.logOfEvents.push({
-                    frameNumber: playerLevelEnvironment.frameNumber,
-                    event: 'keyPressed',
-                    eventValue: 'rotateRight'
-                });
+                recordGame.saveGameEvent(playerLevelEnvironment.frameNumber,'keyPressed','rotateRight');
                 moveBlockInCalculationArea('rotateRight');
                 break;
             case "ArrowDown":
-                playerLevelEnvironment.logOfEvents.push({
-                    frameNumber: playerLevelEnvironment.frameNumber,
-                    event: 'keyPressed',
-                    eventValue: 'rotateLeft'
-                });
+                recordGame.saveGameEvent(playerLevelEnvironment.frameNumber,'keyPressed','rotateLeft');
                 moveBlockInCalculationArea('rotateLeft');
                 break;
             case "ArrowLeft":
-                playerLevelEnvironment.logOfEvents.push({
-                    frameNumber: playerLevelEnvironment.frameNumber,
-                    event: 'keyPressed',
-                    eventValue: 'moveLeft'
-                });
+                recordGame.saveGameEvent(playerLevelEnvironment.frameNumber,'keyPressed','moveLeft');
                 moveBlockInCalculationArea('moveLeft');
                 break;
             case "ArrowRight":
-                playerLevelEnvironment.logOfEvents.push({
-                    frameNumber: playerLevelEnvironment.frameNumber,
-                    event: 'keyPressed',
-                    eventValue: 'moveRight'
-                });
+                recordGame.saveGameEvent(playerLevelEnvironment.frameNumber,'keyPressed','moveRight');
                 moveBlockInCalculationArea('moveRight');
                 break;
             case " ":
-                playerLevelEnvironment.logOfEvents.push({
-                    frameNumber: playerLevelEnvironment.frameNumber,
-                    event: 'keyPressed',
-                    eventValue: 'instantDrop'
-                });
+                recordGame.saveGameEvent(playerLevelEnvironment.frameNumber,'keyPressed','instantDrop');
                 // instant drop
                 while (playerLevelEnvironment.moveCanBeDone === true) {
                     playerLevelEnvironment.yPlayArea = playerLevelEnvironment.yPlayArea + gameLevelEnvironment.pixelSize;
@@ -99,12 +81,7 @@ const chat = require('./includes/chat');
 
         playerLevelEnvironment.blockCounter++;
 
-        playerLevelEnvironment.logOfEvents.push({
-            frameNumber: playerLevelEnvironment.frameNumber,
-            event: 'newBlock',
-            eventValue: playerLevelEnvironment.blockIndex
-        });
-
+        recordGame.saveGameEvent(playerLevelEnvironment.frameNumber,'newBlock',playerLevelEnvironment.blockIndex);
     }
 
 
@@ -1034,8 +1011,12 @@ const chat = require('./includes/chat');
 
             // stop the game loop
             gameLevelEnvironment.stopTheGameLoop = true;
+
+            // say "game over" in the chat
             chat.sayGameOver();
 
+            // save game data to the server
+            recordGame.saveGameStringToServer();
 
         } else {
             //

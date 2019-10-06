@@ -1,29 +1,35 @@
-var express = require('express');
-var router = express.Router();
-var mongoose = require('mongoose');
-var Counter = require('../models/Counter.model');
-var nconf = require('nconf');
+const express = require('express');
+const router = express.Router();
+const mongoose = require('mongoose');
+const Counter = require('../models/Counter.model');
+const gameRecording = require('../models/GameRecording.model');
+const nconf = require('nconf');
 
-var dbURL = nconf.get('database:MONGODB_URL');
-mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true });
+const dbURL = nconf.get('database:MONGODB_URL');
+mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true }).then(
+    () => { /** ready to use */ },
+    err => { console.log(err); /** handle initial connection error */ }
+);
 
 
 /* GET welcome page. */
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res) {
 
   Promise.all([
     Counter.find({ counterName: 'linesCleared' }),
     Counter.find({ counterName: 'gamesPlayed'})
   ]).then( ([ linesCleared, gamesPlayed ]) => {
+    let numberOfGamesPlayed;
+    let numberOfLinesCleared;
     if (linesCleared[0]) {
-      var numberOfLinesCleared = linesCleared[0].counterValue
+      numberOfLinesCleared = linesCleared[0].counterValue;
     } else {
-      var numberOfLinesCleared = 1;
+      numberOfLinesCleared = 1;
     }
     if (gamesPlayed[0]) {
-      var numberOfGamesPlayed = gamesPlayed[0].counterValue
+      numberOfGamesPlayed = gamesPlayed[0].counterValue;
     } else {
-      var numberOfGamesPlayed = 1;
+      numberOfGamesPlayed = 1;
     }
     res.render('index', { 
       numberOfLinesCleared: numberOfLinesCleared,
@@ -36,7 +42,7 @@ router.get('/', function(req, res, next) {
 
 
 /* GET game page. */
-router.get('/game', function(req, res, next) {
+router.get('/game', function(req, res) {
 
   // increase gamesPlayed
   Counter.findOneAndUpdate(
@@ -54,7 +60,7 @@ router.get('/game', function(req, res, next) {
     },
     function(err, counter) {
     if (err) {
-      console.log('game | error | could not increase gamesPlayed counter');
+      console.log('game | error | could not increase gamesPlayed counter', counter);
     } else {
       // success
     }
@@ -65,8 +71,8 @@ router.get('/game', function(req, res, next) {
 
 
 /* Increase the linesCleared counter */
-router.get('/increase-linesCleared-counter/:numberOfLinesCleared', function(req, res, next) {
-  var numberOfLinesCleared = Number(req.params.numberOfLinesCleared);
+router.get('/increase-linesCleared-counter/:numberOfLinesCleared', function(req, res) {
+  const numberOfLinesCleared = Number(req.params.numberOfLinesCleared);
   if (typeof numberOfLinesCleared != "number") {
     console.log('increase-linesCleared-counter | error | not a number received from the client');
   } else if (numberOfLinesCleared > 30) {
@@ -87,7 +93,7 @@ router.get('/increase-linesCleared-counter/:numberOfLinesCleared', function(req,
       },
       function(err, counter) {
       if (err) {
-        console.log('increase-linesCleared-counter | error | could not increase the counter');
+        console.log('increase-linesCleared-counter | error | could not increase the counter', counter);
         res.status(400).send('error increasing counter', err);
       } else {
         console.log('increase-linesCleared-counter | log | counter increased by ' + numberOfLinesCleared);
@@ -95,6 +101,26 @@ router.get('/increase-linesCleared-counter/:numberOfLinesCleared', function(req,
       }
     });
   }
+});
+
+
+/* Save a gameString to the DB based on client request  */
+router.post('/save-game-status/', function(req, res) {
+
+  let newGameRecording = new gameRecording();
+  newGameRecording.gameString = req.body.gameString;
+
+  // console.log(req.body.gameString);
+
+  newGameRecording.save(function(err, gameRecording) {
+    if (err) {
+      console.log("problem", err);
+      res.sendStatus(400);
+    } else {
+      console.log("success", gameRecording);
+      res.sendStatus(200);
+    }
+  })
 });
 
 
