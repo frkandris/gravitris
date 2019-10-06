@@ -1,4 +1,4 @@
-var blockMap = {
+const blockMap = {
     0 : [
         { 
             0 : [

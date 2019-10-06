@@ -104,7 +104,7 @@ router.get('/increase-linesCleared-counter/:numberOfLinesCleared', function(req,
 });
 
 
-/* Save a gameString to the DB based on client request  */
+/* Save a gameString to the DB based on client request, probably at the end of the game */
 router.post('/save-game-status/', function(req, res) {
 
   let newGameRecording = new gameRecording();
@@ -117,11 +117,29 @@ router.post('/save-game-status/', function(req, res) {
       console.log("problem", err);
       res.sendStatus(400);
     } else {
-      console.log("success", gameRecording);
+      console.log(gameRecording);
       res.sendStatus(200);
     }
   })
 });
 
+
+/* Replay a game. */
+router.get('/replay-game/:id', function(req, res) {
+  const id = req.params.id;
+
+  gameRecording.findOne( {
+    _id: id
+  }, function(err, gameRecording) {
+    if (err) {
+      console.log("problem", err);
+      res.sendStatus(400);
+    } else {
+      console.log(gameRecording);
+      res.render('game');
+    }
+  });
+
+});
 
 module.exports = router;

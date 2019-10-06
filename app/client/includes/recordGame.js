@@ -8,14 +8,14 @@ function saveGameEvent(frameNumber, eventName, eventValue) {
         eventName: eventName,
         eventValue: eventValue
     });
-    console.log(frameNumber, eventName, eventValue)
+    // console.log(frameNumber, eventName, eventValue)
 }
 
 function saveGameStringToServer() {
 
-    params = {
+    const params = {
         gameString: playerLevelEnvironment.logOfEvents
-    }
+    };
 
     // ajax load URL and increase global linesCleared counter
     axios.post('/save-game-status/', params)
