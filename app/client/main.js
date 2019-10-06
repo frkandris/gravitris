@@ -466,13 +466,17 @@ const chat = require('./includes/chat');
             playerLevelEnvironment.playAreaMode = 'fullLineRemoveAnimation';
             let numberOfNewLinesCleared = playerLevelEnvironment.fullLines.length
             let numberOfLinesCleared = statRelated.increaseNumberOfLinesCleared(numberOfNewLinesCleared);
+            let pointsReceived = statRelated.calculatePointsReceived(numberOfNewLinesCleared, playerLevelEnvironment.gameLevel);
+            playerLevelEnvironment.points += pointsReceived;
+
+            chat.sayPointsReceived(pointsReceived, numberOfNewLinesCleared);
             if (
                 Math.round(numberOfLinesCleared / gameLevelEnvironment.numberOfLinesNeedsToBeClearedToIncreaseGameSpeed) !==
                 Math.round((numberOfLinesCleared-numberOfNewLinesCleared) / gameLevelEnvironment.numberOfLinesNeedsToBeClearedToIncreaseGameSpeed)
             ) {
+                playerLevelEnvironment.gameLevel++;
                 playerLevelEnvironment.fallingSpeed = playerLevelEnvironment.fallingSpeed + 0.5;
-                console.log("playerLevelEnvironment.fallingSpeed", playerLevelEnvironment.fallingSpeed);
-                chat.saySomething(numberOfLinesCleared + " lines cleared, game speed increased!");
+                chat.sayLevelIncreased(playerLevelEnvironment.gameLevel);
             };
         }
     }
@@ -1022,17 +1026,15 @@ const chat = require('./includes/chat');
         playerLevelEnvironment.gameEndFadeAnimationCounter--;
 
         // check if everything has faded out properly
-        if (playerLevelEnvironment.gameEndFadeAnimationCounter === 0) {
+        if (playerLevelEnvironment.gameEndFadeAnimationCounter === 20) {
 
             playerLevelEnvironment.gameEndFadeAnimationCounter = gameLevelEnvironment.gameEndFadeAnimationLength;
 
             statRelated.displayGameEndStats(playerLevelEnvironment.blockCounter);
 
-            $('#game-start-button').css('visibility','visible');
-
             // stop the game loop
             gameLevelEnvironment.stopTheGameLoop = true;
-            chat.saySomething("Game over!");
+            chat.sayGameOver();
 
 
         } else {
@@ -1090,7 +1092,7 @@ playerLevelEnvironment.playAreaMode = 'blockFallingAnimation';
 // record game start time
 statRelated.setGameStartTime();
 
-chat.saySomething("The game has started!");
+chat.sayGameStarted();
 
 // start the game loop
 requestAnimationFrame(gameLoop);

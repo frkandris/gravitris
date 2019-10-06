@@ -30,6 +30,10 @@ let xPlayArea;
 let blockIndex;
 let rotationIndex;
 
+let gameLevel = 1;
+
+let points = 0;
+
 module.exports = {
     fallingSpeed,
     selectANewBlockNextFrame,
@@ -48,5 +52,7 @@ module.exports = {
     xPlayArea,
     yPlayArea,
     blockIndex,
-    rotationIndex
+    rotationIndex,
+    gameLevel,
+    points
 };

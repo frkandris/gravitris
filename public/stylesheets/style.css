@@ -1,27 +1,12 @@
 body {
   background-color:#000000;
+  color: #666666;
 }
 
 #game-container {
   margin:auto;
   text-align:center;
   padding: 40px;
-}
-
-canvas { 
-  z-index: 1;
-}
-
-#game-start-button {
-  visibility: hidden;
-  position: absolute;
-  z-index: 2;
-  width: 180px;
-  height: 40px;
-  left: 50%;
-  top: 50%;
-  position: absolute;
-  margin: -20px 0 0 -90px;
 }
 
 .vertical-center {
