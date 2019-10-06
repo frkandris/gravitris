@@ -6,10 +6,6 @@ let gameStartTime;
 
 let numberOfLinesCleared = 0;
 
-let statLineCounter = 0;
-const statPositionX = 5;
-const statPositionY = 150;
-const lineHeight = 20;
 
 function setGameStartTime() {
     gameStartTime = new Date().getTime();
