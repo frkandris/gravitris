@@ -464,7 +464,7 @@ const chat = require('./includes/chat');
         }
         if (fullLineFound === true) {
             playerLevelEnvironment.playAreaMode = 'fullLineRemoveAnimation';
-            let numberOfNewLinesCleared = playerLevelEnvironment.fullLines.length
+            let numberOfNewLinesCleared = playerLevelEnvironment.fullLines.length;
             let numberOfLinesCleared = statRelated.increaseNumberOfLinesCleared(numberOfNewLinesCleared);
             let pointsReceived = statRelated.calculatePointsReceived(numberOfNewLinesCleared, playerLevelEnvironment.gameLevel);
             playerLevelEnvironment.points += pointsReceived;
@@ -477,7 +477,7 @@ const chat = require('./includes/chat');
                 playerLevelEnvironment.gameLevel++;
                 playerLevelEnvironment.fallingSpeed = playerLevelEnvironment.fallingSpeed + 0.5;
                 chat.sayLevelIncreased(playerLevelEnvironment.gameLevel);
-            };
+            }
         }
     }
 
