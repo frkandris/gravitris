@@ -20,7 +20,7 @@ function sayGameStarted() {
 // and displays the restart / home buttons
 
 function sayGameOver() {
-    saySomething("<br/><span class=text-light>Game over!</span> Reached " + numberWithCommas(playerLevelEnvironment.points) + " points and level#" + playerLevelEnvironment.gameLevel + "!");
+    saySomething("<br/><span class=text-light>Game over!</span>");
 
     const restartButton = '<br/><button type="button" class="btn btn-primary" onClick="window.location.reload();">Start a new game</button>';
     const separator = "&nbsp;"
@@ -59,6 +59,8 @@ function sayGameEndStats(numberOfLinesCleared, gameTimeInSeconds, numberOfBlocks
     saySomething("- <span class=text-light>" + Math.round(gameTimeInSeconds) + " seconds</span> game time.");
     saySomething("- <span class=text-light>" + numberOfBlocks + " blocks</span> served.");
     saySomething("- <span class=text-light>" + blocksPerMinute + " blocks/minute</span> player speed.");
+    saySomething("- <span class=text-light>" + numberWithCommas(playerLevelEnvironment.points) + " points</span>.");
+    saySomething("- <span class=text-light>Level#" + playerLevelEnvironment.gameLevel + "</span>.")
 }
 
 
