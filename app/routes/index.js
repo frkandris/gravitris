@@ -26,7 +26,6 @@ router.get('/', function(req, res, next) {
       var numberOfGamesPlayed = 1;
     }
     res.render('index', { 
-      title: 'Gravitris',
       numberOfLinesCleared: numberOfLinesCleared,
       numberOfGamesPlayed: numberOfGamesPlayed,
       app_version: process.env.npm_package_version
@@ -61,7 +60,7 @@ router.get('/game', function(req, res, next) {
     }
   });
 
-  res.render('game', { title: 'Gravitris' });
+  res.render('game');
 });
 
 
