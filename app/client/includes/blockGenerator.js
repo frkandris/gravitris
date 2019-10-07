@@ -3,18 +3,14 @@ const gameLevelEnvironment = require('./gameLevelEnvironment');
 const statRelated = require('./statRelated');
 const recordGame = require('./recordGame');
 const blockMap = require('./blockMap');
-
 const calculationAreaDefinitions = require('./calculationAreaDefinitions');
-const currentCalculationArea = calculationAreaDefinitions.currentCalculationArea;
 
 
 // this function returns the index of a randomly selected block
 
 function selectABlockRandomly() {
-
     let numberOfBlocks = Object.keys(blockMap).length;
     return Math.floor(Math.random() * numberOfBlocks);
-
 }
 
 
@@ -26,13 +22,15 @@ function selectABlockRandomly() {
 function selectANewBlock(){
 
     // get a random new block
-    const newBlock = selectABlockRandomly();
+    // const newBlock = selectABlockRandomly();
+    const allBlocksPointer = (playerLevelEnvironment.blockCounter + 1) % gameLevelEnvironment.numberOfBlocksInAllBlocks;
+    const currentBlock = gameLevelEnvironment.allBlocks[allBlocksPointer];
 
     // add new item to the beginning of the array
-    playerLevelEnvironment.nextBlocks.unshift(newBlock);
+    // playerLevelEnvironment.nextBlocks.unshift(newBlock);
 
-    let currentBlock = playerLevelEnvironment.nextBlocks.slice(-1).pop(); // get the last item
-    playerLevelEnvironment.nextBlocks.splice(-1,1); // remove the last item
+    // let currentBlock = playerLevelEnvironment.nextBlocks.slice(-1).pop(); // get the last item
+    // playerLevelEnvironment.nextBlocks.splice(-1,1); // remove the last item
 
     // set the current block
     playerLevelEnvironment.blockIndex = currentBlock;
@@ -68,7 +66,7 @@ function checkIfBlockOverlapsAnythingOnACalculationArea() {
             if (isRectangleFilled === 1) {
                 const yOnCalculationArea = Math.floor(playerLevelEnvironment.yPlayArea / gameLevelEnvironment.pixelSize) + y;
                 const xOnCalculationArea = Math.floor(playerLevelEnvironment.xPlayArea / gameLevelEnvironment.pixelSize) + x;
-                if (currentCalculationArea[yOnCalculationArea][xOnCalculationArea] !== 0) {
+                if (calculationAreaDefinitions.currentCalculationArea[yOnCalculationArea][xOnCalculationArea] !== 0) {
                     // move can not be done, as the block in the new position would overlap with something
                     moveCanBeDone = false;
                 }
@@ -80,7 +78,17 @@ function checkIfBlockOverlapsAnythingOnACalculationArea() {
 }
 
 
+// this function generates all blocks that we'll use during the game
+
+function generateAllBlocks() {
+    for (let i = 0; i < gameLevelEnvironment.numberOfBlocksInAllBlocks; i++) {
+        let nextPiece = selectABlockRandomly();
+        gameLevelEnvironment.allBlocks.push(nextPiece);
+    }
+}
+
 module.exports = {
     selectANewBlock,
-    selectABlockRandomly
+    selectABlockRandomly,
+    generateAllBlocks
 };

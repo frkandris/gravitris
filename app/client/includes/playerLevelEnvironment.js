@@ -30,9 +30,8 @@ let xPlayArea;
 let blockIndex;
 let rotationIndex;
 
-let gameLevel = 1;
-
-let points = 0;
+let gameLevel = 1; // level reached in the game, determines game speed
+let points = 0; // points reached in the game
 
 module.exports = {
     fallingSpeed,

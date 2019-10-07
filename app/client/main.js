@@ -17,7 +17,7 @@ const chat = require('./includes/chat');
 
 const recordGame = require('./includes/recordGame');
 
-const pieceGenerator = require('./includes/pieceGenerator');
+const blockGenerator = require('./includes/blockGenerator');
 
     // this function handles the keyboard events
 
@@ -498,10 +498,11 @@ const pieceGenerator = require('./includes/pieceGenerator');
         const ctx = c.getContext("2d");
         ctx.clearRect(0, 0, c.width, c.height);
 
-        for (let i = 0; i < playerLevelEnvironment.nextBlocks.length; i++) {
-            const blockToDrawIndex = playerLevelEnvironment.nextBlocks[i];
+        for (let i = 0; i < gameLevelEnvironment.numberOfBlocksDisplayedInTheNextBlocksArea; i++) {
+            const allBlockPointer = (playerLevelEnvironment.blockCounter + i + 1) % gameLevelEnvironment.numberOfBlocksInAllBlocks;
+            const blockToDrawIndex = gameLevelEnvironment.allBlocks[allBlockPointer];
             const blockToDrawRotation = 0;
-            const xModifierInSquares = i * 5;
+            const xModifierInSquares = ((gameLevelEnvironment.numberOfBlocksDisplayedInTheNextBlocksArea - 1) * 5) - (i * 5);
             const yModifierInSquares = 0;
             const yModifierInPixels = 0;
             const drawEmptyLines = false;
@@ -837,7 +838,7 @@ const pieceGenerator = require('./includes/pieceGenerator');
             saveDoneBlock();
 
             // select a new one
-            pieceGenerator.selectANewBlock();
+            blockGenerator.selectANewBlock();
             playerLevelEnvironment.selectANewBlockNextFrame = false;
         }
 
@@ -992,12 +993,15 @@ const pieceGenerator = require('./includes/pieceGenerator');
 document.onkeydown = checkKeyboardInput;
 
 // let's generate the first 3 blocks
-playerLevelEnvironment.blockIndex = pieceGenerator.selectABlockRandomly();
+playerLevelEnvironment.blockIndex = blockGenerator.selectABlockRandomly();
 playerLevelEnvironment.nextBlocks.unshift(playerLevelEnvironment.blockIndex);
-playerLevelEnvironment.blockIndex = pieceGenerator.selectABlockRandomly();
+playerLevelEnvironment.blockIndex = blockGenerator.selectABlockRandomly();
 playerLevelEnvironment.nextBlocks.unshift(playerLevelEnvironment.blockIndex);
-playerLevelEnvironment.blockIndex = pieceGenerator.selectABlockRandomly();
+playerLevelEnvironment.blockIndex = blockGenerator.selectABlockRandomly();
 playerLevelEnvironment.nextBlocks.unshift(playerLevelEnvironment.blockIndex);
+
+// let's create the pieces for this game
+blockGenerator.generateAllBlocks();
 
 // set playerLevelEnvironment.playAreaMode
 playerLevelEnvironment.playAreaMode = 'blockFallingAnimation';
