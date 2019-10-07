@@ -1,7 +1,6 @@
 const playerLevelEnvironment = require('./playerLevelEnvironment');
 const gameLevelEnvironment = require('./gameLevelEnvironment');
 const statRelated = require('./statRelated');
-const recordGame = require('./recordGame');
 const blockMap = require('./blockMap');
 const calculationAreaDefinitions = require('./calculationAreaDefinitions');
 
@@ -45,8 +44,6 @@ function selectANewBlock(){
     }
 
     playerLevelEnvironment.blockCounter++;
-
-    recordGame.saveGameEvent(playerLevelEnvironment.frameNumber,'newBlock',playerLevelEnvironment.blockIndex);
 }
 
 

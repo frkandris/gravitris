@@ -1,4 +1,5 @@
 const playerLevelEnvironment = require('./playerLevelEnvironment');
+const gameLevelEnvironment = require('./gameLevelEnvironment');
 const axios = require('axios');
 
 
@@ -14,6 +15,8 @@ function saveGameEvent(frameNumber, eventName, eventValue) {
 function saveGameStringToServer() {
 
     const params = {
+        gameDate: new Date(),
+        gameBlocks: gameLevelEnvironment.allBlocks,
         gameString: playerLevelEnvironment.logOfEvents
     };
 
