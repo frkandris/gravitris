@@ -55,12 +55,12 @@ const blockGenerator = require('./includes/blockGenerator');
     }
 
 
+    // this function feeds the handlePlayerInput function with keyboard actions from the recording
+
     function checkPlayerInputFromRecording() {
-        if (preloadedGameString) {
-            for (let i = 0; i < preloadedGameString.length; i++) {
-                if (preloadedGameString[i].frameNumber === playerLevelEnvironment.frameNumber) {
-                    handlePlayerInput(preloadedGameString[i].eventValue);
-                }
+        for (let i = 0; i < preloadedGameString.length; i++) {
+            if (preloadedGameString[i].frameNumber === playerLevelEnvironment.frameNumber) {
+                handlePlayerInput(preloadedGameString[i].eventValue);
             }
         }
     }
@@ -986,7 +986,7 @@ const blockGenerator = require('./includes/blockGenerator');
             chat.sayGameOver();
 
             // if this is not a replay
-            if (!preloadedGameString) {
+            if (!replayingAGame) {
                 // save game data to the server
                 recordGame.saveGameStringToServer();
             }
@@ -1002,7 +1002,9 @@ const blockGenerator = require('./includes/blockGenerator');
 
     function gameLoop() {
 
-        checkPlayerInputFromRecording();
+        if (replayingAGame) {
+            checkPlayerInputFromRecording();
+        }
 
         switch (playerLevelEnvironment.playAreaMode) {
             case 'blockFallingAnimation':
@@ -1044,7 +1046,7 @@ playerLevelEnvironment.nextBlocks.unshift(playerLevelEnvironment.blockIndex);
 
 
 // if there are preloaded blocks from the server, load them
-if (preloadedGameBlocks) {
+if (replayingAGame) {
     gameLevelEnvironment.allBlocks = preloadedGameBlocks;
     // announce in the chatbox that we are replaying a saved game
     chat.sayReplayStarted();

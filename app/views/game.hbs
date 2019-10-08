@@ -25,6 +25,7 @@
 
 {{#if gameBlocks}}
     <script>
+        var replayingAGame = true;
         var preloadedGameBlocks = [{{#each gameBlocks}}{{this}}, {{/each}}];
     </script>
 {{/if}}
