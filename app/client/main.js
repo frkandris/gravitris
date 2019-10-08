@@ -19,29 +19,67 @@ const recordGame = require('./includes/recordGame');
 
 const blockGenerator = require('./includes/blockGenerator');
 
-    // this function handles the keyboard events
+
+    // this function gets called if there was a keyboard event
 
     function checkKeyboardInput(event) {
 
-        switch (event.key) {
-            case "ArrowUp":
-                recordGame.saveGameEvent(playerLevelEnvironment.frameNumber,'keyPressed','rotateRight');
+        // if there is no saved game being replayed now, handle inputs from the keyboard
+        if(!preloadedGameString) {
+            switch (event.key) {
+                case 'ArrowUp':
+                    recordGame.saveGameEvent(playerLevelEnvironment.frameNumber, 'keyPressed', 'rotateRight');
+                    handlePlayerInput('rotateRight');
+                    break;
+                case 'ArrowDown':
+                    recordGame.saveGameEvent(playerLevelEnvironment.frameNumber, 'keyPressed', 'rotateLeft');
+                    handlePlayerInput('rotateLeft');
+                    break;
+                case 'ArrowLeft':
+                    recordGame.saveGameEvent(playerLevelEnvironment.frameNumber, 'keyPressed', 'moveLeft');
+                    handlePlayerInput('moveLeft');
+                    break;
+                case 'ArrowRight':
+                    recordGame.saveGameEvent(playerLevelEnvironment.frameNumber, 'keyPressed', 'moveRight');
+                    handlePlayerInput('moveRight');
+                    break;
+                case ' ':
+                    recordGame.saveGameEvent(playerLevelEnvironment.frameNumber, 'keyPressed', 'instantDrop');
+                    handlePlayerInput('instantDrop');
+                    break;
+                default:
+                    return;
+            }
+        }
+        event.preventDefault();
+    }
+
+
+    function checkPlayerInputFromRecording() {
+        if (preloadedGameString) {
+            for (let i = 0; i < preloadedGameString.length; i++) {
+                if (preloadedGameString[i].frameNumber === playerLevelEnvironment.frameNumber) {
+                    handlePlayerInput(preloadedGameString[i].eventValue);
+                }
+            }
+        }
+    }
+
+    function handlePlayerInput(event) {
+        switch (event) {
+            case 'rotateRight':
                 moveBlockInCalculationArea('rotateRight');
                 break;
-            case "ArrowDown":
-                recordGame.saveGameEvent(playerLevelEnvironment.frameNumber,'keyPressed','rotateLeft');
+            case 'rotateLeft':
                 moveBlockInCalculationArea('rotateLeft');
                 break;
-            case "ArrowLeft":
-                recordGame.saveGameEvent(playerLevelEnvironment.frameNumber,'keyPressed','moveLeft');
+            case 'moveLeft':
                 moveBlockInCalculationArea('moveLeft');
                 break;
-            case "ArrowRight":
-                recordGame.saveGameEvent(playerLevelEnvironment.frameNumber,'keyPressed','moveRight');
+            case 'moveRight':
                 moveBlockInCalculationArea('moveRight');
                 break;
-            case " ":
-                recordGame.saveGameEvent(playerLevelEnvironment.frameNumber,'keyPressed','instantDrop');
+            case 'instantDrop':
                 // instant drop
                 while (playerLevelEnvironment.moveCanBeDone === true) {
                     playerLevelEnvironment.yPlayArea = playerLevelEnvironment.yPlayArea + gameLevelEnvironment.pixelSize;
@@ -51,7 +89,6 @@ const blockGenerator = require('./includes/blockGenerator');
             default:
                 return;
         }
-        event.preventDefault();
     }
 
 
@@ -948,8 +985,11 @@ const blockGenerator = require('./includes/blockGenerator');
             // say "game over" in the chat
             chat.sayGameOver();
 
-            // save game data to the server
-            recordGame.saveGameStringToServer();
+            // if this is not a replay
+            if (!preloadedGameString) {
+                // save game data to the server
+                recordGame.saveGameStringToServer();
+            }
 
         } else {
             //
@@ -961,6 +1001,8 @@ const blockGenerator = require('./includes/blockGenerator');
     // this is the game loop, it runs every frame
 
     function gameLoop() {
+
+        checkPlayerInputFromRecording();
 
         switch (playerLevelEnvironment.playAreaMode) {
             case 'blockFallingAnimation':
@@ -1000,16 +1042,24 @@ playerLevelEnvironment.nextBlocks.unshift(playerLevelEnvironment.blockIndex);
 playerLevelEnvironment.blockIndex = blockGenerator.selectABlockRandomly();
 playerLevelEnvironment.nextBlocks.unshift(playerLevelEnvironment.blockIndex);
 
-// let's create the pieces for this game
-blockGenerator.generateAllBlocks();
+
+// if there are preloaded blocks from the server, load them
+if (preloadedGameBlocks) {
+    gameLevelEnvironment.allBlocks = preloadedGameBlocks;
+    // announce in the chatbox that we are replaying a saved game
+    chat.sayReplayStarted();
+} else {
+    // ...otherwise let's create all the blocks for this game
+    blockGenerator.generateAllBlocks();
+    // announce in the chatbox that the game has started
+    chat.sayGameStarted();
+}
 
 // set playerLevelEnvironment.playAreaMode
 playerLevelEnvironment.playAreaMode = 'blockFallingAnimation';
 
 // record game start time
 statRelated.setGameStartTime();
-
-chat.sayGameStarted();
 
 // start the game loop
 requestAnimationFrame(gameLoop);

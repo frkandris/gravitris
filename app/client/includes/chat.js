@@ -16,6 +16,13 @@ function sayGameStarted() {
 }
 
 
+// this function announces, that a replay has started
+
+function sayReplayStarted() {
+    saySomething("<span class=text-light>Replay started!</span>");
+}
+
+
 // this function announces, that the game has ended,
 // and displays the restart / home buttons
 
@@ -74,6 +81,7 @@ function saySomething(something) {
 
 module.exports = {
     sayGameStarted,
+    sayReplayStarted,
     sayGameOver,
     sayLevelIncreased,
     sayPointsReceived,

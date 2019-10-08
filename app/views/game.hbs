@@ -23,4 +23,22 @@
     </div>
 </div>
 
+{{#if gameBlocks}}
+    <script>
+        var preloadedGameBlocks = [{{#each gameBlocks}}{{this}}, {{/each}}];
+    </script>
+{{/if}}
+{{#if gameString}}
+    <script>
+        var preloadedGameString = [];
+        {{#each gameString}}
+        preloadedGameString.push({
+            frameNumber: {{this.frameNumber}},
+            eventName: '{{this.eventName}}',
+            eventValue: '{{this.eventValue}}'
+        });
+        {{/each}}
+    </script>
+{{/if}}
+
 <script src='/javascripts/bundle.js'></script>
