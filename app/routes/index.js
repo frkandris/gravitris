@@ -109,6 +109,8 @@ router.post('/save-game-status/', function(req, res) {
 
   let newGameRecording = new gameRecording();
   newGameRecording.gameString = req.body.gameString;
+  newGameRecording.gameBlocks = req.body.gameBlocks;
+  newGameRecording.gameDate = new Date();
 
   // console.log(req.body.gameString);
 

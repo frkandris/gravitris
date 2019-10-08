@@ -15,7 +15,6 @@ function saveGameEvent(frameNumber, eventName, eventValue) {
 function saveGameStringToServer() {
 
     const params = {
-        gameDate: new Date(),
         gameBlocks: gameLevelEnvironment.allBlocks,
         gameString: playerLevelEnvironment.logOfEvents
     };
