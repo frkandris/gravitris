@@ -983,7 +983,11 @@ const blockGenerator = require('./includes/blockGenerator');
             gameLevelEnvironment.stopTheGameLoop = true;
 
             // say "game over" in the chat
-            chat.sayGameOver();
+            if (!replayingAGame) {
+                chat.sayGameOver();
+            } else {
+                chat.sayReplayOver();
+            }
 
             // if this is not a replay
             if (!replayingAGame) {

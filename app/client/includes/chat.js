@@ -36,6 +36,19 @@ function sayGameOver() {
 }
 
 
+// this function announces, that the replay has ended,
+// and displays the restart / home buttons
+
+function sayReplayOver() {
+    saySomething("<br/><span class=text-light>Replay over!</span>");
+
+    const restartButton = '<br/><button type="button" class="btn btn-primary" onClick="window.location.reload();">Restart replay</button>';
+    const separator = "&nbsp;";
+    const returnToMainScreenButton = '<a href="/"><button type="button" class="btn btn-primary">Return to main menu</button></a>';
+    saySomething(restartButton + separator + returnToMainScreenButton);
+}
+
+
 // this function announces that the game level and speed has been increased
 
 function sayLevelIncreased(gameLevel) {
@@ -83,6 +96,7 @@ module.exports = {
     sayGameStarted,
     sayReplayStarted,
     sayGameOver,
+    sayReplayOver,
     sayLevelIncreased,
     sayPointsReceived,
     sayGameEndStats
