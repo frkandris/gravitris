@@ -12,7 +12,7 @@ function numberWithCommas(x) {
 // this function announces, that the game has started
 
 function sayGameStarted() {
-    saySomething("<span class=text-light>Game started!</span>");
+    saySomething("<span class=text-light>Game started! Good luck " + playerLevelEnvironment.playerName + "!</span>");
 }
 
 

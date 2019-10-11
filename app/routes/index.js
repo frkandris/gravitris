@@ -113,6 +113,9 @@ router.post('/save-game-status/', function (req, res) {
     let newGameRecording = new gameRecording();
     newGameRecording.gameString = req.body.gameString;
     newGameRecording.gameBlocks = req.body.gameBlocks;
+    newGameRecording.playerName = req.body.playerName;
+    newGameRecording.gameLevel = req.body.gameLevel;
+    newGameRecording.points = req.body.points;
     newGameRecording.gameDate = new Date();
 
     // console.log(req.body.gameString);
@@ -140,15 +143,12 @@ router.get('/replay-game/:id', function (req, res) {
             console.log("problem", err);
             res.sendStatus(400);
         } else {
-            // console.log(gameRecording);
-
             res.render('game', {
                 gameBlocks: gameRecording.gameBlocks,
                 gameString: gameRecording.gameString,
             });
         }
     });
-
 });
 
 module.exports = router;

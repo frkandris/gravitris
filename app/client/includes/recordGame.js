@@ -16,7 +16,10 @@ function saveGameToServer() {
 
     const params = {
         gameBlocks: gameLevelEnvironment.allBlocks,
-        gameString: playerLevelEnvironment.logOfEvents
+        gameString: playerLevelEnvironment.logOfEvents,
+        playerName: playerLevelEnvironment.playerName,
+        gameLevel: playerLevelEnvironment.gameLevel,
+        points: playerLevelEnvironment.points
     };
 
     // ajax load URL and increase global linesCleared counter
