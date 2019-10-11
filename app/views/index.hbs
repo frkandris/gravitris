@@ -1,17 +1,82 @@
-<div class="vertical-center">
-    <div class="container">
-        <h1 class="display-4 text-light">Welcome to Gravitris!</h1>
-        <p class="lead"><span class="text-light">Gravitris</span> is an <span class="text-light">online, free, gravity based Tetris game</span> that you can play in your browser.</p>
-        <p class="lead"><span class="text-light">{{numberOfLinesCleared}} lines</span> have been cleared in <span class="text-light">{{numberOfGamesPlayed}} games</span>.</p>
-        <p><a class="btn btn-primary btn-lg" href="/game" role="button">Start a new game</a></p>
-    </div>
-    <footer class="footer mt-auto py-3">
-        <div class="container">
-            <span style="font-size: 1.5em;">
-                <a href="https://mailchi.mp/3dd3db22c169/gravitris" target="_blank" alt="Subscribe to newsletter" title="Subscribe to newsletter"><i class="fas fa-envelope-square"></i></a>
-                <a href="https://github.com/frkandris/gravitris" target="_blank" alt="View source code at github.com" title="View source code at github.com"><i class="fab fa-github-square"></i></a>
-            </span>
-            <span>v{{app_version}}</span>
+<div class="container-fluid h-100 d-flex flex-column">
+    <nav class="navbar navbar-expand-sm fixed-top navbar-light">
+        <!--
+        <a class="navbar-brand text-light" href="/" title="Gravitris v{{app_version}}">Gravitris</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar1">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbar1">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+            </ul>
+        </div>
+        -->
+    </nav>
+    <main class="row align-items-center flex-grow-1">
+        <div class="col-6 mx-auto">
+            <div class="jumbotron bg-transparent text-center mb-0 col-md-6 mx-auto">
+                <h1 class="text-light" title="Gravitris v{{app_version}}">Gravitris</h1>
+                <br>
+                <br>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="nick-name" placeholder="Nickname">
+                </div>
+                <button id="play-button" class="btn btn-primary btn-lg" role="button">Play</button>
+                </form>
+            </div>
+        </div>
+    </main>
+    <footer class="mt-auto fixed-bottom p-3">
+        <div class="row">
+            <div class="col-sm text-left my-auto">
+                <span class="text-light">{{numberOfLinesCleared}} lines</span> have been cleared in <span class="text-light">{{numberOfGamesPlayed}} games</span>.
+            </div>
+            <div class="col-sm text-right">
+                <span class="footer-icons">
+                    <a href="https://mailchi.mp/3dd3db22c169/gravitris" target="_blank" alt="Subscribe to newsletter" title="Subscribe to newsletter"><i class="fas fa-envelope-square"></i></a>
+                    <a href="https://github.com/frkandris/gravitris" target="_blank" alt="View source code at github.com" title="View source code at github.com"><i class="fab fa-github-square"></i></a>
+                </span>
+            </div>
         </div>
     </footer>
 </div>
+
+<script>
+$(document).ready(function(){
+
+    // reload nickName from localStorage to nick-name input field
+    const nickName = localStorage.getItem("nickName");
+    if (nickName !== null) {
+        $("#nick-name").val(nickName);
+    }
+
+    // if #play-button is pressed, store nick-name input field value in localStorage as nickName
+    $("#play-button").click(function(){
+        let nickName = $("#nick-name").val();
+
+        // if there was no nickName, generate one
+        if (nickName === '') {
+            const animals = ['Alligator', 'Ant', 'Bear', 'Bee', 'Bird', 'Camel', 'Cat', 'Cheetah', 'Chicken', 'Chimpanzee', 'Cow', 'Crocodile', 'Deer', 'Dog', 'Dolphin', 'Duck', 'Eagle', 'Elephant', 'Fish', 'Fly', 'Fox', 'Frog', 'Giraffe', 'Goat', 'Goldfish', 'Hamster', 'Hippopotamus', 'Horse', 'Kangaroo', 'Kitten', 'Lion', 'Lobster', 'Monkey', 'Octopus', 'Owl', 'Panda', 'Pig', 'Puppy', 'Rabbit', 'Rat', 'Scorpion', 'Seal', 'Shark', 'Sheep', 'Snail', 'Snake', 'Spider', 'Squirrel', 'Tiger', 'Turtle', 'Wolf', 'Zebra'];
+            nickName = 'Anonymous ' + animals[Math.floor(Math.random() * animals.length)];
+        }
+
+        // save it to local storage
+        localStorage.setItem("nickName", nickName);
+
+        // load game
+        window.location = "/game";
+    });
+
+});
+
+</script>

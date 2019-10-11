@@ -9,9 +9,10 @@ body {
   padding: 40px;
 }
 
-.vertical-center {
-  min-height: 100%;
+main {
   min-height: 100vh;
-  display: flex;
-  align-items: center;
+}
+
+.footer-icons {
+  font-size: 1.5em;
 }
