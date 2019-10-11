@@ -12,7 +12,7 @@ function saveGameEvent(frameNumber, eventName, eventValue) {
     // console.log(frameNumber, eventName, eventValue)
 }
 
-function saveGameStringToServer() {
+function saveGameToServer() {
 
     const params = {
         gameBlocks: gameLevelEnvironment.allBlocks,
@@ -36,5 +36,5 @@ function saveGameStringToServer() {
 
 module.exports = {
     saveGameEvent,
-    saveGameStringToServer
+    saveGameToServer
 };

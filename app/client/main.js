@@ -992,7 +992,7 @@ const blockGenerator = require('./includes/blockGenerator');
             // if this is not a replay
             if (!replayingAGame) {
                 // save game data to the server
-                recordGame.saveGameStringToServer();
+                recordGame.saveGameToServer();
             }
 
         } else {
