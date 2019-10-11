@@ -1,0 +1,26 @@
+<div class="jumbotron bg-transparent mb-0 mx-auto">
+    <h1 class="text-light text-center">Leaderboard</h1>
+    <br>
+    <table class="table table-bordered table-dark">
+        <thead>
+        <tr>
+            <th scope="col" class="text-center">#</th>
+            <th scope="col" class="text-center">Name</th>
+            <th scope="col" class="text-center">Points</th>
+            <th scope="col" class="text-center">Level</th>
+            <th scope="col" class="text-center"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each games}}
+            <tr>
+                <th scope="row" class="text-center">{{this.index}}</th>
+                <td class="text-left">{{this.playerName}}</td>
+                <td class="text-right">{{this.points_formatted}}</td>
+                <td class="text-center">{{this.gameLevel}}</td>
+                <td class="text-center"><a href="/replay-game/{{this._id}}">Replay</a></td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>

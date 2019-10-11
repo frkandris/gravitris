@@ -14,6 +14,12 @@ mongoose.connect(dbURL, {useNewUrlParser: true, useUnifiedTopology: true}).then(
     }
 );
 
+function numberWithCommas(x) {
+    const parts = x.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
+}
+
 
 /* GET welcome page. */
 router.get('/', function (req, res) {
@@ -35,8 +41,8 @@ router.get('/', function (req, res) {
             numberOfGamesPlayed = 1;
         }
         res.render('index', {
-            numberOfLinesCleared: numberOfLinesCleared,
-            numberOfGamesPlayed: numberOfGamesPlayed,
+            numberOfLinesCleared: numberWithCommas(numberOfLinesCleared),
+            numberOfGamesPlayed: numberWithCommas(numberOfGamesPlayed),
             app_version: process.env.npm_package_version
         });
     });
@@ -149,6 +155,27 @@ router.get('/replay-game/:id', function (req, res) {
             });
         }
     });
+});
+
+
+/* Leaderboard. */
+router.get('/leaderboard/', function (req, res) {
+
+    gameRecording.find().sort({points: -1}).limit(10).exec(function(err, games) {
+        if (err) {
+            console.log("problem", err);
+            res.sendStatus(400);
+        } else {
+            for (let i = 0; i < games.length; i++) {
+                games[i].index = i + 1;
+                games[i].points_formatted = numberWithCommas(games[i].points);
+            }
+            res.render('leaderboard', {
+                games: games
+            });
+        }
+    });
+
 });
 
 module.exports = router;

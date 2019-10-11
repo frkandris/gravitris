@@ -1,5 +1,6 @@
 const playerLevelEnvironment = require('./playerLevelEnvironment');
 
+
 // this function adds commas to a number at every thousand
 
 function numberWithCommas(x) {
