@@ -25,7 +25,7 @@ const blockGenerator = require('./includes/blockGenerator');
     function checkKeyboardInput(event) {
 
         // if there is no saved game being replayed now, handle inputs from the keyboard
-        if(!preloadedGameString) {
+        if(!replayingAGame) {
             switch (event.key) {
                 case 'ArrowUp':
                     recordGame.saveGameEvent(playerLevelEnvironment.frameNumber, 'keyPressed', 'rotateRight');
@@ -1048,6 +1048,13 @@ playerLevelEnvironment.nextBlocks.unshift(playerLevelEnvironment.blockIndex);
 playerLevelEnvironment.blockIndex = blockGenerator.selectABlockRandomly();
 playerLevelEnvironment.nextBlocks.unshift(playerLevelEnvironment.blockIndex);
 
+try {
+    if(replayingAGame) {
+        console.log("we are replaying a game");
+    }
+} catch(err) {
+    replayingAGame = false;
+}
 
 // if there are preloaded blocks from the server, load them
 if (replayingAGame) {
