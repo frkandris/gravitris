@@ -29,10 +29,10 @@
                 <br>
                 <br>
                 <div class="form-group">
+                    <!--suppress HtmlFormInputWithoutLabel -->
                     <input type="text" class="form-control" id="nick-name" placeholder="Nickname">
                 </div>
                 <button id="play-button" class="btn btn-primary btn-lg" role="button">Play</button>
-                </form>
             </div>
         </div>
     </main>
@@ -43,8 +43,8 @@
             </div>
             <div class="col-sm text-right">
                 <span class="footer-icons">
-                    <a href="https://mailchi.mp/3dd3db22c169/gravitris" target="_blank" alt="Subscribe to newsletter" title="Subscribe to newsletter"><i class="fas fa-envelope-square"></i></a>
-                    <a href="https://github.com/frkandris/gravitris" target="_blank" alt="View source code at github.com" title="View source code at github.com"><i class="fab fa-github-square"></i></a>
+                    <a href="https://mailchi.mp/3dd3db22c169/gravitris" target="_blank" title="Subscribe to newsletter"><i class="fas fa-envelope-square"></i></a>
+                    <a href="https://github.com/frkandris/gravitris" target="_blank" title="View source code at github.com"><i class="fab fa-github-square"></i></a>
                 </span>
             </div>
         </div>
@@ -52,7 +52,7 @@
 </div>
 
 <script>
-$(document).ready(function(){
+$(function(){
 
     // reload nickName from localStorage to nick-name input field
     const nickName = localStorage.getItem("nickName");
@@ -61,7 +61,7 @@ $(document).ready(function(){
     }
 
     // if #play-button is pressed, store nick-name input field value in localStorage as nickName
-    $("#play-button").click(function(){
+    $("#play-button").on("click", function(){
         let nickName = $("#nick-name").val();
 
         // if there was no nickName, generate one
