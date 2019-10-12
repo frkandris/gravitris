@@ -12,31 +12,57 @@
 </div>
 
 <script>
-    $(function () {
 
-        // reload playerName from localStorage to player-name input field
-        const playerName = localStorage.getItem("playerName");
-        if (playerName !== null) {
-            $("#player-name").val(playerName);
+// this function executes when the document is loaded
+
+$(function () {
+
+
+    // this functions checks the keyboard events
+
+    function checkKeyboardInput(event) {
+        if (event.key === 'Enter') {
+            playButtonPressed();
+        } else {
+            return;
+        }
+        event.preventDefault();
+    }
+
+
+    // this function handles the event when the Play is pressed
+
+    function playButtonPressed() {
+        let playerName = $("#player-name").val();
+
+        // if there was no playerName, generate one
+        if (playerName === '') {
+            const animals = ['Alligator', 'Ant', 'Bear', 'Bee', 'Bird', 'Camel', 'Cat', 'Cheetah', 'Chicken', 'Chimpanzee', 'Cow', 'Crocodile', 'Deer', 'Dog', 'Dolphin', 'Duck', 'Eagle', 'Elephant', 'Fish', 'Fly', 'Fox', 'Frog', 'Giraffe', 'Goat', 'Goldfish', 'Hamster', 'Hippopotamus', 'Horse', 'Kangaroo', 'Kitten', 'Lion', 'Lobster', 'Monkey', 'Octopus', 'Owl', 'Panda', 'Pig', 'Puppy', 'Rabbit', 'Rat', 'Scorpion', 'Seal', 'Shark', 'Sheep', 'Snail', 'Snake', 'Spider', 'Squirrel', 'Tiger', 'Turtle', 'Wolf', 'Zebra'];
+            playerName = 'Anonymous ' + animals[Math.floor(Math.random() * animals.length)];
         }
 
-        // if #play-button is pressed, store player-name input field value in localStorage as playerName
-        $("#play-button").on("click", function () {
-            let playerName = $("#player-name").val();
+        // save it to local storage
+        localStorage.setItem("playerName", playerName);
 
-            // if there was no playerName, generate one
-            if (playerName === '') {
-                const animals = ['Alligator', 'Ant', 'Bear', 'Bee', 'Bird', 'Camel', 'Cat', 'Cheetah', 'Chicken', 'Chimpanzee', 'Cow', 'Crocodile', 'Deer', 'Dog', 'Dolphin', 'Duck', 'Eagle', 'Elephant', 'Fish', 'Fly', 'Fox', 'Frog', 'Giraffe', 'Goat', 'Goldfish', 'Hamster', 'Hippopotamus', 'Horse', 'Kangaroo', 'Kitten', 'Lion', 'Lobster', 'Monkey', 'Octopus', 'Owl', 'Panda', 'Pig', 'Puppy', 'Rabbit', 'Rat', 'Scorpion', 'Seal', 'Shark', 'Sheep', 'Snail', 'Snake', 'Spider', 'Squirrel', 'Tiger', 'Turtle', 'Wolf', 'Zebra'];
-                playerName = 'Anonymous ' + animals[Math.floor(Math.random() * animals.length)];
-            }
+        // load game
+        window.location = "/game";
+    }
 
-            // save it to local storage
-            localStorage.setItem("playerName", playerName);
 
-            // load game
-            window.location = "/game";
-        });
+    // the checkKeyboardInput() function will take care of the keyboard interactions
+    document.onkeydown = checkKeyboardInput;
 
+    // reload playerName from localStorage to player-name input field
+    const playerName = localStorage.getItem("playerName");
+    if (playerName !== null) {
+        $("#player-name").val(playerName);
+    }
+
+    // if #play-button is pressed, store player-name input field value in localStorage as playerName
+    $("#play-button").on("click", function () {
+        playButtonPressed();
     });
+
+});
 
 </script>
