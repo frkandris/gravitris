@@ -23,30 +23,9 @@ function numberWithCommas(x) {
 
 /* GET welcome page. */
 router.get('/', function (req, res) {
-
-    Promise.all([
-        Counter.find({counterName: 'linesCleared'}),
-        Counter.find({counterName: 'gamesPlayed'})
-    ]).then(([linesCleared, gamesPlayed]) => {
-        let numberOfGamesPlayed;
-        let numberOfLinesCleared;
-        if (linesCleared[0]) {
-            numberOfLinesCleared = linesCleared[0].counterValue;
-        } else {
-            numberOfLinesCleared = 1;
-        }
-        if (gamesPlayed[0]) {
-            numberOfGamesPlayed = gamesPlayed[0].counterValue;
-        } else {
-            numberOfGamesPlayed = 1;
-        }
-        res.render('index', {
-            numberOfLinesCleared: numberWithCommas(numberOfLinesCleared),
-            numberOfGamesPlayed: numberWithCommas(numberOfGamesPlayed),
-            app_version: process.env.npm_package_version
-        });
-    });
-
+     res.render('index', {
+         app_version: process.env.npm_package_version
+     });
 });
 
 
@@ -176,6 +155,34 @@ router.get('/leaderboard/', function (req, res) {
         }
     });
 
+});
+
+
+/* GET about page. */
+router.get('/about', function (req, res) {
+
+    Promise.all([
+        Counter.find({counterName: 'linesCleared'}),
+        Counter.find({counterName: 'gamesPlayed'})
+    ]).then(([linesCleared, gamesPlayed]) => {
+        let numberOfGamesPlayed;
+        let numberOfLinesCleared;
+        if (linesCleared[0]) {
+            numberOfLinesCleared = linesCleared[0].counterValue;
+        } else {
+            numberOfLinesCleared = 1;
+        }
+        if (gamesPlayed[0]) {
+            numberOfGamesPlayed = gamesPlayed[0].counterValue;
+        } else {
+            numberOfGamesPlayed = 1;
+        }
+        res.render('about', {
+            numberOfLinesCleared: numberWithCommas(numberOfLinesCleared),
+            numberOfGamesPlayed: numberWithCommas(numberOfGamesPlayed),
+            app_version: process.env.npm_package_version
+        });
+    });
 });
 
 module.exports = router;
