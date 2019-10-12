@@ -13,6 +13,8 @@ main {
   min-height: 100vh;
 }
 
-.footer-icons {
-  font-size: 2em;
+#chat-area {
+  position: absolute;
+  bottom: 30px;
+  width: 100%;
 }

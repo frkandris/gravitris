@@ -1,5 +1,14 @@
 const playerLevelEnvironment = require('./playerLevelEnvironment');
 
+const gameStartText = "<span class=text-light>Game started! Good luck " + playerLevelEnvironment.playerName + "!</span>";
+const replayStartText = "<span class=text-light>Replay started!</span>";
+const gameOverText = "<span class=text-light>Game over!</span>";
+const replayOverText = "<span class=text-light>Replay over!</span>";
+const newGameButton = '<a href="/game"><button type="button" class="btn btn-primary">New game</button></a>';
+const restartReplayButton = '<button type="button" class="btn btn-primary" onclick="location.reload();">Replay</button></a>';
+const goToLeaderBoardButton = '<a href="/leaderboard"><button type="button" class="btn btn-primary">Leaderboard</button></a>';
+const separator = "&nbsp;";
+const newLine = "<br/>";
 
 // this function adds commas to a number at every thousand
 
@@ -13,14 +22,14 @@ function numberWithCommas(x) {
 // this function announces, that the game has started
 
 function sayGameStarted() {
-    saySomething("<span class=text-light>Game started! Good luck " + playerLevelEnvironment.playerName + "!</span>");
+    saySomething(gameStartText);
 }
 
 
 // this function announces, that a replay has started
 
 function sayReplayStarted() {
-    saySomething("<span class=text-light>Replay started!</span>");
+    saySomething(replayStartText);
 }
 
 
@@ -28,12 +37,8 @@ function sayReplayStarted() {
 // and displays the restart / home buttons
 
 function sayGameOver() {
-    saySomething("<br/><span class=text-light>Game over!</span>");
-
-    const restartButton = '<br/><button type="button" class="btn btn-primary" onClick="window.location.reload();">Start a new game</button>';
-    const separator = "&nbsp;";
-    const returnToMainScreenButton = '<a href="/"><button type="button" class="btn btn-primary">Return to main menu</button></a>';
-    saySomething(restartButton + separator + returnToMainScreenButton);
+    saySomething(newLine + gameOverText);
+    saySomething(newLine + newGameButton + separator + goToLeaderBoardButton);
 }
 
 
@@ -41,12 +46,8 @@ function sayGameOver() {
 // and displays the restart / home buttons
 
 function sayReplayOver() {
-    saySomething("<br/><span class=text-light>Replay over!</span>");
-
-    const restartButton = '<br/><button type="button" class="btn btn-primary" onClick="window.location.reload();">Restart replay</button>';
-    const separator = "&nbsp;";
-    const returnToMainScreenButton = '<a href="/"><button type="button" class="btn btn-primary">Return to main menu</button></a>';
-    saySomething(restartButton + separator + returnToMainScreenButton);
+    saySomething(newLine + replayOverText);
+    saySomething(newLine + restartReplayButton + separator + newGameButton + separator + goToLeaderBoardButton);
 }
 
 
@@ -61,9 +62,9 @@ function sayLevelIncreased(gameLevel) {
 
 function sayPointsReceived(pointsReceived, numberOfNewLinesCleared) {
     if (numberOfNewLinesCleared === 1) {
-        saySomething("<span class=text-light>+" + numberWithCommas(pointsReceived) + " points</span> (1 line cleared on level#" + playerLevelEnvironment.gameLevel+ ", " + numberWithCommas(playerLevelEnvironment.points) + " points overall)");
+        saySomething("<span class=text-light>+" + numberWithCommas(pointsReceived) + " points</span> (1 line cleared on level#" + playerLevelEnvironment.gameLevel + ", " + numberWithCommas(playerLevelEnvironment.points) + " points overall)");
     } else {
-        saySomething("<span class=text-light>+" + numberWithCommas(pointsReceived) + " points</span> (" + numberOfNewLinesCleared + " lines cleared on level#" + playerLevelEnvironment.gameLevel+ ", " + numberWithCommas(playerLevelEnvironment.points) + " points overall)");
+        saySomething("<span class=text-light>+" + numberWithCommas(pointsReceived) + " points</span> (" + numberOfNewLinesCleared + " lines cleared on level#" + playerLevelEnvironment.gameLevel + ", " + numberWithCommas(playerLevelEnvironment.points) + " points overall)");
     }
 }
 
