@@ -139,7 +139,7 @@ router.get('/replay-game/:id', function (req, res) {
 /* Leaderboard. */
 router.get('/leaderboard/', function (req, res) {
 
-    gameRecording.find().sort({points: -1}).limit(10).exec(function(err, games) {
+    gameRecording.find().sort({points: -1}).limit(20).exec(function(err, games) {
         if (err) {
             console.log("problem", err);
             res.sendStatus(400);
