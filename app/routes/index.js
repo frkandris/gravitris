@@ -110,7 +110,6 @@ router.post('/save-game-status/', function (req, res) {
             console.log("problem", err);
             res.sendStatus(400);
         } else {
-            console.log(gameRecording);
             res.sendStatus(200);
         }
     })
