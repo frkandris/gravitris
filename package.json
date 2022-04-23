@@ -23,7 +23,7 @@
     "fs": "0.0.1-security",
     "hbs": "^4.0.6",
     "http-errors": "~1.6.3",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "mongodb": "^3.3.3",
     "mongoose": "^5.7.9",
     "morgan": "~1.9.1",
