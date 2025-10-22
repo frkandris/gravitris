@@ -8,11 +8,12 @@
   },
   "scripts": {
     "dev": "TURBOPACK=0 next dev",
-    "build": "prisma generate && next build",
+    "build": "prisma generate && prisma db push --accept-data-loss && next build",
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate",
-    "bundle-game": "node scripts/bundle-game.js"
+    "bundle-game": "node scripts/bundle-game.js",
+    "vercel-build": "prisma generate && prisma db push --accept-data-loss && next build"
   },
   "dependencies": {
     "@prisma/client": "^6.18.0",
