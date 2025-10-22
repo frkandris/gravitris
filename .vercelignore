@@ -1,0 +1,7 @@
+node_modules
+.next
+.env
+.env.local
+app-old-express
+*.log
+.DS_Store

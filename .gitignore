@@ -1,0 +1,29 @@
+# VSCode workspace file
+*.code-workspace
+
+# Webstorm workspace file
+.idea/*
+
+# Node.js compiled modules
+node_modules/*
+
+# Environment files
+.env
+.env*.local
+.env.local
+env.*.json
+!env.default.json
+
+# Next.js
+/.next/
+/out/
+
+# Production
+/build
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Vercel
+.vercel

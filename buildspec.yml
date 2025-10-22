@@ -1,0 +1,40 @@
+# Do not change version. This is the version of aws buildspec, not the version of your buldspec file.
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 10  
+    commands:
+      - echo Phase - install - `date`
+  pre_build:
+    commands:
+      - echo Phase - pre_build - `date`
+      - npm install
+      - git clone https://frkandris:$TOKEN@github.com/frkandris/gravitris-env.git
+      - cp ./gravitris-env/env.production.json ./env.production.json
+  build:
+    commands:
+      - echo Phase - build - `date`
+  post_build:
+    commands:
+      - echo Phase - post_build - `date`
+# Include only the files required for your application to run.
+# Do not use recursively include artifacts from node_modules directory as it will include unnecessary packages 
+# used only for building and testing.
+# ExpressJS apps will need other artifact directories included (bin/*, public/*, routes/*, views/* etc).
+artifacts:
+  files:
+    - package.json
+    - env.default.json
+    - env.production.json
+    - app/*
+    - app/client/*
+    - app/client/includes/*
+    - app/models/*
+    - app/routes/*
+    - app/services/*    
+    - app/views/*
+    - node_modules/*
+    - public/*
+    - public/stylesheets/*

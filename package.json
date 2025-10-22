@@ -1,0 +1,33 @@
+{
+  "name": "gravitris",
+  "version": "2.0.5",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frkandris/gravitris"
+  },
+  "scripts": {
+    "dev": "TURBOPACK=0 next dev",
+    "build": "node scripts/bundle-game.js && prisma generate && next build",
+    "start": "next start",
+    "lint": "next lint",
+    "postinstall": "prisma generate",
+    "bundle-game": "node scripts/bundle-game.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.18.0",
+    "axios": "^1.12.2",
+    "next": "^16.0.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "eslint": "^8.0.0",
+    "eslint-config-next": "^14.2.0",
+    "prisma": "^6.18.0",
+    "typescript": "^5.0.0"
+  }
+}
