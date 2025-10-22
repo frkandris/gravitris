@@ -2,8 +2,6 @@ import Link from 'next/link'
 import { numberWithCommas } from '@/lib/utils'
 import { prisma } from '@/lib/prisma'
 
-export const runtime = 'edge'
-
 async function getStats() {
   try {
     const [linesCleared, gamesPlayed] = await Promise.all([
