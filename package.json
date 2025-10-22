@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "TURBOPACK=0 next dev",
-    "build": "node scripts/bundle-game.js && prisma generate && next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate",
