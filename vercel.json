@@ -2,7 +2,7 @@
   "buildCommand": "npm run build",
   "framework": "nextjs",
   "functions": {
-    "app/**/*.tsx": {
+    ".next/server/**/*.js": {
       "includeFiles": "node_modules/.prisma/client/**"
     }
   }
