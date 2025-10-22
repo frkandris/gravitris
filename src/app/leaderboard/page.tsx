@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { numberWithCommas } from '@/lib/utils'
 
+export const runtime = 'edge'
+
 async function getLeaderboard() {
   try {
     const games = await prisma.gameRecording.findMany({
