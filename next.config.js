@@ -1,7 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  serverExternalPackages: ['@prisma/adapter-neon', '@neondatabase/serverless', 'ws'],
+  outputFileTracing: true,
+  experimental: {
+    outputFileTracingIncludes: {
+      '/api/**/*': ['./node_modules/.prisma/client/**/*'],
+      '/': ['./node_modules/.prisma/client/**/*'],
+    },
+  },
 }
 
 module.exports = nextConfig
