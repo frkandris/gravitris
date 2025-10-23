@@ -39,17 +39,6 @@ export default async function About() {
           <span style={{ color: '#ffffff', fontWeight: '500' }}>{numberWithCommas(stats.gamesPlayed)} games</span>
         </p>
         <br />
-        <p style={{ fontSize: '1.1rem', color: '#cccccc', lineHeight: '2' }}>
-          Use <i className="fas fa-arrow-alt-circle-left" style={{ color: '#4a9eff' }}></i> and{' '}
-          <i className="fas fa-arrow-alt-circle-right" style={{ color: '#4a9eff' }}></i> to{' '}
-          <span style={{ color: '#ffffff' }}>move blocks</span><br />
-          <i className="fas fa-arrow-alt-circle-up" style={{ color: '#4a9eff' }}></i> and{' '}
-          <i className="fas fa-arrow-alt-circle-down" style={{ color: '#4a9eff' }}></i> to{' '}
-          <span style={{ color: '#ffffff' }}>rotate blocks</span><br />
-          <span style={{ color: '#ffffff', fontWeight: '500' }}>Space</span> to{' '}
-          <span style={{ color: '#ffffff' }}>instant drop</span>
-        </p>
-        <br />
         <p style={{ fontSize: '1.1rem' }}>
           <i className="fab fa-github-square" style={{ color: '#4a9eff' }}></i>{' '}
           <span style={{ color: '#cccccc' }}>View</span>{' '}
