@@ -31,12 +31,36 @@ export function getDatabaseUrl(): string {
 
   ensureEnvLoaded()
 
-  const sources: Array<{ value: string | undefined; label: string }> = [
-    { value: process.env.POSTGRES_PRISMA_URL, label: 'POSTGRES_PRISMA_URL' },
-    { value: process.env.DATABASE_URL, label: 'DATABASE_URL' },
-    { value: process.env.POSTGRES_URL, label: 'POSTGRES_URL' },
-    { value: process.env.POSTGRES_URL_NON_POOLING, label: 'POSTGRES_URL_NON_POOLING' }
-  ]
+  const baseKeys = [
+    'POSTGRES_PRISMA_URL',
+    'DATABASE_URL',
+    'POSTGRES_URL',
+    'POSTGRES_URL_NON_POOLING'
+  ] as const
+
+  function resolveEnv(key: typeof baseKeys[number]) {
+    const direct = process.env[key]
+    if (direct && direct.trim().length > 0) {
+      return { value: direct.trim(), label: key }
+    }
+
+    const prefixedKey = Object.keys(process.env).find((envKey) => {
+      if (!envKey || typeof envKey !== 'string') return false
+      if (envKey === key) return false
+      return envKey.toUpperCase().endsWith(`_${key}`)
+    })
+
+    if (prefixedKey) {
+      const value = process.env[prefixedKey]
+      if (value && value.trim().length > 0) {
+        return { value: value.trim(), label: prefixedKey }
+      }
+    }
+
+    return { value: undefined, label: key }
+  }
+
+  const sources = baseKeys.map((key) => resolveEnv(key))
 
   let databaseUrl: string | undefined
   let resolvedFrom: string | null = null
