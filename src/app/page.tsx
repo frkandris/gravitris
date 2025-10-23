@@ -57,32 +57,29 @@ export default function Home() {
             onKeyDown={handleKeyDown}
           />
         </div>
-        <button 
-          className="btn btn-secondary mb-3" 
-          onClick={handleGenerateName}
-        >
-          Generate Nickname
-        </button>
-        <br />
-        <button 
-          id="play-button" 
-          className="btn btn-primary btn-lg" 
-          onClick={handlePlay}
-        >
-          Play
-        </button>
-        <br />
-        <br />
-        <p style={{ fontSize: '1.1rem', color: '#cccccc', lineHeight: '2' }}>
-          Use <i className="fas fa-arrow-alt-circle-left" style={{ color: '#4a9eff' }}></i> and{' '}
-          <i className="fas fa-arrow-alt-circle-right" style={{ color: '#4a9eff' }}></i> to{' '}
-          <span style={{ color: '#ffffff' }}>move blocks</span><br />
-          <i className="fas fa-arrow-alt-circle-up" style={{ color: '#4a9eff' }}></i> and{' '}
-          <i className="fas fa-arrow-alt-circle-down" style={{ color: '#4a9eff' }}></i> to{' '}
-          <span style={{ color: '#ffffff' }}>rotate blocks</span><br />
-          <span style={{ color: '#ffffff', fontWeight: '500' }}>Space</span> to{' '}
-          <span style={{ color: '#ffffff' }}>instant drop</span>
-        </p>
+        <div className="row mb-3 justify-content-center">
+          <div className="col-10">
+            <div className="row">
+              <div className="col-6">
+                <button 
+                  className="btn btn-secondary w-100" 
+                  onClick={handleGenerateName}
+                >
+                  Generate Nickname
+                </button>
+              </div>
+              <div className="col-6">
+                <button 
+                  id="play-button" 
+                  className="btn btn-primary w-100" 
+                  onClick={handlePlay}
+                >
+                  Play
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )
