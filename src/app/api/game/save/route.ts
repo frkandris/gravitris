@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const prisma = await getPrisma()
+    const prisma = getPrisma()
     const gameRecording = await prisma.gameRecording.create({
       data: {
         gameString,

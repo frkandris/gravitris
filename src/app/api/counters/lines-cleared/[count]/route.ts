@@ -23,7 +23,7 @@ export async function GET(
       )
     }
 
-    const prisma = await getPrisma()
+    const prisma = getPrisma()
     await prisma.counter.upsert({
       where: { counterName: 'linesCleared' },
       update: {

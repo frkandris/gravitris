@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic'
 
 async function getLeaderboard() {
   try {
-    const prisma = await getPrisma()
+    const prisma = getPrisma()
     const games = await prisma.gameRecording.findMany({
       orderBy: {
         points: 'desc'

@@ -3,7 +3,7 @@ import { getPrisma } from '@/lib/prisma'
 
 export async function POST() {
   try {
-    const prisma = await getPrisma()
+    const prisma = getPrisma()
     await prisma.counter.upsert({
       where: { counterName: 'gamesPlayed' },
       update: {

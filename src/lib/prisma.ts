@@ -1,23 +1,11 @@
 import { PrismaClient } from '@prisma/client'
-import { PrismaNeon } from '@prisma/adapter-neon'
-import { Pool, neonConfig } from '@neondatabase/serverless'
 import { getDatabaseUrl } from '@/lib/env'
-
-const isNode = typeof process !== 'undefined' && process.versions?.node
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
-  prismaPromise: Promise<PrismaClient> | undefined
 }
 
-async function createPrismaClient(): Promise<PrismaClient> {
-  if (isNode) {
-    const wsModule = await import('ws')
-    neonConfig.webSocketConstructor = wsModule.default ?? wsModule
-  } else if (typeof WebSocket !== 'undefined') {
-    neonConfig.webSocketConstructor = WebSocket
-  }
-
+function createPrismaClient(): PrismaClient {
   const databaseUrl = getDatabaseUrl()
 
   if (!databaseUrl) {
@@ -26,33 +14,28 @@ async function createPrismaClient(): Promise<PrismaClient> {
 
   if (process.env.NODE_ENV !== 'production') {
     const redacted = databaseUrl.replace(/:[^:@/]+@/, ':***@')
-    console.info('[prisma] Initializing Neon adapter', { databaseUrl: redacted, runtime: isNode ? 'node' : 'edge' })
+    console.info('[prisma] Creating Prisma client', { databaseUrl: redacted })
   }
 
-  const pool = new Pool({ connectionString: databaseUrl })
-  const adapter = new PrismaNeon(pool as any)
-  const client = new PrismaClient({ adapter } as any)
-
-  return client
+  return new PrismaClient({
+    datasources: {
+      db: {
+        url: databaseUrl
+      }
+    }
+  })
 }
 
-export async function getPrisma(): Promise<PrismaClient> {
+export function getPrisma(): PrismaClient {
   if (globalForPrisma.prisma) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.info('[prisma] Reusing existing Prisma client')
-    }
     return globalForPrisma.prisma
   }
 
-  if (!globalForPrisma.prismaPromise) {
-    globalForPrisma.prismaPromise = createPrismaClient().then(client => {
-      if (process.env.NODE_ENV !== 'production') {
-        console.info('[prisma] Prisma client ready')
-        globalForPrisma.prisma = client
-      }
-      return client
-    })
+  globalForPrisma.prisma = createPrismaClient()
+  
+  if (process.env.NODE_ENV !== 'production') {
+    console.info('[prisma] Prisma client ready')
   }
 
-  return globalForPrisma.prismaPromise
+  return globalForPrisma.prisma
 }

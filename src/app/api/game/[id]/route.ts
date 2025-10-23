@@ -9,7 +9,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params
-    const prisma = await getPrisma()
+    const prisma = getPrisma()
     const game = await prisma.gameRecording.findUnique({
       where: { id }
     })
