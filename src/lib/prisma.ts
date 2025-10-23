@@ -8,15 +8,6 @@ const globalForPrisma = globalThis as unknown as {
 function createPrismaClient(): PrismaClient {
   const databaseUrl = getDatabaseUrl()
 
-  if (!databaseUrl) {
-    throw new Error('DATABASE_URL is not defined')
-  }
-
-  if (process.env.NODE_ENV !== 'production') {
-    const redacted = databaseUrl.replace(/:[^:@/]+@/, ':***@')
-    console.info('[prisma] Creating Prisma client', { databaseUrl: redacted })
-  }
-
   return new PrismaClient({
     datasources: {
       db: {
@@ -27,15 +18,8 @@ function createPrismaClient(): PrismaClient {
 }
 
 export function getPrisma(): PrismaClient {
-  if (globalForPrisma.prisma) {
-    return globalForPrisma.prisma
+  if (!globalForPrisma.prisma) {
+    globalForPrisma.prisma = createPrismaClient()
   }
-
-  globalForPrisma.prisma = createPrismaClient()
-  
-  if (process.env.NODE_ENV !== 'production') {
-    console.info('[prisma] Prisma client ready')
-  }
-
   return globalForPrisma.prisma
 }
