@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { PrismaNeon } from '@prisma/adapter-neon'
-import { neonConfig } from '@neondatabase/serverless'
+import { Pool, neonConfig } from '@neondatabase/serverless'
 import { getDatabaseUrl } from '@/lib/env'
 
 const isNode = typeof process !== 'undefined' && process.versions?.node
@@ -29,12 +29,9 @@ async function createPrismaClient(): Promise<PrismaClient> {
     console.info('[prisma] Initializing Neon adapter', { databaseUrl: redacted, runtime: isNode ? 'node' : 'edge' })
   }
 
-  const adapter = new PrismaNeon({
-    connectionString: databaseUrl
-  })
-  const client = new PrismaClient({
-    adapter
-  } as any)
+  const pool = new Pool({ connectionString: databaseUrl })
+  const adapter = new PrismaNeon(pool as any)
+  const client = new PrismaClient({ adapter } as any)
 
   return client
 }
