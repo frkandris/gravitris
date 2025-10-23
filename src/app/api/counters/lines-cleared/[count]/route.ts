@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+import { getPrisma } from '@/lib/prisma'
 
 export async function GET(
   request: NextRequest,
@@ -23,6 +23,7 @@ export async function GET(
       )
     }
 
+    const prisma = await getPrisma()
     await prisma.counter.upsert({
       where: { counterName: 'linesCleared' },
       update: {

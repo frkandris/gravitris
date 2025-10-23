@@ -1,9 +1,10 @@
 import Link from 'next/link'
-import { prisma } from '@/lib/prisma'
+import { getPrisma } from '@/lib/prisma'
 import { numberWithCommas } from '@/lib/utils'
 
 async function getLeaderboard() {
   try {
+    const prisma = await getPrisma()
     const games = await prisma.gameRecording.findMany({
       orderBy: {
         points: 'desc'

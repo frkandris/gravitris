@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+import { getPrisma } from '@/lib/prisma'
 
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
 export async function GET() {
   try {
+    const prisma = await getPrisma()
     const [linesCleared, gamesPlayed] = await Promise.all([
       prisma.counter.findUnique({
         where: { counterName: 'linesCleared' }

@@ -1,9 +1,10 @@
 import Link from 'next/link'
 import { numberWithCommas } from '@/lib/utils'
-import { prisma } from '@/lib/prisma'
+import { getPrisma } from '@/lib/prisma'
 
 async function getStats() {
   try {
+    const prisma = await getPrisma()
     const [linesCleared, gamesPlayed] = await Promise.all([
       prisma.counter.findUnique({
         where: { counterName: 'linesCleared' }

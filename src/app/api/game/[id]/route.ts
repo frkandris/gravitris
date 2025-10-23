@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+import { getPrisma } from '@/lib/prisma'
 
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
 export async function GET(
   request: NextRequest,
@@ -9,6 +9,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params
+    const prisma = await getPrisma()
     const game = await prisma.gameRecording.findUnique({
       where: { id }
     })
