@@ -21,6 +21,12 @@ export default function Home() {
     }
   }, [])
 
+  const handleGenerateName = () => {
+    const newName = generateRandomName()
+    setPlayerName(newName)
+    localStorage.setItem('playerName', newName)
+  }
+
   const handlePlay = () => {
     const finalName = playerName.trim() || generateRandomName()
     localStorage.setItem('playerName', finalName)
@@ -51,6 +57,13 @@ export default function Home() {
             onKeyDown={handleKeyDown}
           />
         </div>
+        <button 
+          className="btn btn-secondary mb-3" 
+          onClick={handleGenerateName}
+        >
+          Generate Nickname
+        </button>
+        <br />
         <button 
           id="play-button" 
           className="btn btn-primary btn-lg" 
