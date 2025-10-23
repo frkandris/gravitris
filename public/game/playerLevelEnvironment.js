@@ -33,11 +33,30 @@ let rotationIndex;
 let gameLevel = 1; // level reached in the game, determines game speed
 let points = 0; // points reached in the game
 
+// Helper function to generate random name
+function generateRandomName() {
+    const adjectives = [
+        'Swift', 'Mighty', 'Clever', 'Brave', 'Epic', 'Cosmic', 'Stellar', 'Quantum',
+        'Blazing', 'Thunder', 'Frost', 'Shadow', 'Golden', 'Crystal', 'Neon', 'Turbo',
+        'Electric', 'Mystic', 'Hyper', 'Ultra', 'Super', 'Mega', 'Ninja', 'Cyber',
+        'Atomic', 'Laser', 'Plasma', 'Diamond', 'Phoenix', 'Dragon', 'Vortex', 'Storm'
+    ];
+    const nouns = [
+        'Fox', 'Wolf', 'Eagle', 'Falcon', 'Hawk', 'Tiger', 'Lion', 'Panda',
+        'Bear', 'Shark', 'Dragon', 'Phoenix', 'Cobra', 'Panther', 'Raven', 'Lynx',
+        'Otter', 'Badger', 'Owl', 'Penguin', 'Puma', 'Leopard', 'Cheetah', 'Raptor',
+        'Viper', 'Manta', 'Jaguar', 'Orca', 'Dolphin', 'Octopus', 'Kraken', 'Yeti'
+    ];
+    const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+    const noun = nouns[Math.floor(Math.random() * nouns.length)];
+    return adjective + noun;
+}
+
 let playerName = localStorage.getItem("playerName");
-// if there was no nickName, generate one
-if (playerName === '') {
-    const animals = ['Alligator', 'Ant', 'Bear', 'Bee', 'Bird', 'Camel', 'Cat', 'Cheetah', 'Chicken', 'Chimpanzee', 'Cow', 'Crocodile', 'Deer', 'Dog', 'Dolphin', 'Duck', 'Eagle', 'Elephant', 'Fish', 'Fly', 'Fox', 'Frog', 'Giraffe', 'Goat', 'Goldfish', 'Hamster', 'Hippopotamus', 'Horse', 'Kangaroo', 'Kitten', 'Lion', 'Lobster', 'Monkey', 'Octopus', 'Owl', 'Panda', 'Pig', 'Puppy', 'Rabbit', 'Rat', 'Scorpion', 'Seal', 'Shark', 'Sheep', 'Snail', 'Snake', 'Spider', 'Squirrel', 'Tiger', 'Turtle', 'Wolf', 'Zebra'];
-    playerName = 'Anonymous ' + animals[Math.floor(Math.random() * animals.length)];
+// If there was no name or it's empty/null, generate one
+if (!playerName || playerName.trim() === '') {
+    playerName = generateRandomName();
+    localStorage.setItem("playerName", playerName);
 }
 
 module.exports = {

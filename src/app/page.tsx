@@ -2,31 +2,24 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { generateRandomName } from '@/lib/nameGenerator'
 
 export default function Home() {
   const [playerName, setPlayerName] = useState('')
   const router = useRouter()
 
   useEffect(() => {
-    // Load player name from localStorage
+    // Load player name from localStorage or generate a new one
     const savedName = localStorage.getItem('playerName')
-    if (savedName) {
+    if (savedName && savedName.trim()) {
       setPlayerName(savedName)
+    } else {
+      // Auto-generate and populate a name
+      const newName = generateRandomName()
+      setPlayerName(newName)
+      localStorage.setItem('playerName', newName)
     }
   }, [])
-
-  const generateRandomName = () => {
-    const animals = [
-      'Alligator', 'Ant', 'Bear', 'Bee', 'Bird', 'Camel', 'Cat', 'Cheetah', 
-      'Chicken', 'Chimpanzee', 'Cow', 'Crocodile', 'Deer', 'Dog', 'Dolphin', 
-      'Duck', 'Eagle', 'Elephant', 'Fish', 'Fly', 'Fox', 'Frog', 'Giraffe', 
-      'Goat', 'Goldfish', 'Hamster', 'Hippopotamus', 'Horse', 'Kangaroo', 
-      'Kitten', 'Lion', 'Lobster', 'Monkey', 'Octopus', 'Owl', 'Panda', 
-      'Pig', 'Puppy', 'Rabbit', 'Rat', 'Scorpion', 'Seal', 'Shark', 'Sheep', 
-      'Snail', 'Snake', 'Spider', 'Squirrel', 'Tiger', 'Turtle', 'Wolf', 'Zebra'
-    ]
-    return `Anonymous ${animals[Math.floor(Math.random() * animals.length)]}`
-  }
 
   const handlePlay = () => {
     const finalName = playerName.trim() || generateRandomName()

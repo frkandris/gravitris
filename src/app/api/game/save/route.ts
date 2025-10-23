@@ -1,16 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getPrisma } from '@/lib/prisma'
+import { generateRandomName } from '@/lib/nameGenerator'
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { gameString, gameBlocks, playerName, gameLevel, points } = body
+    let { gameString, gameBlocks, playerName, gameLevel, points } = body
 
-    if (!gameString || !gameBlocks || !playerName || gameLevel === undefined || points === undefined) {
+    if (!gameString || !gameBlocks || gameLevel === undefined || points === undefined) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
       )
+    }
+
+    // Ensure playerName is never empty - fallback to generated name
+    if (!playerName || !playerName.trim()) {
+      playerName = generateRandomName()
     }
 
     const prisma = getPrisma()
@@ -18,7 +24,7 @@ export async function POST(request: NextRequest) {
       data: {
         gameString,
         gameBlocks,
-        playerName,
+        playerName: playerName.trim(),
         gameLevel,
         points,
         gameDate: new Date()
