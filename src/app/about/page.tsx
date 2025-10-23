@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { numberWithCommas } from '@/lib/utils'
 import { getPrisma } from '@/lib/prisma'
 
+export const dynamic = 'force-dynamic'
+
 async function getStats() {
   try {
     const prisma = await getPrisma()

@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { getPrisma } from '@/lib/prisma'
 import { numberWithCommas } from '@/lib/utils'
 
+export const dynamic = 'force-dynamic'
+
 async function getLeaderboard() {
   try {
     const prisma = await getPrisma()
